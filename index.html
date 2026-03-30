@@ -563,25 +563,24 @@ async function startSEOAudit() {
   saoShow('saoStepAnalyzing');
   renderSaoPrg();
 
-  const [mR, dR, hR] = await Promise.allSettled([
+  const [mR, hR] = await Promise.allSettled([
     fetchPSI(url, 'mobile'),
-    fetchPSI(url, 'desktop'),
     fetchPageHTML(url)
   ]);
 
   clearInterval(window._saoPrgTimer);
-  // mark all done
   document.querySelectorAll('.sao-prog-item').forEach(el => {
     el.className = 'sao-prog-item done';
     el.querySelector('.sao-prog-dot').textContent = '✓';
   });
 
   setTimeout(() => {
-    const mob   = mR.status === 'fulfilled' ? mR.value : null;
-    const desk  = dR.status === 'fulfilled' ? dR.value : null;
-    const html  = hR.status === 'fulfilled' ? hR.value : null;
-    const onPg  = html ? analyzeHTML(html, url) : null;
-    renderSaoResults(url, mob, desk, onPg);
+    const mob  = mR.status === 'fulfilled' ? mR.value : null;
+    const html = hR.status === 'fulfilled' ? hR.value : null;
+    const onPg = html ? analyzeHTML(html, url) : null;
+    if (mR.status === 'rejected') console.warn('PSI failed:', mR.reason);
+    if (hR.status === 'rejected') console.warn('HTML fetch failed:', hR.reason);
+    renderSaoResults(url, mob, onPg);
   }, 600);
 }
 
@@ -616,25 +615,40 @@ function renderSaoPrg() {
 
 async function fetchPSI(url, strategy) {
   const cats = 'category=performance&category=seo&category=accessibility&category=best-practices';
-  const r = await fetch(`${PSI}?url=${encodeURIComponent(url)}&strategy=${strategy}&${cats}`);
-  if (!r.ok) throw new Error('PSI error');
-  return r.json();
+  const apiUrl = `${PSI}?url=${encodeURIComponent(url)}&strategy=${strategy}&${cats}`;
+  const r = await fetch(apiUrl);
+  if (!r.ok) {
+    const body = await r.text().catch(() => '');
+    throw new Error(`PSI HTTP ${r.status}: ${body.slice(0, 120)}`);
+  }
+  const data = await r.json();
+  if (data.error) throw new Error(`PSI API: ${data.error.message || JSON.stringify(data.error)}`);
+  return data;
 }
 
 async function fetchPageHTML(url) {
-  const proxies = [
-    `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
-    `https://corsproxy.io/?${encodeURIComponent(url)}`
-  ];
-  for (const p of proxies) {
-    try {
-      const r = await fetch(p, { signal: AbortSignal.timeout(9000) });
-      if (!r.ok) continue;
+  const sig = () => typeof AbortSignal.timeout === 'function'
+    ? AbortSignal.timeout(10000)
+    : undefined;
+
+  // allorigins — returns JSON { contents: "<html>..." }
+  try {
+    const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`, { signal: sig() });
+    if (r.ok) {
       const d = await r.json();
-      const html = d.contents || d;
-      if (typeof html === 'string' && html.length > 100) return html;
-    } catch(e) { /* try next */ }
-  }
+      if (typeof d.contents === 'string' && d.contents.length > 200) return d.contents;
+    }
+  } catch(e) { console.warn('allorigins:', e.message); }
+
+  // corsproxy.io — returns raw HTML text
+  try {
+    const r = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`, { signal: sig() });
+    if (r.ok) {
+      const html = await r.text();
+      if (html.length > 200) return html;
+    }
+  } catch(e) { console.warn('corsproxy:', e.message); }
+
   return null;
 }
 
@@ -678,24 +692,31 @@ const catScore = (p, c) => { const s = p?.lighthouseResult?.categories?.[c]?.sco
 const scoreColor = n => n==null?'s-na':n>=90?'s-good':n>=50?'s-ok':'s-bad';
 const badge = { pass:'Pass', warn:'Warning', fail:'Fail', info:'Check Needed', na:'N/A' };
 
-function renderSaoResults(url, mob, desk, op) {
+function renderSaoResults(url, mob, op) {
   const host = new URL(url).hostname;
   document.getElementById('saoResHost').textContent = host;
 
+  const psiLink = `https://pagespeed.web.dev/report?url=${encodeURIComponent(url)}`;
   const scores = [
-    { label: 'Performance', val: catScore(mob,'performance') },
-    { label: 'SEO Score',   val: catScore(mob,'seo') },
+    { label: 'Performance',    val: catScore(mob,'performance') },
+    { label: 'SEO Score',      val: catScore(mob,'seo') },
     { label: 'Best Practices', val: catScore(mob,'best-practices') },
-    { label: 'Accessibility', val: catScore(mob,'accessibility') },
+    { label: 'Accessibility',  val: catScore(mob,'accessibility') },
   ];
   document.getElementById('saoScores').innerHTML = scores.map(s =>
-    `<div class="sao-score-box">
-      <div class="sao-score-val ${scoreColor(s.val)}">${s.val ?? '—'}</div>
+    `<div class="sao-score-box" title="${s.val==null?'Open PageSpeed Insights':''}">
+      ${s.val==null
+        ? `<a class="sao-score-val s-na sao-score-link" href="${psiLink}" target="_blank" rel="noopener">View →</a>`
+        : `<div class="sao-score-val ${scoreColor(s.val)}">${s.val}</div>`}
       <div class="sao-score-lbl">${s.label}</div>
     </div>`
   ).join('');
+  if (!mob) {
+    document.getElementById('saoScores').insertAdjacentHTML('afterend',
+      `<p class="sao-psi-note">PageSpeed data unavailable — <a href="${psiLink}" target="_blank" rel="noopener">view on Google PageSpeed Insights ↗</a></p>`);
+  }
 
-  const steps = buildAuditSteps(url, mob, desk, op);
+  const steps = buildAuditSteps(url, mob, op);
   document.getElementById('saoStepsList').innerHTML = steps.map(s =>
     `<div class="sao-step-item" onclick="this.classList.toggle('open')">
       <div class="sao-step-hd">
@@ -715,9 +736,8 @@ function renderSaoResults(url, mob, desk, op) {
   document.getElementById('saoGoBtn').disabled = false;
 }
 
-function buildAuditSteps(url, mob, desk, op) {
+function buildAuditSteps(url, mob, op) {
   const pScoreM   = catScore(mob, 'performance');
-  const pScoreD   = catScore(desk, 'performance');
   const seoScoreN = catScore(mob, 'seo');
   const lcp  = psiDisp(mob,'largest-contentful-paint');
   const cls  = psiDisp(mob,'cumulative-layout-shift');
@@ -823,7 +843,7 @@ function buildAuditSteps(url, mob, desk, op) {
       desc:op?.viewport
         ?`Viewport meta tag is set (${op.viewport}). ${tapT!==null?(tapT>=0.9?'Tap targets are appropriately sized.':'Some tap targets may be too small for mobile users — buttons/links should be at least 48×48px.'):''}${pScoreM!==null?' Mobile performance score: '+pScoreM+'/100.':''} Google uses mobile-first indexing.`
         :`${vp===0?'No viewport meta tag detected — this is a critical mobile issue!':vp===1?'Viewport meta tag detected.':'Could not verify viewport.'} ${tapT!==null&&tapT<0.9?'Tap targets need to be larger for mobile users.':''} Google mobile-first indexing means your mobile experience is what Google indexes.`,
-      metrics:[op?.viewport?{k:'Viewport',v:'Set ✓'}:{k:'Viewport',v:vp===1?'Set ✓':vp===0?'Missing ✗':'Unknown'},tapT!==null?{k:'Tap Targets',v:tapT>=0.9?'Good ✓':'Issues ✗'}:null,pScoreM!==null?{k:'Mobile Score',v:pScoreM+'/100'}:null,pScoreD!==null?{k:'Desktop Score',v:pScoreD+'/100'}:null]
+      metrics:[op?.viewport?{k:'Viewport',v:'Set ✓'}:{k:'Viewport',v:vp===1?'Set ✓':vp===0?'Missing ✗':'Unknown'},tapT!==null?{k:'Tap Targets',v:tapT>=0.9?'Good ✓':'Issues ✗'}:null,pScoreM!==null?{k:'Mobile Score',v:pScoreM+'/100'}:null]
     },
     {
       num:'#9', name:'Check Google Is Indexing Your Site Correctly', st:idxSt,

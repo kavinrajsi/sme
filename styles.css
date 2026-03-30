@@ -978,6 +978,11 @@ footer a { font-size: var(--fs-xs); color: var(--lime); text-decoration: none; }
 .sao-score-val.s-bad  { color: #d63025; }
 .sao-score-val.s-na   { color: var(--soft); }
 .sao-score-lbl { font-size: 0.7rem; color: var(--soft); text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.3; }
+.sao-score-link { text-decoration: none; font-size: 1.1rem !important; }
+.sao-score-link:hover { text-decoration: underline; }
+.sao-psi-note { font-size: var(--fs-xs); color: rgba(255,255,255,0.4); margin-top: 0.8rem; }
+.sao-psi-note a { color: var(--lime); text-decoration: none; }
+.sao-psi-note a:hover { text-decoration: underline; }
 
 .sao-steps-list { padding: 1.5rem; display: flex; flex-direction: column; gap: 0.55rem; }
 .sao-step-item {

@@ -35,7 +35,8 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         from: { address: 'noreply@madarth.com', name: 'SearchMadarth® Website' },
-        to: [{ email_address: { address: 'kavin@madarth.com', name: 'Kavinraj' } }],
+        to: [{ email_address: { address: 'manoj@madarth.com', name: 'Manoj' } }],
+        cc: [{ email_address: { address: 'kavin@madarth.com', name: 'Kavinraj' } }],
         reply_to: [{ address: email, name: name }],
         subject: `[${source}] ${name}${company ? ' — ' + company : ''}`,
         htmlbody: html,

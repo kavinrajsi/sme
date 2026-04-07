@@ -113,6 +113,9 @@ export default function Header() {
       </button>
       {menuOpen && (
         <div className={styles.mobileMenu}>
+          <div className={styles.mobileMenuHeader}>
+            <Logo />
+          </div>
           <nav className={styles.mobileNav}>
             {navLinks.map((link) => (
               <a

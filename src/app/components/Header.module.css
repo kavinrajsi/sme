@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 120px;
+  padding: 16px 24px;
   width: 100%;
   position: fixed;
   top: 0;
@@ -20,9 +20,9 @@
   flex-shrink: 0;
 }
 
-/* Navigation */
+/* Navigation - hidden on mobile */
 .nav {
-  display: flex;
+  display: none;
   gap: 32px;
   align-items: center;
 }
@@ -40,9 +40,9 @@
   color: #cadb3f;
 }
 
-/* Buttons */
+/* Buttons - hidden on mobile */
 .actions {
-  display: flex;
+  display: none;
   gap: 16px;
   align-items: center;
 }
@@ -91,9 +91,9 @@
   background-color: #b8c837;
 }
 
-/* Burger menu - hidden on desktop */
+/* Burger menu - visible on mobile */
 .burger {
-  display: none;
+  display: flex;
   flex-direction: column;
   gap: 5px;
   background: none;
@@ -126,86 +126,84 @@
 
 /* Mobile menu dropdown */
 .mobileMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #004c43;
+  padding: 80px 24px 24px;
+  z-index: 99;
+}
+
+.mobileNav {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.mobileNavLink {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 32px;
+  color: white;
+  text-decoration: none;
+}
+
+.mobileNavLink:hover {
+  color: #cadb3f;
+}
+
+.mobileActions {
   display: none;
 }
 
 /* Mobile fixed footer CTA */
 .mobileFooter {
-  display: none;
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  gap: 8px;
+  padding: 12px 24px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  background-color: #004c43;
+  box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.2);
+  z-index: 100;
 }
 
-/* Tablet & Mobile */
-@media (max-width: 1024px) {
+.mobileFooter .btnOutline,
+.mobileFooter .btnFilled {
+  flex: 1;
+}
+
+/* Desktop */
+@media (min-width: 1025px) {
   .header {
-    padding: 16px 24px;
+    padding: 16px 120px;
   }
 
   .nav {
-    display: none;
+    display: flex;
   }
 
   .actions {
-    display: none;
+    display: flex;
   }
 
   .burger {
-    display: flex;
+    display: none;
   }
 
   .mobileMenu {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: #004c43;
-    padding: 80px 24px 24px;
-    z-index: 99;
-  }
-
-  .mobileNav {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  .mobileNavLink {
-    font-weight: 500;
-    font-size: 24px;
-    line-height: 32px;
-    color: white;
-    text-decoration: none;
-  }
-
-  .mobileNavLink:hover {
-    color: #cadb3f;
-  }
-
-  .mobileActions {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    display: none;
   }
 
   .mobileFooter {
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    gap: 8px;
-    padding: 12px 24px;
-    padding-bottom: max(12px, env(safe-area-inset-bottom));
-    background-color: #004c43;
-    box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.2);
-    z-index: 100;
-  }
-
-  .mobileFooter .btnOutline,
-  .mobileFooter .btnFilled {
-    flex: 1;
+    display: none;
   }
 }

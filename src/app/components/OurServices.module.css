@@ -2,8 +2,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 56px;
-  padding: 80px 120px;
+  gap: 32px;
+  padding: 48px 24px;
   background-color: #f6f5f3;
   width: 100%;
 }
@@ -40,16 +40,16 @@
 
 .title {
   font-weight: 700;
-  font-size: 48px;
-  line-height: 52px;
+  font-size: 32px;
+  line-height: 36px;
   color: #004c43;
   text-align: center;
 }
 
 .subtitle {
   font-weight: 500;
-  font-size: 20px;
-  line-height: 26px;
+  font-size: 16px;
+  line-height: 22px;
   color: #004c43;
   text-align: center;
 }
@@ -65,14 +65,15 @@
 
 .row {
   display: flex;
+  flex-direction: column;
   gap: 20px;
 }
 
 .card {
   display: flex;
   flex-direction: column;
-  gap: 40px;
-  padding: 24px 40px;
+  gap: 24px;
+  padding: 20px 24px;
   background: #ffffff;
   border: 1px solid rgba(0, 76, 67, 0.12);
   border-radius: 20px;
@@ -109,8 +110,8 @@
 
 .cardDescription {
   font-weight: 500;
-  font-size: 18px;
-  line-height: 24px;
+  font-size: 16px;
+  line-height: 22px;
   color: #4a5568;
 }
 
@@ -131,33 +132,33 @@
   white-space: nowrap;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 769px) {
   .section {
-    padding: 48px 24px;
-    gap: 32px;
+    padding: 80px 120px;
+    gap: 56px;
   }
 
   .title {
-    font-size: 32px;
-    line-height: 36px;
+    font-size: 48px;
+    line-height: 52px;
   }
 
   .subtitle {
-    font-size: 16px;
-    line-height: 22px;
+    font-size: 20px;
+    line-height: 26px;
   }
 
   .row {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .card {
-    padding: 20px 24px;
-    gap: 24px;
+    padding: 24px 40px;
+    gap: 40px;
   }
 
   .cardDescription {
-    font-size: 16px;
-    line-height: 22px;
+    font-size: 18px;
+    line-height: 24px;
   }
 }

@@ -1,8 +1,9 @@
 .section {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
   justify-content: space-between;
-  padding: 80px 120px;
+  padding: 48px 24px;
   background-color: #085243;
   width: 100%;
   gap: 40px;
@@ -13,8 +14,10 @@
   display: flex;
   flex-direction: column;
   gap: 32px;
-  width: 489px;
+  width: 100%;
   flex-shrink: 0;
+  align-items: center;
+  text-align: center;
 }
 
 .badge {
@@ -41,8 +44,8 @@
 
 .title {
   font-weight: 700;
-  font-size: 48px;
-  line-height: 52px;
+  font-size: 32px;
+  line-height: 36px;
   color: white;
 }
 
@@ -52,8 +55,8 @@
 
 .subtitle {
   font-weight: 500;
-  font-size: 20px;
-  line-height: 26px;
+  font-size: 16px;
+  line-height: 22px;
   color: white;
 }
 
@@ -66,7 +69,8 @@
   background: white;
   border-radius: 30px;
   box-shadow: 0px 24px 64px rgba(0, 0, 0, 0.12);
-  width: 590px;
+  width: 100%;
+  max-width: 590px;
   flex-shrink: 0;
 }
 
@@ -131,21 +135,22 @@
 
 .questionTitle {
   font-weight: 600;
-  font-size: 24px;
-  line-height: 28px;
+  font-size: 20px;
+  line-height: 24px;
   color: #004c43;
 }
 
 .questionSubtitle {
   font-weight: 500;
-  font-size: 20px;
-  line-height: 26px;
+  font-size: 16px;
+  line-height: 22px;
   color: #7a8a9a;
 }
 
 /* Options grid */
 .optionsGrid {
   display: flex;
+  flex-direction: column;
   gap: 8px;
 }
 
@@ -267,47 +272,47 @@
   flex-shrink: 0;
 }
 
-@media (max-width: 1024px) {
-  .section {
-    flex-direction: column;
-    align-items: center;
-    padding: 48px 24px;
-  }
-
-  .left {
-    width: 100%;
-    align-items: center;
-    text-align: center;
-  }
-
-  .card {
-    width: 100%;
-    max-width: 590px;
-  }
-}
-
-@media (max-width: 600px) {
+@media (min-width: 601px) {
   .title {
-    font-size: 32px;
-    line-height: 36px;
+    font-size: 48px;
+    line-height: 52px;
   }
 
   .subtitle {
-    font-size: 16px;
-    line-height: 22px;
+    font-size: 20px;
+    line-height: 26px;
   }
 
   .questionTitle {
-    font-size: 20px;
-    line-height: 24px;
+    font-size: 24px;
+    line-height: 28px;
   }
 
   .questionSubtitle {
-    font-size: 16px;
-    line-height: 22px;
+    font-size: 20px;
+    line-height: 26px;
   }
 
   .optionsGrid {
-    flex-direction: column;
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 1025px) {
+  .section {
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 80px 120px;
+  }
+
+  .left {
+    width: 489px;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .card {
+    width: 590px;
+    max-width: none;
   }
 }

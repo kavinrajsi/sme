@@ -1,8 +1,10 @@
 .footer {
   display: flex;
+  flex-direction: column;
+  gap: 16px;
   align-items: center;
-  justify-content: space-between;
-  padding: 24px 120px;
+  text-align: center;
+  padding: 24px 24px 80px;
   background-color: #003830;
   width: 100%;
 }
@@ -25,19 +27,20 @@
   font-size: 16px;
   line-height: 18px;
   color: #cadb3f;
-  text-align: right;
+  text-align: center;
 }
 
-@media (max-width: 1024px) {
+@media (min-width: 1025px) {
   .footer {
-    flex-direction: column;
-    gap: 16px;
-    padding: 24px 24px 80px;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 24px 120px;
     align-items: center;
-    text-align: center;
+    text-align: left;
+    gap: 0;
   }
 
   .url {
-    text-align: center;
+    text-align: right;
   }
 }

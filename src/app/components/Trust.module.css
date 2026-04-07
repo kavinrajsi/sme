@@ -39,7 +39,7 @@
 .marqueeTrack {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 16px;
   width: max-content;
   animation: scroll 15s linear infinite;
 }
@@ -85,7 +85,7 @@
   }
 
   .marqueeTrack {
-    gap: 40px;
+    gap: 16px;
     animation-duration: 20s;
   }
 }

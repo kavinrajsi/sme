@@ -28,11 +28,11 @@
   text-align: right;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .footer {
     flex-direction: column;
     gap: 16px;
-    padding: 24px 24px;
+    padding: 24px 24px 80px;
     align-items: center;
     text-align: center;
   }

@@ -1,0 +1,249 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 56px;
+  padding: 80px 120px;
+  background-color: #f6f5f3;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  max-width: 794px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 17px;
+  border-radius: 50px;
+  background-color: rgba(202, 219, 63, 0.15);
+  border: 1px solid rgba(202, 219, 63, 0.35);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #004c43;
+}
+
+.titleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 52px;
+  color: #004c43;
+  text-align: center;
+}
+
+.subtitle {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 26px;
+  color: #004c43;
+  text-align: center;
+}
+
+/* Content area */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Stats row */
+.stats {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 24px;
+  background: white;
+  border: 1px solid rgba(0, 76, 67, 0.2);
+  border-radius: 20px;
+  width: 285px;
+  flex: 1;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  border-radius: 6px;
+  background-color: rgba(202, 219, 63, 0.15);
+  width: 56px;
+  height: 56px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.statRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.statNumber {
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 52px;
+  color: #004c43;
+}
+
+.statUnit {
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 24px;
+  color: #cadb3f;
+}
+
+.cardDescription {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 26px;
+  color: #4a5568;
+}
+
+/* CTA Banner */
+.ctaBanner {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+  padding: 24px 32px;
+  background-color: #004c43;
+  border-radius: 20px;
+  width: 100%;
+}
+
+.ctaText {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.ctaTitle {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 28px;
+  color: #cadb3f;
+}
+
+.ctaSubtitle {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 26px;
+  color: white;
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 50px;
+  background-color: #cadb3f;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  text-transform: uppercase;
+  color: #004c43;
+  white-space: nowrap;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.ctaButton:hover {
+  background-color: #b8c837;
+}
+
+@media (max-width: 1024px) {
+  .section {
+    padding: 48px 24px;
+    gap: 32px;
+  }
+
+  .stats {
+    flex-wrap: wrap;
+  }
+
+  .card {
+    min-width: calc(50% - 10px);
+  }
+
+  .ctaBanner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 24px;
+  }
+}
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 32px;
+    line-height: 36px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  .stats {
+    flex-direction: column;
+  }
+
+  .card {
+    min-width: 100%;
+    gap: 24px;
+  }
+
+  .statNumber {
+    font-size: 36px;
+    line-height: 40px;
+  }
+
+  .cardDescription {
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  .ctaTitle {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .ctaSubtitle {
+    font-size: 16px;
+    line-height: 22px;
+  }
+}

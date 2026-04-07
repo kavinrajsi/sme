@@ -1,0 +1,186 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 56px;
+  padding: 80px 120px;
+  background-color: #f6f5f3;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  max-width: 794px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 17px;
+  border-radius: 50px;
+  background-color: rgba(202, 219, 63, 0.15);
+  border: 1px solid rgba(202, 219, 63, 0.35);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #004c43;
+}
+
+.titleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 52px;
+  color: #004c43;
+  text-align: center;
+}
+
+.subtitle {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 26px;
+  color: #004c43;
+  text-align: center;
+}
+
+.cards {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 25px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 76, 67, 0.12);
+  flex: 1;
+}
+
+.cardLight {
+  background-color: #ffffff;
+}
+
+.cardDark {
+  background-color: #004c43;
+}
+
+.stars {
+  display: flex;
+  gap: 3px;
+  font-size: 16px;
+  line-height: 25.6px;
+  color: #cadb3f;
+}
+
+.quoteBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.quoteMark {
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 52px;
+  height: 22px;
+  color: #cadb3f;
+}
+
+.quoteText {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.quoteTextLight {
+  color: #0f1a12;
+}
+
+.quoteTextDark {
+  color: #ffffff;
+}
+
+.divider {
+  width: 100%;
+}
+
+.dividerLight {
+  border-top: 1px solid rgba(0, 76, 67, 0.12);
+}
+
+.dividerDark {
+  border-top: 1px solid #f6f5f3;
+}
+
+.author {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 17px;
+}
+
+.authorName {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 26px;
+}
+
+.authorNameLight {
+  color: #0f1a12;
+}
+
+.authorNameDark {
+  color: #ffffff;
+}
+
+.authorRole {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.authorRoleLight {
+  color: #7a8a9a;
+}
+
+.authorRoleDark {
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 48px 24px;
+    gap: 32px;
+  }
+
+  .title {
+    font-size: 32px;
+    line-height: 36px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  .cards {
+    flex-direction: column;
+  }
+}

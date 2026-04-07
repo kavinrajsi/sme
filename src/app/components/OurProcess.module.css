@@ -1,0 +1,165 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 56px;
+  padding: 80px 120px;
+  background-color: #ffffff;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  max-width: 794px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 17px;
+  border-radius: 50px;
+  background-color: rgba(202, 219, 63, 0.15);
+  border: 1px solid rgba(202, 219, 63, 0.35);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #004c43;
+}
+
+.titleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 52px;
+  color: #004c43;
+  text-align: center;
+}
+
+.subtitle {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 26px;
+  color: #004c43;
+  text-align: center;
+}
+
+/* Steps row */
+.steps {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  flex: 1;
+}
+
+.stepNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 26px;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 26px;
+  flex-shrink: 0;
+}
+
+.stepNumberDark {
+  background-color: #004c43;
+  color: #cadb3f;
+}
+
+.stepNumberLight {
+  background-color: #cadb3f;
+  color: #004c43;
+}
+
+.stepContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.stepTitle {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 26px;
+  color: #004c43;
+}
+
+.stepDescription {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  color: #4a5568;
+}
+
+/* CTA Button */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 50px;
+  background-color: #cadb3f;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  text-transform: uppercase;
+  color: #004c43;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.cta:hover {
+  background-color: #b8c837;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 48px 24px;
+    gap: 32px;
+  }
+
+  .title {
+    font-size: 32px;
+    line-height: 36px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  .steps {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .step {
+    max-width: 300px;
+  }
+}

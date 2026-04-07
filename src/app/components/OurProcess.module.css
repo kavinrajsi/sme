@@ -134,10 +134,12 @@
   border: none;
   cursor: pointer;
   text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .cta:hover {
-  background-color: #b8c837;
+  background-color: #004c43;
+  color: white;
 }
 
 @media (min-width: 769px) {

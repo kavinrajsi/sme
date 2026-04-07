@@ -182,10 +182,12 @@
   white-space: nowrap;
   text-decoration: none;
   flex-shrink: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .ctaButton:hover {
-  background-color: #b8c837;
+  background-color: #004c43;
+  color: white;
 }
 
 @media (min-width: 601px) {

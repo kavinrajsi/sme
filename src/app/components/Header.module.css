@@ -63,10 +63,12 @@
   text-transform: uppercase;
   white-space: nowrap;
   text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .btnOutline:hover {
-  background-color: rgba(202, 219, 63, 0.1);
+  background-color: #cadb3f;
+  color: #004c43;
 }
 
 .btnFilled {
@@ -85,10 +87,12 @@
   text-transform: uppercase;
   white-space: nowrap;
   text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .btnFilled:hover {
-  background-color: #b8c837;
+  background-color: #004c43;
+  color: white;
 }
 
 /* Burger menu - visible on mobile */

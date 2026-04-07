@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Anek_Tamil } from "next/font/google";
 import styles from "./Hero.module.css";
 
@@ -10,12 +9,14 @@ const anekTamil = Anek_Tamil({
 export default function Hero() {
   return (
     <section className={`${styles.section} ${anekTamil.className}`}>
-      <Image
-        src="/home-page-bg.png"
-        alt=""
-        fill
-        priority
-        className={styles.bgImage}
+      <video
+        src="/video.mp4"
+        poster="/home-page-bg.png"
+        autoPlay
+        loop
+        muted
+        playsInline
+        className={styles.bgVideo}
       />
       <div className={styles.content} data-aos="fade-right">
         <span className={styles.badge}>India&apos;s SME Growth Engine</span>

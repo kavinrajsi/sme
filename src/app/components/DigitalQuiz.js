@@ -647,7 +647,7 @@ export default function DigitalQuiz() {
               <div className={styles.footerLeft}>
                 <button
                   type="button"
-                  className={styles.backBtn}
+                  className="btn-base btn-ghost-teal"
                   onClick={handleBack}
                   disabled={currentQuestion === 0}
                   style={{ opacity: currentQuestion === 0 ? 0.4 : 1 }}
@@ -658,7 +658,7 @@ export default function DigitalQuiz() {
                 {!question.required && (
                   <button
                     type="button"
-                    className={styles.skipBtn}
+                    className="btn-text"
                     onClick={handleSkip}
                   >
                     Skip
@@ -667,7 +667,7 @@ export default function DigitalQuiz() {
               </div>
               <button
                 type="button"
-                className={styles.nextBtn}
+                className="btn-base btn-solid-teal"
                 onClick={handleNext}
                 disabled={!canProceed}
                 style={{ opacity: canProceed ? 1 : 0.4 }}
@@ -772,7 +772,7 @@ export default function DigitalQuiz() {
               </p>
               <button
                 type="button"
-                className={styles.nextBtn}
+                className="btn-base btn-solid-teal"
                 onClick={() => setShowBooking(true)}
                 style={{ margin: "0 auto" }}
               >
@@ -780,8 +780,9 @@ export default function DigitalQuiz() {
               </button>
               <button
                 type="button"
-                className={styles.restartBtn}
+                className="btn-text"
                 onClick={handleRestart}
+                style={{ display: "block", width: "100%", textAlign: "center", marginTop: "16px" }}
               >
                 ← Retake the quiz
               </button>
@@ -881,7 +882,7 @@ export default function DigitalQuiz() {
                   </div>
                   <button
                     type="button"
-                    className={styles.submitBtn}
+                    className="btn-submit"
                     onClick={handleBookingSubmit}
                   >
                     ✅ Confirm My Free Call →
@@ -899,7 +900,7 @@ export default function DigitalQuiz() {
                   </p>
                   <button
                     type="button"
-                    className={styles.nextBtn}
+                    className="btn-base btn-solid-teal"
                     onClick={() => setShowBooking(false)}
                     style={{ margin: "0 auto" }}
                   >

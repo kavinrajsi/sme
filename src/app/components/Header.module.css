@@ -47,54 +47,6 @@
   align-items: center;
 }
 
-.btnOutline {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 16px;
-  border-radius: 50px;
-  border: 2px solid #cadb3f;
-  background: transparent;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 20px;
-  color: white;
-  text-transform: uppercase;
-  white-space: nowrap;
-  text-decoration: none;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.btnOutline:hover {
-  background-color: #cadb3f;
-  color: #004c43;
-}
-
-.btnFilled {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 16px;
-  border-radius: 50px;
-  border: none;
-  background-color: #cadb3f;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 20px;
-  color: #004c43;
-  text-transform: uppercase;
-  white-space: nowrap;
-  text-decoration: none;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.btnFilled:hover {
-  background-color: #004c43;
-  color: white;
-}
-
 /* Burger menu - visible on mobile */
 .burger {
   display: flex;

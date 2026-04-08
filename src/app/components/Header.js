@@ -94,10 +94,10 @@ export default function Header() {
         ))}
       </nav>
       <div className={styles.actions}>
-        <a href="#quiz" className={styles.btnOutline}>
+        <a href="#quiz" className="btn-base btn-ghost-lime">
           Check Your Score
         </a>
-        <a href="#get-started" className={styles.btnFilled}>
+        <a href="#get-started" className="btn-base btn-solid">
           Get Started
         </a>
       </div>
@@ -131,14 +131,14 @@ export default function Header() {
           <div className={styles.mobileActions}>
             <a
               href="#quiz"
-              className={styles.btnOutline}
+              className="btn-base btn-ghost-lime"
               onClick={() => setMenuOpen(false)}
             >
               Check Your Score
             </a>
             <a
               href="#get-started"
-              className={styles.btnFilled}
+              className="btn-base btn-solid"
               onClick={() => setMenuOpen(false)}
             >
               Get Started
@@ -147,10 +147,10 @@ export default function Header() {
         </div>
       )}
       <div className={styles.mobileFooter}>
-        <a href="#quiz" className={styles.btnOutline}>
+        <a href="#quiz" className="btn-base btn-ghost-lime">
           Check Your Score
         </a>
-        <a href="#get-started" className={styles.btnFilled}>
+        <a href="#get-started" className="btn-base btn-solid">
           Get Started
         </a>
       </div>

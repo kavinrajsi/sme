@@ -33,10 +33,10 @@ export default function Hero() {
           </p>
         </div>
         <div className={styles.actions}>
-          <a href="#quiz" className={styles.btnPrimary}>
+          <a href="#quiz" className="btn-base btn-solid">
             Check Your Digital Score
           </a>
-          <a href="#demo" className={styles.btnOutline}>
+          <a href="#demo" className="btn-base btn-ghost-white">
             Free Demo Call
           </a>
         </div>

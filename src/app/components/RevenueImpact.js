@@ -92,7 +92,7 @@ export default function RevenueImpact() {
               city, and business size. No commitment required.
             </p>
           </div>
-          <a href="#" className={styles.ctaButton}>
+          <a href="#" className="btn-base btn-solid">
             Get Free Demo Call
           </a>
         </div>

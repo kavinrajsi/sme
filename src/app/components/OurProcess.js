@@ -80,7 +80,7 @@ export default function OurProcess() {
           <StepCard key={step.number} {...step} />
         ))}
       </div>
-      <a href="#" className={styles.cta}>
+      <a href="#" className="btn-base btn-solid">
         Start Your Growth Journey
       </a>
     </section>

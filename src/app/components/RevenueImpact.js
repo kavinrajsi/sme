@@ -41,7 +41,7 @@ const stats = [
 function StatCard({ icon, number, unit, description }) {
   return (
     <div className={styles.card}>
-      <div className={styles.iconWrapper}>
+      {/* <div className={styles.iconWrapper}>
         <Image
           src={icon}
           alt=""
@@ -49,7 +49,7 @@ function StatCard({ icon, number, unit, description }) {
           height={24}
           className={styles.icon}
         />
-      </div>
+      </div> */}
       <div className={styles.cardBody}>
         <div className={styles.statRow}>
           <span className={styles.statNumber}>{number}</span>

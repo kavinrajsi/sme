@@ -58,7 +58,6 @@ const services = [
 function ServiceCard({ number, title, description, tags }) {
   return (
     <div className={styles.card}>
-      <span className={styles.cardNumber}>{number}</span>
       <div className={styles.cardBody}>
         <div className={styles.cardTextGroup}>
           <h3 className={styles.cardTitle}>{title}</h3>

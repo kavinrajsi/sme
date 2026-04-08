@@ -53,7 +53,7 @@ function StatCard({ icon, number, unit, description }) {
       <div className={styles.cardBody}>
         <div className={styles.statRow}>
           <span className={styles.statNumber}>{number}</span>
-          <span className={styles.statUnit}>{unit}</span>
+          <sub className={styles.statUnit}>{unit}</sub>
         </div>
         <p className={styles.cardDescription}>{description}</p>
       </div>

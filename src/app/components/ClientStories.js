@@ -22,8 +22,8 @@ const testimonials = [
       "As the Business Head of Veranda IAS, I have had the opportunity to closely work with Madarth as our digital marketing partner, and I must acknowledge their outstanding contribution to our growth journey. Their team has consistently demonstrated strategic clarity, strong execution capabilities, and a sharp data-driven approach in managing our campaigns across multiple platforms.",
       "Madarth has been more than just an agency, they have been a dependable pillar in scaling our outreach, strengthening our brand visibility, and driving high-quality lead funnels aligned with our academic objectives. Their proactive communication, quick turnaround time, and deep understanding of the competitive exam ecosystem have significantly enhanced the effectiveness of our marketing initiatives.",
     ],
-    name: "Business Head",
-    role: "Veranda IAS",
+    name: "Vignesh",
+    role: "Business Head, Veranda IAS",
   },
 ];
 

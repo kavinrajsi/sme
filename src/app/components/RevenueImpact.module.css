@@ -201,6 +201,15 @@
     line-height: 26px;
   }
 
+  .stats {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .card {
+    min-width: calc(50% - 10px);
+  }
+
   .statNumber {
     font-size: 48px;
     line-height: 52px;
@@ -228,13 +237,9 @@
     gap: 56px;
   }
 
-  .stats {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
   .card {
-    min-width: calc(50% - 10px);
+    min-width: 0;
+    flex: 1;
     gap: 40px;
   }
 

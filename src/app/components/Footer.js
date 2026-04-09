@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Anek_Tamil } from "next/font/google";
 import styles from "./Footer.module.css";
 
@@ -65,9 +66,19 @@ export default function Footer() {
       <div className={styles.logo}>
         <SearchMadarthLogo />
       </div>
-      <p className={styles.copyright}>
-        &copy; 2026 SearchMadarth | All rights reserved.
-      </p>
+      <div className={styles.middle}>
+        <p className={styles.copyright}>
+          &copy; 2026 SearchMadarth | All rights reserved.
+        </p>
+        <div className={styles.legalLinks}>
+          <Link href="/privacy-policy" className={styles.legalLink}>
+            Privacy Policy
+          </Link>
+          <Link href="/terms-and-conditions" className={styles.legalLink}>
+            Terms &amp; Conditions
+          </Link>
+        </div>
+      </div>
       <span className={styles.url}>search.madarth.com</span>
     </footer>
   );

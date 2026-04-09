@@ -97,13 +97,9 @@ export default function Header() {
         <a href="#quiz" className="btn-base btn-ghost-lime">
           Check Your Score
         </a>
-        <button
-          type="button"
-          className="btn-base btn-solid"
-          onClick={() => window.dispatchEvent(new Event("open-demo-modal"))}
-        >
-          Get Started
-        </button>
+        <a href="tel:+918667767447" className="btn-base btn-solid">
+          Call Us
+        </a>
       </div>
       <button
         type="button"
@@ -140,16 +136,13 @@ export default function Header() {
             >
               Check Your Score
             </a>
-            <button
-              type="button"
+            <a
+              href="tel:+918667767447"
               className="btn-base btn-solid"
-              onClick={() => {
-                setMenuOpen(false);
-                window.dispatchEvent(new Event("open-demo-modal"));
-              }}
+              onClick={() => setMenuOpen(false)}
             >
-              Get Started
-            </button>
+              Call Us
+            </a>
           </div>
         </div>
       )}
@@ -157,13 +150,9 @@ export default function Header() {
         <a href="#quiz" className="btn-base btn-ghost-lime">
           Check Your Score
         </a>
-        <button
-          type="button"
-          className="btn-base btn-solid"
-          onClick={() => window.dispatchEvent(new Event("open-demo-modal"))}
-        >
-          Get Started
-        </button>
+        <a href="tel:+918667767447" className="btn-base btn-solid">
+          Call Us
+        </a>
       </div>
     </header>
   );

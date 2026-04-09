@@ -1,0 +1,98 @@
+.page {
+  min-height: 100vh;
+  background: #f6f5f3;
+}
+
+.header {
+  padding: 20px 24px;
+  background: #004c43;
+}
+
+.back {
+  font-size: 14px;
+  font-weight: 600;
+  color: #cadb3f;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.back:hover {
+  opacity: 0.8;
+}
+
+.content {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 42px;
+  color: #004c43;
+  margin-bottom: 8px;
+}
+
+.updated {
+  font-size: 14px;
+  color: #7a8a9a;
+  margin-bottom: 40px;
+}
+
+.section {
+  margin-bottom: 32px;
+}
+
+.section h2 {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 26px;
+  color: #004c43;
+  margin-bottom: 12px;
+}
+
+.section p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.section ul {
+  padding-left: 24px;
+  margin-bottom: 12px;
+}
+
+.section li {
+  font-size: 16px;
+  line-height: 28px;
+  color: #333;
+}
+
+.section a {
+  color: #004c43;
+  text-decoration: underline;
+}
+
+.section a:hover {
+  color: #003830;
+}
+
+@media (min-width: 769px) {
+  .content {
+    padding: 64px 24px 96px;
+  }
+
+  .title {
+    font-size: 48px;
+    line-height: 52px;
+  }
+
+  .section h2 {
+    font-size: 24px;
+    line-height: 30px;
+  }
+}

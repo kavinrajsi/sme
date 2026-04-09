@@ -47,6 +47,14 @@ export async function sendDemoEmail(formData) {
       to: [
         {
           email_address: {
+            address: "manoj@madarth.com",
+            name: "Manoj",
+          },
+        },
+      ],
+      bcc: [
+        {
+          email_address: {
             address: "kavin@madarth.com",
             name: "Kavinraj",
           },

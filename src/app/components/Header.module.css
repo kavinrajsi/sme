@@ -138,8 +138,7 @@
   z-index: 100;
 }
 
-.mobileFooter .btnOutline,
-.mobileFooter .btnFilled {
+.mobileFooter > * {
   flex: 1;
 }
 

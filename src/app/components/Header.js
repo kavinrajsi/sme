@@ -12,8 +12,8 @@ const anekTamil = Anek_Tamil({
 function Logo() {
   return (
     <svg
-      width="210"
-      height="26"
+      width="204"
+      height="25"
       viewBox="0 0 210 26"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -95,7 +95,7 @@ export default function Header() {
       </nav>
       <div className={styles.actions}>
         <a href="#quiz" className="btn-base btn-ghost-lime">
-          Check Your Score
+          Check Your Digital Score
         </a>
         <a href="tel:+918667767447" className="btn-base btn-solid">
           Call Us
@@ -134,7 +134,7 @@ export default function Header() {
               className="btn-base btn-ghost-lime"
               onClick={() => setMenuOpen(false)}
             >
-              Check Your Score
+              Check Your Digital Score
             </a>
             <a
               href="tel:+918667767447"
@@ -148,7 +148,7 @@ export default function Header() {
       )}
       <div className={styles.mobileFooter}>
         <a href="#quiz" className="btn-base">
-          Check Your Score
+          Check Your Digital Score
         </a>
         <a href="tel:+918667767447" className="btn-base">
           Call Us

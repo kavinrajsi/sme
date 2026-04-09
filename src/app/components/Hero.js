@@ -21,7 +21,7 @@ export default function Hero() {
         className={styles.bgVideo}
       />
       <div className={styles.content} data-aos="fade-right">
-        <span className={styles.badge}>India&apos;s SME Growth Engine</span>
+        <span className={styles.tagline}>India&apos;s SME Growth Engine</span>
         <div className={styles.titleGroup}>
           <h1 className={styles.title}>
             Turn Your Business{" "}
@@ -43,7 +43,7 @@ export default function Hero() {
             className="btn-base btn-ghost-white"
             onClick={() => window.dispatchEvent(new Event("open-demo-modal"))}
           >
-            Free Demo Call
+            Get Free Demo Call
           </button>
         </div>
       </div>

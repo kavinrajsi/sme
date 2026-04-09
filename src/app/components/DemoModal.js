@@ -120,10 +120,9 @@ export default function DemoModal() {
       <div className={styles.card}>
         <div className={styles.header}>
           <div>
-            <h4 className={styles.title}>Book a Free Demo Call</h4>
+            <h4 className={styles.title}>Tell us about your business</h4>
             <p className={styles.subtitle}>
-              Tell us about your business — we&apos;ll show you what&apos;s
-              possible.
+              We&apos;ll show you what&apos;s possible.
             </p>
           </div>
           <button

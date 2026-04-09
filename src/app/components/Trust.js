@@ -24,8 +24,8 @@ function LogoSet() {
           <Image
             src={logo.src}
             alt={logo.alt}
-            width={160}
-            height={80}
+            width={244}
+            height={122}
             className={styles.logoImage}
           />
         </div>

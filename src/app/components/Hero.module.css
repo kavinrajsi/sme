@@ -58,6 +58,17 @@
   padding-bottom: 48px;
 }
 
+.tagline {
+  display: inline-flex;
+  padding: 5px 17px;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #cadb3f;
+}
+
 .badge {
   display: inline-flex;
   align-items: center;

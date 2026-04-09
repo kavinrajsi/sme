@@ -54,8 +54,39 @@
   text-align: center;
 }
 
+.sliderWrap {
+  width: 100%;
+}
+
 .cards {
   width: 100%;
+}
+
+.navButtons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.navPrev,
+.navNext {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  line-height: 0;
+  transition: opacity 0.2s;
+}
+
+.navPrev:disabled,
+.navNext:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.navPrev svg {
+  transform: scaleX(-1);
 }
 
 .card {

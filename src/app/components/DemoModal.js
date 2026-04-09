@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Anek_Tamil } from "next/font/google";
+import { sendDemoEmail } from "../actions/sendDemoEmail";
 import styles from "./DemoModal.module.css";
 
 const anekTamil = Anek_Tamil({
@@ -9,7 +10,7 @@ const anekTamil = Anek_Tamil({
   weight: ["400", "600"],
 });
 
-const INITIAL = { name: "", email: "", phone: "", website: "", message: "" };
+const INITIAL = { name: "", email: "", phone: "", company: "", message: "" };
 
 function validate(form) {
   const errors = {};
@@ -37,17 +38,7 @@ function validate(form) {
     errors.phone = "Enter a valid 10-digit Indian mobile number";
   }
 
-  // Website: domain format like example.com
-  if (!form.website.trim()) {
-    errors.website = "Website is required";
-  } else if (
-    !/^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z]{2,})+$/.test(
-      form.website.trim()
-    )
-  ) {
-    errors.website = "Enter a valid domain (e.g. example.com)";
-  }
-
+  // Company: not required, no validation
   // Message: not required, no validation
 
   return errors;
@@ -58,12 +49,14 @@ export default function DemoModal() {
   const [form, setForm] = useState(INITIAL);
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
 
   const handleOpen = useCallback(() => {
     setOpen(true);
     setForm(INITIAL);
     setErrors({});
     setSubmitted(false);
+    setSending(false);
   }, []);
 
   useEffect(() => {
@@ -100,18 +93,21 @@ export default function DemoModal() {
     }
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const newErrors = validate(form);
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
 
-    const payload = {
-      ...form,
-      website: `https://${form.website.trim()}`,
-    };
-    console.log("Demo form submitted:", payload);
-    setSubmitted(true);
+    setSending(true);
+    const result = await sendDemoEmail(form);
+    setSending(false);
+
+    if (result.success) {
+      setSubmitted(true);
+    } else {
+      setErrors({ form: result.error });
+    }
   }
 
   if (!open) return null;
@@ -142,6 +138,18 @@ export default function DemoModal() {
         <div className={styles.body}>
           {!submitted ? (
             <form onSubmit={handleSubmit} noValidate>
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Company Name</label>
+                <input
+                  className={styles.input}
+                  name="company"
+                  type="text"
+                  placeholder="Eg: Sharma Electronics"
+                  value={form.company}
+                  onChange={handleChange}
+                />
+              </div>
+
               <div className={styles.formGroup}>
                 <label className={styles.label}>
                   Name <span className={styles.required}>*</span>
@@ -195,26 +203,6 @@ export default function DemoModal() {
               </div>
 
               <div className={styles.formGroup}>
-                <label className={styles.label}>
-                  Website <span className={styles.required}>*</span>
-                </label>
-                <div className={styles.websiteWrap}>
-                  <span className={styles.websitePrefix}>https://</span>
-                  <input
-                    className={`${styles.input} ${styles.websiteInput} ${errors.website ? styles.inputError : ""}`}
-                    name="website"
-                    type="text"
-                    placeholder="example.com"
-                    value={form.website}
-                    onChange={handleChange}
-                  />
-                </div>
-                {errors.website && (
-                  <span className={styles.error}>{errors.website}</span>
-                )}
-              </div>
-
-              <div className={styles.formGroup}>
                 <label className={styles.label}>Message</label>
                 <textarea
                   className={styles.input}
@@ -226,8 +214,11 @@ export default function DemoModal() {
                 />
               </div>
 
-              <button type="submit" className="btn-submit">
-                Request Demo Call
+              {errors.form && (
+                <span className={styles.error}>{errors.form}</span>
+              )}
+              <button type="submit" className="btn-submit" disabled={sending}>
+                {sending ? "Sending..." : "Request Demo Call"}
               </button>
             </form>
           ) : (

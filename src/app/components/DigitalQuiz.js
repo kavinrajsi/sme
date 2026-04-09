@@ -688,12 +688,11 @@ export default function DigitalQuiz() {
             {/* Question body */}
             <div className={styles.questionBody}>
               <div className={styles.questionMeta}>
-                <span className={styles.questionLabel}>
-                  {questionLabel}
-                  {!question.required && (
+                {!question.required && (
+                  <span className={styles.questionLabel}>
                     <span className={styles.optionalBadge}>OPTIONAL</span>
-                  )}
-                </span>
+                  </span>
+                )}
                 <div>
                   <h3 className={styles.questionTitle}>{question.title}</h3>
                   <p className={styles.questionSubtitle}>

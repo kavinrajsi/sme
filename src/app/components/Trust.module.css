@@ -22,6 +22,14 @@
   color: #004c43;
 }
 
+.title {
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 36px;
+  color: #004c43;
+  text-align: center;
+}
+
 /* Marquee viewport — sized to show N logos */
 .marquee {
   /* Mobile: 2 logos → 2 * 150px + 1 * 16px = 316px */

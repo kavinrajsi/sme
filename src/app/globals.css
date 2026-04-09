@@ -1,3 +1,9 @@
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+  height: 100%;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -8,10 +14,6 @@
     --background: #fff;
     --foreground: #ededed;
   }
-}
-
-html {
-  height: 100%;
 }
 
 html,
@@ -72,6 +74,7 @@ a {
 
 /* Solid lime */
 .btn-solid {
+  border: 1px solid transparent;
   background-color: #cadb3f;
   color: #004c43;
 }
@@ -79,6 +82,7 @@ a {
 .btn-solid:hover {
   background-color: #004c43;
   color: white;
+  border-color: #cadb3f;
 }
 
 /* Solid teal */
@@ -96,7 +100,7 @@ a {
 /* Ghost lime border */
 .btn-ghost-lime {
   background: transparent;
-  border: 2px solid #cadb3f;
+  border: 1px solid #cadb3f;
   color: white;
 }
 

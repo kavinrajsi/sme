@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { Anek_Tamil } from "next/font/google";
 import styles from "./RevenueImpact.module.css";
@@ -92,9 +94,13 @@ export default function RevenueImpact() {
               city, and business size. No commitment required.
             </p>
           </div>
-          <a href="#" className="btn-base btn-solid">
+          <button
+            type="button"
+            className="btn-base btn-solid"
+            onClick={() => window.dispatchEvent(new Event("open-demo-modal"))}
+          >
             Get Free Demo Call
-          </a>
+          </button>
         </div>
       </div>
     </section>

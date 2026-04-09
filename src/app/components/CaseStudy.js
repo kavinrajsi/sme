@@ -30,7 +30,7 @@ const caseStudies = [
 
 export default function CaseStudy() {
   return (
-    <section className={`${styles.section} ${anekTamil.className}`} data-aos="fade-up">
+    <section id="case-studies" className={`${styles.section} ${anekTamil.className}`} data-aos="fade-up">
       <div className={styles.header}>
         <span className={styles.badge}>Case Study</span>
         <div className={styles.titleGroup}>

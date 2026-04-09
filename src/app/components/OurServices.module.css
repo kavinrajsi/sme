@@ -109,7 +109,7 @@
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0 8px;
+  gap: 8px;
 }
 
 .tag {

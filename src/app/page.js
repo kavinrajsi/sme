@@ -8,6 +8,7 @@ import RevenueImpact from "./components/RevenueImpact";
 import CaseStudy from "./components/CaseStudy";
 import ClientStories from "./components/ClientStories";
 import Footer from "./components/Footer";
+import DemoModal from "./components/DemoModal";
 
 export default function Home() {
   return (
@@ -24,6 +25,7 @@ export default function Home() {
         <ClientStories />
       </main>
       <Footer />
+      <DemoModal />
     </>
   );
 }

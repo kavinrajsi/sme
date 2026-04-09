@@ -36,10 +36,16 @@ function LogoSet() {
 
 export default function Trust() {
   return (
-    <section className={`${styles.section} ${anekTamil.className}`} data-aos="fade-up">
-      <span className={styles.badge}>
+    <section
+      className={`${styles.section} ${anekTamil.className}`}
+      data-aos="fade-up"
+    >
+      {/* <span className={styles.badge}>
         Trusted by growing businesses across India
-      </span>
+      </span> */}
+      <h2 className={styles.title}>
+        Trusted by growing businesses across India
+      </h2>
       <div className={styles.marquee}>
         <div className={styles.marqueeTrack}>
           <LogoSet />

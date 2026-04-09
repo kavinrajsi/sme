@@ -1,3 +1,5 @@
+"use client";
+
 import { Anek_Tamil } from "next/font/google";
 import styles from "./Hero.module.css";
 
@@ -36,9 +38,13 @@ export default function Hero() {
           <a href="#quiz" className="btn-base btn-solid">
             Check Your Digital Score
           </a>
-          <a href="#demo" className="btn-base btn-ghost-white">
+          <button
+            type="button"
+            className="btn-base btn-ghost-white"
+            onClick={() => window.dispatchEvent(new Event("open-demo-modal"))}
+          >
             Free Demo Call
-          </a>
+          </button>
         </div>
       </div>
     </section>

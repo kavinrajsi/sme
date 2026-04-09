@@ -64,7 +64,7 @@ function StepCard({ number, title, description, variant }) {
 
 export default function OurProcess() {
   return (
-    <section className={`${styles.section} ${anekTamil.className}`} data-aos="fade-up">
+    <section id="process" className={`${styles.section} ${anekTamil.className}`} data-aos="fade-up">
       <div className={styles.header}>
         <span className={styles.badge}>Our Process</span>
         <div className={styles.titleGroup}>

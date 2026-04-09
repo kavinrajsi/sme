@@ -227,7 +227,7 @@ export default function DemoModal() {
               </div>
 
               <button type="submit" className="btn-submit">
-                Request Demo Call →
+                Request Demo Call
               </button>
             </form>
           ) : (

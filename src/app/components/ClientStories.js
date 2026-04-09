@@ -73,9 +73,9 @@ function TestimonialCard({ variant, paragraphs, name, role }) {
 
 export default function ClientStories() {
   return (
-    <section id="clients" className={`${styles.section} ${anekTamil.className}`} data-aos="fade-up">
+    <section id="testimonials" className={`${styles.section} ${anekTamil.className}`} data-aos="fade-up">
       <div className={styles.header}>
-        <span className={styles.badge}>Client Stories</span>
+        <span className={styles.badge}>Testimonials</span>
         <div className={styles.titleGroup}>
           <h2 className={styles.title}>Businesses That Took the Leap</h2>
           <p className={styles.subtitle}>

@@ -32,7 +32,7 @@ export default function CaseStudy() {
   return (
     <section id="case-studies" className={`${styles.section} ${anekTamil.className}`} data-aos="fade-up">
       <div className={styles.header}>
-        <span className={styles.badge}>Case Study</span>
+        <span className={styles.badge}>Case Studies</span>
         <div className={styles.titleGroup}>
           <h2 className={styles.title}>
             SMEs Scaling Through Digital Transformation

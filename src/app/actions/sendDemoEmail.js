@@ -5,7 +5,7 @@ import { SendMailClient } from "zeptomail";
 const url = "https://api.zeptomail.com/v1.1/email";
 const token = process.env.ZEPTOMAIL_TOKEN;
 
-export async function sendQuizEmail({ phone, score, pillars, answers }) {
+export async function sendQuizEmail({ phone, score, pillars, questions }) {
   const pillarRows = Object.values(pillars)
     .map(
       (p, i) =>
@@ -16,18 +16,19 @@ export async function sendQuizEmail({ phone, score, pillars, answers }) {
     )
     .join("");
 
-  const answerRows = Object.entries(answers)
+  const questionRows = questions
     .map(
-      ([key, val], i) =>
+      (q, i) =>
         `<tr style="${i % 2 === 0 ? "" : "background: #f6f5f3;"}">
-          <td style="padding: 8px; font-weight: bold; color: #004c43;">${key}</td>
-          <td style="padding: 8px;">${Array.isArray(val.value) ? val.value.join(", ") : val.value}</td>
+          <td style="padding: 10px 8px; color: #004c43;"><strong>Q${i + 1}. ${q.title}</strong></td>
+          <td style="padding: 10px 8px;">${q.answer}</td>
+          <td style="padding: 10px 8px; text-align: center;">${q.score}</td>
         </tr>`
     )
     .join("");
 
   const htmlbody = `
-    <div style="font-family: Arial, sans-serif; max-width: 600px;">
+    <div style="font-family: Arial, sans-serif; max-width: 700px;">
       <h2 style="color: #004c43;">New Quiz Submission</h2>
       <table style="width: 100%; border-collapse: collapse;">
         <tr>
@@ -43,9 +44,14 @@ export async function sendQuizEmail({ phone, score, pillars, answers }) {
       <table style="width: 100%; border-collapse: collapse;">
         ${pillarRows}
       </table>
-      <h3 style="color: #004c43; margin-top: 24px;">Answers</h3>
+      <h3 style="color: #004c43; margin-top: 24px;">Questions &amp; Answers</h3>
       <table style="width: 100%; border-collapse: collapse;">
-        ${answerRows}
+        <tr style="background: #004c43; color: white;">
+          <th style="padding: 10px 8px; text-align: left;">Question</th>
+          <th style="padding: 10px 8px; text-align: left;">Answer</th>
+          <th style="padding: 10px 8px; text-align: center;">Score</th>
+        </tr>
+        ${questionRows}
       </table>
     </div>
   `;
@@ -74,7 +80,7 @@ export async function sendQuizEmail({ phone, score, pillars, answers }) {
           },
         },
       ],
-      subject: `Quiz Score: ${score}/100 — ${phone}`,
+      subject: `New Form Submission in SME Page — Quiz Score: ${score}/100 -- ${phone}`,
       htmlbody,
     });
 
@@ -140,7 +146,7 @@ export async function sendDemoEmail(formData) {
           },
         },
       ],
-      subject: `Demo Request from ${name}${company ? ` — ${company}` : ""}`,
+      subject: `New Form Submission in SME Page`,
       htmlbody,
     });
 

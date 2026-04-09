@@ -494,7 +494,19 @@ export default function DigitalQuiz() {
     setPhoneError("");
 
     const { total, pillars: p } = computeScore(answers);
-    sendQuizEmail({ phone: trimmed, score: total, pillars: p, answers });
+
+    const questions = quizData.map((q) => {
+      const ans = answers[q.key];
+      if (!ans) return { title: q.title, answer: "Skipped", score: 0 };
+      const values = Array.isArray(ans.value) ? ans.value : [ans.value];
+      const labels = values.map((v) => {
+        const opt = q.options.find((o) => o.value === v);
+        return opt ? opt.label : v;
+      });
+      return { title: q.title, answer: labels.join(", "), score: ans.score };
+    });
+
+    sendQuizEmail({ phone: trimmed, score: total, pillars: p, questions });
 
     setPhase("result");
   };
@@ -836,7 +848,7 @@ export default function DigitalQuiz() {
                 onClick={() => setShowBooking(true)}
                 style={{ margin: "0 auto" }}
               >
-                📞 Book Free Call Now
+                Book Free Call Now
               </button>
               <button
                 type="button"

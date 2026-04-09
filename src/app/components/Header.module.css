@@ -130,7 +130,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  gap: 8px;
+  gap: 0;
   padding: 12px 24px;
   padding-bottom: max(12px, env(safe-area-inset-bottom));
   background-color: #004c43;
@@ -140,6 +140,11 @@
 
 .mobileFooter > * {
   flex: 1;
+  border-radius: 0;
+}
+
+.mobileFooter > *:first-child {
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Desktop */

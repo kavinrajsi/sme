@@ -147,10 +147,10 @@ export default function Header() {
         </div>
       )}
       <div className={styles.mobileFooter}>
-        <a href="#quiz" className="btn-base btn-ghost-lime">
+        <a href="#quiz" className="btn-base">
           Check Your Score
         </a>
-        <a href="tel:+918667767447" className="btn-base btn-solid">
+        <a href="tel:+918667767447" className="btn-base">
           Call Us
         </a>
       </div>

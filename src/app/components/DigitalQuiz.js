@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Anek_Tamil } from "next/font/google";
+import { sendQuizEmail } from "../actions/sendDemoEmail";
 import styles from "./DigitalQuiz.module.css";
 
 const anekTamil = Anek_Tamil({
@@ -388,6 +389,8 @@ export default function DigitalQuiz() {
   const [showBooking, setShowBooking] = useState(false);
   const [bookingDone, setBookingDone] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
+  const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState("");
 
   const totalQuestions = quizData.length;
   const question = quizData[currentQuestion];
@@ -460,7 +463,7 @@ export default function DigitalQuiz() {
 
   const handleNext = () => {
     if (currentQuestion === totalQuestions - 1) {
-      setPhase("result");
+      setPhase("phone");
       return;
     }
     setCurrentQuestion((prev) => prev + 1);
@@ -472,10 +475,28 @@ export default function DigitalQuiz() {
 
   const handleSkip = () => {
     if (currentQuestion === totalQuestions - 1) {
-      setPhase("result");
+      setPhase("phone");
       return;
     }
     setCurrentQuestion((prev) => prev + 1);
+  };
+
+  const handlePhoneSubmit = async () => {
+    const trimmed = phone.trim();
+    if (!trimmed) {
+      setPhoneError("Phone number is required");
+      return;
+    }
+    if (!/^[6-9]\d{9}$/.test(trimmed)) {
+      setPhoneError("Enter a valid 10-digit Indian mobile number");
+      return;
+    }
+    setPhoneError("");
+
+    const { total, pillars: p } = computeScore(answers);
+    sendQuizEmail({ phone: trimmed, score: total, pillars: p, answers });
+
+    setPhase("result");
   };
 
   const handleRestart = () => {
@@ -486,6 +507,8 @@ export default function DigitalQuiz() {
     setShowBooking(false);
     setBookingDone(false);
     setSelectedSlot(null);
+    setPhone("");
+    setPhoneError("");
   };
 
   const handleBookingSubmit = () => {
@@ -590,7 +613,44 @@ export default function DigitalQuiz() {
           />
         </div>
 
-        {phase === "quiz" ? (
+        {phase === "phone" ? (
+          <div className={styles.phoneScreen}>
+            <div className={styles.phoneContent}>
+              <h3 className={styles.questionTitle}>
+                Almost there! Enter your phone number to see your score.
+              </h3>
+              <p className={styles.questionSubtitle}>
+                We&apos;ll send your detailed report via WhatsApp.
+              </p>
+              <div className={styles.phoneInputWrap}>
+                <input
+                  className={`${styles.phoneInput} ${phoneError ? styles.phoneInputError : ""}`}
+                  type="tel"
+                  inputMode="numeric"
+                  placeholder="Eg: 9876543210"
+                  value={phone}
+                  onChange={(e) => {
+                    const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
+                    setPhone(digits);
+                    if (phoneError) setPhoneError("");
+                  }}
+                />
+                {phoneError && (
+                  <span className={styles.phoneError}>{phoneError}</span>
+                )}
+              </div>
+              <button
+                type="button"
+                className="btn-base btn-solid-teal"
+                onClick={handlePhoneSubmit}
+                style={{ width: "100%" }}
+              >
+                See My Score
+                <ArrowRight />
+              </button>
+            </div>
+          </div>
+        ) : phase === "quiz" ? (
           <>
             {/* Card header */}
             <div className={styles.cardHeader}>

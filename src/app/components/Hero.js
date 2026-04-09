@@ -20,31 +20,33 @@ export default function Hero() {
         playsInline
         className={styles.bgVideo}
       />
-      <div className={styles.content} data-aos="fade-right">
-        <span className={styles.tagline}>India&apos;s SME Growth Engine</span>
-        <div className={styles.titleGroup}>
-          <h1 className={styles.title}>
-            Turn Your Business{" "}
-            <span className={styles.titleHighlight}>Digitally</span>{" "}
-            Unstoppable.
-          </h1>
-          <p className={styles.subtitle}>
-            We help Indian SMEs build a powerful digital presence that generates
-            leads, builds trust, and grows revenue — without the complexity or
-            corporate price tag.
-          </p>
-        </div>
-        <div className={styles.actions}>
-          <a href="#quiz" className="btn-base btn-solid">
-            Check Your Digital Score
-          </a>
-          <button
-            type="button"
-            className="btn-base btn-ghost-white"
-            onClick={() => window.dispatchEvent(new Event("open-demo-modal"))}
-          >
-            Get Free Demo Call
-          </button>
+      <div className="container">
+        <div className={styles.content} data-aos="fade-right">
+          <span className={styles.tagline}>India&apos;s SME Growth Engine</span>
+          <div className={styles.titleGroup}>
+            <h1 className={styles.title}>
+              Turn Your Business{" "}
+              <span className={styles.titleHighlight}>Digitally</span>{" "}
+              Unstoppable.
+            </h1>
+            <p className={styles.subtitle}>
+              We help Indian SMEs build a powerful digital presence that generates
+              leads, builds trust, and grows revenue — without the complexity or
+              corporate price tag.
+            </p>
+          </div>
+          <div className={styles.actions}>
+            <a href="#quiz" className="btn-base btn-solid">
+              Check Your Digital Score
+            </a>
+            <button
+              type="button"
+              className="btn-base btn-ghost-white"
+              onClick={() => window.dispatchEvent(new Event("open-demo-modal"))}
+            >
+              Get Free Demo Call
+            </button>
+          </div>
         </div>
       </div>
     </section>

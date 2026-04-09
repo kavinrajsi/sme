@@ -130,7 +130,8 @@
 
 @media (min-width: 769px) {
   .section {
-    padding: 80px 120px;
+    padding-top: 80px;
+    padding-bottom: 80px;
     gap: 56px;
   }
 

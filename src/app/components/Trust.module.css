@@ -34,6 +34,8 @@
 .marquee {
   /* Mobile: 2 logos → 2 * 150px + 1 * 16px = 316px */
   max-width: 316px;
+  margin-left: auto;
+  margin-right: auto;
   width: 100%;
   overflow: hidden;
   mask-image: linear-gradient(

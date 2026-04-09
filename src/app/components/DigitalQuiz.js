@@ -601,7 +601,8 @@ export default function DigitalQuiz() {
   };
 
   return (
-    <section className={`${styles.section} ${anekTamil.className}`} id="quiz">
+    <section className={`${styles.sectionContainer} ${anekTamil.className}`} id="quiz">
+      <div className={`${styles.section} container`} >
       <div className={styles.left} data-aos="fade-up">
         <span className={styles.badge}>Free Digital Quiz</span>
         <div className={styles.titleGroup}>
@@ -860,6 +861,7 @@ export default function DigitalQuiz() {
             </div>
           </div>
         )}
+      </div>
       </div>
 
       {/* Booking modal */}

@@ -40,16 +40,18 @@ export default function Trust() {
       className={`${styles.section} ${anekTamil.className}`}
       data-aos="fade-up"
     >
-      {/* <span className={styles.badge}>
-        Trusted by growing businesses across India
-      </span> */}
-      <h2 className={styles.title}>
-        Trusted by growing businesses across India
-      </h2>
-      <div className={styles.marquee}>
-        <div className={styles.marqueeTrack}>
-          <LogoSet />
-          <LogoSet />
+      <div className="container">
+        {/* <span className={styles.badge}>
+          Trusted by growing businesses across India
+        </span> */}
+        <h2 className={styles.title}>
+          Trusted by growing businesses across India
+        </h2>
+        <div className={styles.marquee}>
+          <div className={styles.marqueeTrack}>
+            <LogoSet />
+            <LogoSet />
+          </div>
         </div>
       </div>
     </section>

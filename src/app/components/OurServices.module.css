@@ -4,8 +4,10 @@
   align-items: center;
   gap: 32px;
   padding: 48px 24px;
-  background-color: #f6f5f3;
   width: 100%;
+}
+.sectionContainer{
+  background-color: #f6f5f3;
 }
 
 .header {
@@ -125,7 +127,8 @@
 
 @media (min-width: 769px) {
   .section {
-    padding: 80px 120px;
+    padding-top: 80px;
+padding-bottom: 80px;
     gap: 56px;
   }
 

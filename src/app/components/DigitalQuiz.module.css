@@ -9,6 +9,10 @@
   gap: 40px;
 }
 
+.sectionContainer{
+  background-color: #085243;
+}
+
 /* Left column */
 .left {
   display: flex;
@@ -69,6 +73,7 @@
   box-shadow: 0px 24px 64px rgba(0, 0, 0, 0.12);
   width: 100%;
   max-width: 590px;
+  /* max-width: 50%; */
   flex-shrink: 0;
   overflow: hidden;
 }
@@ -220,7 +225,9 @@
   border: 1px solid rgba(0, 76, 67, 0.12);
   border-radius: 12px;
   cursor: pointer;
-  transition: background-color 0.15s, border-color 0.15s;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
 }
 
 .option:hover {
@@ -320,7 +327,10 @@
   color: #0f1a12;
   background: #f6f5f3;
   outline: none;
-  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s,
+    box-shadow 0.2s;
 }
 
 .phoneInput:focus {
@@ -662,7 +672,10 @@
   font-size: 15px;
   color: #0f1a12;
   background: #f6f5f3;
-  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s,
+    box-shadow 0.2s;
   outline: none;
 }
 
@@ -693,7 +706,10 @@
   text-align: center;
   cursor: pointer;
   background: #f6f5f3;
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  transition:
+    border-color 0.2s,
+    color 0.2s,
+    background 0.2s;
 }
 
 .timeSlot:hover {
@@ -824,17 +840,20 @@
   .section {
     flex-direction: row;
     align-items: flex-start;
-    padding: 80px 120px;
+    padding-top: 80px;
+    padding-bottom: 80px;
   }
 
   .left {
     width: 489px;
+    width: 46%;
     align-items: flex-start;
     text-align: left;
   }
 
   .card {
     width: 590px;
+    width: 46%;
     max-width: none;
   }
 }

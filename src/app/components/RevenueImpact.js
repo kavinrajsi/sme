@@ -66,41 +66,43 @@ function StatCard({ icon, number, unit, description }) {
 export default function RevenueImpact() {
   return (
     <section className={`${styles.section} ${anekTamil.className}`} data-aos="fade-up">
-      <div className={styles.header}>
-        <span className={styles.badge}>Revenue Impact</span>
-        <div className={styles.titleGroup}>
-          <h2 className={styles.title}>
-            Numbers That Actually Matter to Your Business
-          </h2>
-          <p className={styles.subtitle}>
-            We don&apos;t talk in impressions and clicks. We talk in leads,
-            customers, and rupees.
-          </p>
-        </div>
-      </div>
-      <div className={styles.content}>
-        <div className={styles.stats}>
-          {stats.map((stat) => (
-            <StatCard key={stat.number} {...stat} />
-          ))}
-        </div>
-        <div className={styles.ctaBanner}>
-          <div className={styles.ctaText}>
-            <h3 className={styles.ctaTitle}>
-              Ready to see what&apos;s possible for your business?
-            </h3>
-            <p className={styles.ctaSubtitle}>
-              Get a personalised revenue projection based on your industry,
-              city, and business size. No commitment required.
+      <div className="container">
+        <div className={styles.header}>
+          <span className={styles.badge}>Revenue Impact</span>
+          <div className={styles.titleGroup}>
+            <h2 className={styles.title}>
+              Numbers That Actually Matter to Your Business
+            </h2>
+            <p className={styles.subtitle}>
+              We don&apos;t talk in impressions and clicks. We talk in leads,
+              customers, and rupees.
             </p>
           </div>
-          <button
-            type="button"
-            className="btn-base btn-solid"
-            onClick={() => window.dispatchEvent(new Event("open-demo-modal"))}
-          >
-            Get Free Demo Call
-          </button>
+        </div>
+        <div className={styles.content}>
+          <div className={styles.stats}>
+            {stats.map((stat) => (
+              <StatCard key={stat.number} {...stat} />
+            ))}
+          </div>
+          <div className={styles.ctaBanner}>
+            <div className={styles.ctaText}>
+              <h3 className={styles.ctaTitle}>
+                Ready to see what&apos;s possible for your business?
+              </h3>
+              <p className={styles.ctaSubtitle}>
+                Get a personalised revenue projection based on your industry,
+                city, and business size. No commitment required.
+              </p>
+            </div>
+            <button
+              type="button"
+              className="btn-base btn-solid"
+              onClick={() => window.dispatchEvent(new Event("open-demo-modal"))}
+            >
+              Get Free Demo Call
+            </button>
+          </div>
         </div>
       </div>
     </section>

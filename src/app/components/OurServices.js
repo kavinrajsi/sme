@@ -77,7 +77,8 @@ function ServiceCard({ number, title, description, tags }) {
 
 export default function OurServices() {
   return (
-    <section id="services" className={`${styles.section} ${anekTamil.className}`} data-aos="fade-up">
+    <section id="services" className={`${styles.sectionContainer} ${anekTamil.className}`} data-aos="fade-up">
+      <div className={`${styles.section} container`} >
       <div className={styles.header}>
         <span className={styles.badge}>Our Services</span>
         <div className={styles.titleGroup}>
@@ -100,6 +101,7 @@ export default function OurServices() {
             ))}
           </div>
         ))}
+      </div>
       </div>
     </section>
   );

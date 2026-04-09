@@ -55,16 +55,12 @@
 }
 
 .cards {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
   width: 100%;
 }
 
 .card {
   display: flex;
   flex-direction: column;
-  flex: 1;
 }
 
 .cardImage {
@@ -115,10 +111,6 @@
   .subtitle {
     font-size: 20px;
     line-height: 26px;
-  }
-
-  .cards {
-    flex-direction: row;
   }
 
   .cardImage {

@@ -1,5 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import { Anek_Tamil } from "next/font/google";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 import styles from "./CaseStudy.module.css";
 
 const anekTamil = Anek_Tamil({
@@ -26,6 +30,42 @@ const caseStudies = [
     description:
       "Concept and execution of a hyper-local digital campaign for a leading masalas and spices brand",
   },
+  {
+    image: "/images/nithya-amirtham.png",
+    title: "Nithya Amirtham",
+    description:
+      "Scaling a Heritage Brand into a Digital Growth Engine",
+  },
+  {
+    image: "/images/adyar-ananda-bhavan.webp",
+    title: "Adyar Ananda Bhavan",
+    description:
+      "How we fast tracked the website build for Adyar Ananda Bhavan in 20 days",
+  },
+  {
+    image: "/images/dheepam-lamp-oil.webp",
+    title: "Dheepam Lamp Oil",
+    description:
+      "How we lit up more smiles for Karthigai Dheepam with Dheepam Lamp Oil",
+  },
+  {
+    image: "/images/frankfinn.webp",
+    title: "Frankfinn",
+    description:
+      "How a career institute got 10x visibility on YouTube",
+  },
+  {
+    image: "/images/dahnay.webp",
+    title: "DahNAY",
+    description:
+      "Digital Lead Generation for a Logistics Company: How We Generated 10.9% Sales Qualified Leads in 10 Months",
+  },
+  {
+    image: "/images/sundari-silks-aadi-sale.webp",
+    title: "Sundari Silks — Aadi Sale",
+    description:
+      "Tailoring a perfect Aadi Sale Performance campaign that seamlessly integrates precision targeting maintaining brand authenticity",
+  },
 ];
 
 export default function CaseStudy() {
@@ -43,9 +83,17 @@ export default function CaseStudy() {
           </p>
         </div>
       </div>
-      <div className={styles.cards}>
+      <Swiper
+        className={styles.cards}
+        spaceBetween={20}
+        slidesPerView={1.2}
+        breakpoints={{
+          768: { slidesPerView: 2.3 },
+          1024: { slidesPerView: 3 },
+        }}
+      >
         {caseStudies.map((study) => (
-          <div key={study.title} className={styles.card}>
+          <SwiperSlide key={study.title} className={styles.card}>
             <div className={styles.cardImage}>
               <Image
                 src={study.image}
@@ -59,9 +107,9 @@ export default function CaseStudy() {
               <h3 className={styles.cardTitle}>{study.title}</h3>
               <p className={styles.cardDescription}>{study.description}</p>
             </div>
-          </div>
+          </SwiperSlide>
         ))}
-      </div>
+      </Swiper>
     </section>
   );
 }

@@ -135,7 +135,7 @@ export default function TermsAndConditions() {
             <strong>SearchMadarth (a division of Madarth)</strong>
             <br />
             Email:{" "}
-            <a href="mailto:kavin@madarth.com">kavin@madarth.com</a>
+            <a href="mailto:manoj@madarth.com">manoj@madarth.com</a>
             <br />
             Phone:{" "}
             <a href="tel:+918667767447">+91 86677 67447</a>

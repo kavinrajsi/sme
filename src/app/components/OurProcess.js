@@ -1,3 +1,5 @@
+"use client";
+
 import { Anek_Tamil } from "next/font/google";
 import styles from "./OurProcess.module.css";
 
@@ -80,9 +82,12 @@ export default function OurProcess() {
           <StepCard key={step.number} {...step} />
         ))}
       </div>
-      <a href="#" className="btn-base btn-solid">
-        FREE DEMO CALL
-      </a>
+      <button
+        className="btn-base btn-solid"
+        onClick={() => window.dispatchEvent(new Event("open-demo-modal"))}
+      >
+        GET FREE DEMO CALL
+      </button>
     </section>
   );
 }

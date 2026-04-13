@@ -85,6 +85,7 @@ export default function CaseStudy() {
           </p>
         </div>
       </div>
+      <div className="container">
       <div className={styles.sliderWrap}>
         <Swiper
           className={styles.cards}
@@ -132,6 +133,7 @@ export default function CaseStudy() {
             </svg>
           </button>
         </div>
+      </div>
       </div>
     </section>
   );

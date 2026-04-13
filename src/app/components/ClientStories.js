@@ -51,18 +51,29 @@ function TestimonialCard({ variant, paragraphs, name, role }) {
           className={`${styles.quoteText} ${isDark ? styles.quoteTextDark : styles.quoteTextLight}`}
         >
           {paragraphs.map((text, i) => (
-            <p key={i} style={i < paragraphs.length - 1 ? { marginBottom: 18 } : undefined}>
+            <p
+              key={i}
+              style={
+                i < paragraphs.length - 1 ? { marginBottom: 18 } : undefined
+              }
+            >
               {text}
             </p>
           ))}
         </div>
       </div>
-      <div className={`${styles.divider} ${isDark ? styles.dividerDark : styles.dividerLight}`}>
+      <div
+        className={`${styles.divider} ${isDark ? styles.dividerDark : styles.dividerLight}`}
+      >
         <div className={styles.author}>
-          <span className={`${styles.authorName} ${isDark ? styles.authorNameDark : styles.authorNameLight}`}>
+          <span
+            className={`${styles.authorName} ${isDark ? styles.authorNameDark : styles.authorNameLight}`}
+          >
             {name}
           </span>
-          <span className={`${styles.authorRole} ${isDark ? styles.authorRoleDark : styles.authorRoleLight}`}>
+          <span
+            className={`${styles.authorRole} ${isDark ? styles.authorRoleDark : styles.authorRoleLight}`}
+          >
             {role}
           </span>
         </div>
@@ -73,20 +84,25 @@ function TestimonialCard({ variant, paragraphs, name, role }) {
 
 export default function ClientStories() {
   return (
-    <section id="testimonials" className={`${styles.section} ${anekTamil.className}`} data-aos="fade-up">
-      <div className={styles.header}>
-        <span className={styles.badge}>Testimonials</span>
-        <div className={styles.titleGroup}>
-          <h2 className={styles.title}>Businesses That Took the Leap</h2>
-          <p className={styles.subtitle}>
-            Real owners. Real results. Measured in revenue, not vanity metrics.
-          </p>
+    <section id="testimonials" className={`${styles.sectionWrapper}`} data-aos="fade-up">
+      <div className="container">
+        <div className={`${styles.section} ${anekTamil.className}`}>
+          <div className={styles.header}>
+            <span className={styles.badge}>Testimonials</span>
+            <div className={styles.titleGroup}>
+              <h2 className={styles.title}>Businesses That Took the Leap</h2>
+              <p className={styles.subtitle}>
+                Real owners. Real results. Measured in revenue, not vanity
+                metrics.
+              </p>
+            </div>
+          </div>
+          <div className={styles.cards}>
+            {testimonials.map((item) => (
+              <TestimonialCard key={item.name} {...item} />
+            ))}
+          </div>
         </div>
-      </div>
-      <div className={styles.cards}>
-        {testimonials.map((item) => (
-          <TestimonialCard key={item.name} {...item} />
-        ))}
       </div>
     </section>
   );

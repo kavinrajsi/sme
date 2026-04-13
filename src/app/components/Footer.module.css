@@ -4,9 +4,12 @@
   gap: 16px;
   align-items: center;
   text-align: center;
+  width: 100%;
+}
+
+.footerWrapper{
   padding: 24px 24px 80px;
   background-color: #003830;
-  width: 100%;
 }
 
 .logo {
@@ -58,7 +61,7 @@
   .footer {
     flex-direction: row;
     justify-content: space-between;
-    padding: 24px 120px;
+    padding: 24px 0px;
     align-items: center;
     text-align: left;
     gap: 0;

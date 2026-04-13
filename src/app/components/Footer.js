@@ -62,7 +62,8 @@ function SearchMadarthLogo() {
 
 export default function Footer() {
   return (
-    <footer className={`${styles.footer} ${anekTamil.className}`} >
+    <footer className={`${styles.footerWrapper} ${anekTamil.className}`} >
+      <div className={`${styles.footer} container`} >
       <div className={styles.logo}>
         <SearchMadarthLogo />
       </div>
@@ -80,6 +81,7 @@ export default function Footer() {
         </div>
       </div>
       <span className={styles.url}>search.madarth.com</span>
+      </div>
     </footer>
   );
 }

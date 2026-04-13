@@ -2,11 +2,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  padding: 48px 24px;
+  /* justify-content: space-between; */
+  justify-content: space-around;
+  padding: 48px 0px;
   background-color: #085243;
   width: 100%;
-  gap: 40px;
+  gap: 20px;
 }
 
 .sectionContainer{
@@ -852,14 +853,14 @@
 
   .left {
     width: 489px;
-    width: 46%;
+    width: calc(50% - 10px);
     align-items: flex-start;
     text-align: left;
   }
 
   .card {
     width: 590px;
-    width: 46%;
+    width: calc(50% - 10px);
     max-width: none;
   }
 }

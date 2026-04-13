@@ -1,14 +1,18 @@
 .header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: 16px 24px;
   width: 100%;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 100;
-  transition: background-color 0.3s, box-shadow 0.3s;
+  transition:
+    background-color 0.3s,
+    box-shadow 0.3s;
+}
+.headerWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .headerScrolled {
@@ -65,7 +69,9 @@
   height: 2px;
   background-color: white;
   border-radius: 2px;
-  transition: transform 0.3s, opacity 0.3s;
+  transition:
+    transform 0.3s,
+    opacity 0.3s;
 }
 
 .burgerLineOpen1 {
@@ -150,7 +156,7 @@
 /* Desktop */
 @media (min-width: 1025px) {
   .header {
-    padding: 16px 120px;
+    padding: 16px 0px;
   }
 
   .nav {

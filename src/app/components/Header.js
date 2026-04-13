@@ -85,6 +85,7 @@ export default function Header() {
         scrolled ? styles.headerScrolled : ""
       }`}
     >
+      <div className={`container ${styles.headerWrapper} `}>
       <Logo />
       <nav className={styles.nav}>
         {navLinks.map((link) => (
@@ -148,11 +149,12 @@ export default function Header() {
       )}
       <div className={styles.mobileFooter}>
         <a href="#quiz" className="btn-base">
-          Check Your Digital Score
+          Check Digital Score
         </a>
         <a href="tel:+918667767447" className="btn-base">
           Call Us
         </a>
+      </div>
       </div>
     </header>
   );

@@ -4,10 +4,15 @@
   align-items: center;
   /* justify-content: space-between; */
   justify-content: space-around;
-  padding: 48px 0px;
+  padding: 48px 24px;
   background-color: #085243;
   width: 100%;
   gap: 20px;
+
+  @media(min-width: 769px) {
+  padding-left: 0;
+  padding-right: 0;
+  }
 }
 
 .sectionContainer{

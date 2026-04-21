@@ -30,7 +30,7 @@
   text-align: center;
 }
 
-/* Marquee viewport — sized to show N logos */
+/* Marquee viewport - sized to show N logos */
 .marquee {
   /* Mobile: 2 logos → 2 * 150px + 1 * 16px = 316px */
   max-width: 316px;

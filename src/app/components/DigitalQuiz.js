@@ -114,16 +114,16 @@ const quizData = [
     required: true,
     options: [
       {
-        label: "Yes — Google Ads + Meta Ads regularly",
+        label: "Yes - Google Ads + Meta Ads regularly",
         value: "google_meta",
         score: 10,
       },
       {
-        label: "Yes — only Meta (Instagram / Facebook)",
+        label: "Yes - only Meta (Instagram / Facebook)",
         value: "meta_only",
         score: 6,
       },
-      { label: "Yes — only Google Ads", value: "google_only", score: 7 },
+      { label: "Yes - only Google Ads", value: "google_only", score: 7 },
       {
         label: "Tried before, didn't see results",
         value: "tried",
@@ -165,16 +165,16 @@ const quizData = [
   {
     key: "website",
     title: "Do you currently have a business website?",
-    subtitle: "Be honest — even a basic one counts.",
+    subtitle: "Be honest - even a basic one counts.",
     required: true,
     options: [
       {
-        label: "Yes — it's active, looks good, and gets traffic",
+        label: "Yes - it's active, looks good, and gets traffic",
         value: "yes_good",
         score: 10,
       },
       {
-        label: "Yes — but it's outdated or rarely gets visitors",
+        label: "Yes - but it's outdated or rarely gets visitors",
         value: "yes_basic",
         score: 5,
       },
@@ -213,11 +213,11 @@ const quizData = [
   {
     key: "budget",
     title: "What is your current monthly marketing budget range?",
-    subtitle: "Include everything — ads, agency fees, tools, content.",
+    subtitle: "Include everything - ads, agency fees, tools, content.",
     required: true,
     options: [
       {
-        label: "Zero — no marketing budget currently",
+        label: "Zero - no marketing budget currently",
         value: "zero",
         score: 0,
       },
@@ -325,12 +325,12 @@ function getGrade(total) {
       text: "⚠️ Needs Urgent Attention",
       headline: "Your business is largely invisible online.",
       subline:
-        "There are major revenue gaps — but the upside is massive with the right moves.",
+        "There are major revenue gaps - but the upside is massive with the right moves.",
     };
   if (total < 60)
     return {
       className: "gradeMid",
-      text: "📈 Growing — But Leaking Revenue",
+      text: "📈 Growing - But Leaking Revenue",
       headline:
         "You have a foundation, but critical gaps are costing you leads.",
       subline:
@@ -338,7 +338,7 @@ function getGrade(total) {
     };
   return {
     className: "gradeHigh",
-    text: "🚀 Strong — Ready to Scale",
+    text: "🚀 Strong - Ready to Scale",
     headline: "You're ahead of 80% of Indian SMEs digitally.",
     subline:
       "The next step is building a scalable growth engine to compound your advantage.",
@@ -802,7 +802,7 @@ export default function DigitalQuiz() {
             {/* Breakdown */}
             <div className={styles.breakdownSection}>
               <div className={styles.breakdownTitle}>
-                Score Breakdown — 5 Growth Pillars
+                Score Breakdown - 5 Growth Pillars
               </div>
               <div className={styles.breakdownItems}>
                 {Object.values(pillars).map((p) => {
@@ -840,7 +840,7 @@ export default function DigitalQuiz() {
               </h4>
               <p className={styles.resultCtaText}>
                 Our growth experts will walk you through your score and hand
-                you a personalised action plan — at zero cost.
+                you a personalised action plan - at zero cost.
               </p>
               <button
                 type="button"

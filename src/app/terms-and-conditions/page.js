@@ -8,7 +8,7 @@ const anekTamil = Anek_Tamil({
 });
 
 export const metadata = {
-  title: "Terms and Conditions — SearchMadarth",
+  title: "Terms and Conditions - SearchMadarth",
   description:
     "Read the terms and conditions for using the SearchMadarth website and services.",
 };
@@ -28,8 +28,8 @@ export default function TermsAndConditions() {
         <section className={styles.section}>
           <h2>1. Acceptance of Terms</h2>
           <p>
-            By accessing and using the SearchMadarth website
-            (search.madarth.com), you accept and agree to be bound by these
+            By accessing and using the SearchMadarth<sup>&reg;</sup> website
+            (searchmadarth.com), you accept and agree to be bound by these
             Terms and Conditions. If you do not agree, please do not use our
             website.
           </p>
@@ -59,8 +59,8 @@ export default function TermsAndConditions() {
         <section className={styles.section}>
           <h2>4. Intellectual Property</h2>
           <p>
-            All content on this website — including text, graphics, logos,
-            images, and software — is the property of Madarth and is protected
+            All content on this website - including text, graphics, logos,
+            images, and software - is the property of Madarth and is protected
             by applicable intellectual property laws. You may not reproduce,
             distribute, or create derivative works without our prior written
             consent.
@@ -122,23 +122,6 @@ export default function TermsAndConditions() {
             time. Changes will be effective immediately upon posting on this
             page. Your continued use of the website constitutes acceptance of
             the updated terms.
-          </p>
-        </section>
-
-        <section className={styles.section}>
-          <h2>11. Contact Us</h2>
-          <p>
-            If you have any questions about these Terms and Conditions, please
-            contact us at:
-          </p>
-          <p>
-            <strong>SearchMadarth (a division of Madarth)</strong>
-            <br />
-            Email:{" "}
-            <a href="mailto:manoj@madarth.com">manoj@madarth.com</a>
-            <br />
-            Phone:{" "}
-            <a href="tel:+918667767447">+91 86677 67447</a>
           </p>
         </section>
       </main>

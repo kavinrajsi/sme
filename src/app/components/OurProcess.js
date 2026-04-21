@@ -20,21 +20,21 @@ const steps = [
     number: "02",
     title: "Digital Audit",
     description:
-      "A full audit of your current online presence — website, SEO, ads, social, and local listings — with a clear gap analysis.",
+      "A full audit of your current online presence - website, SEO, ads, social, and local listings - with a clear gap analysis.",
     variant: "light",
   },
   {
     number: "03",
     title: "Growth Blueprint",
     description:
-      "A custom 90-day roadmap with specific actions, timelines, budget allocation, and expected outcomes — built for your goals.",
+      "A custom 90-day roadmap with specific actions, timelines, budget allocation, and expected outcomes - built for your goals.",
     variant: "dark",
   },
   {
     number: "04",
     title: "Execution",
     description:
-      "Our team implements everything — no lengthy briefs, no hand-holding needed. You focus on your business, we build your growth engine.",
+      "Our team implements everything - no lengthy briefs, no hand-holding needed. You focus on your business, we build your growth engine.",
     variant: "light",
   },
   {

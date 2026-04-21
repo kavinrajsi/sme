@@ -64,7 +64,7 @@ const caseStudies = [
   },
   {
     image: "/images/sundari-silks-aadi-sale.webp",
-    title: "Sundari Silks — Aadi Sale",
+    title: "Sundari Silks - Aadi Sale",
     description:
       "Tailoring a perfect Aadi Sale Performance campaign that seamlessly integrates precision targeting maintaining brand authenticity",
   },

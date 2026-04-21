@@ -31,7 +31,7 @@ export default function Hero() {
             </h1>
             <p className={styles.subtitle}>
               We help Indian SMEs build a powerful digital presence that generates
-              leads, builds trust, and grows revenue — without the complexity or
+              leads, builds trust, and grows revenue - without the complexity or
               corporate price tag.
             </p>
           </div>

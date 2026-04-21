@@ -12,7 +12,7 @@ const services = [
       number: "01",
       title: "Revenue-Ready Website",
       description:
-        "A fast, mobile-first website built not just to look good — but to convert visitors into calls, leads, and walk-ins. Includes CRO, speed optimization, and local SEO.",
+        "A fast, mobile-first website built not just to look good - but to convert visitors into calls, leads, and walk-ins. Includes CRO, speed optimization, and local SEO.",
       tags: ["Conversion Design", "SEO", "Mobile-First"],
     },
     {
@@ -26,7 +26,7 @@ const services = [
       number: "03",
       title: "Performance Marketing",
       description:
-        "Targeted Google and Meta ads that reach your ideal buyer in your city — with budgets designed for SME realities and ROI-first campaign structure.",
+        "Targeted Google and Meta ads that reach your ideal buyer in your city - with budgets designed for SME realities and ROI-first campaign structure.",
       tags: ["Google Ads", "Meta Ads", "ROI-First"],
     },
   ],
@@ -88,7 +88,7 @@ export default function OurServices() {
             Nothing You Don&apos;t
           </h2>
           <p className={styles.subtitle}>
-            Focused services built for Indian SME realities — fast
+            Focused services built for Indian SME realities - fast
             implementation, clear metrics, real results.
           </p>
         </div>

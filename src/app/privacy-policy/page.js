@@ -8,7 +8,7 @@ const anekTamil = Anek_Tamil({
 });
 
 export const metadata = {
-  title: "Privacy Policy — SearchMadarth",
+  title: "Privacy Policy - SearchMadarth",
   description:
     "Learn how SearchMadarth collects, uses, and protects your personal information.",
 };
@@ -28,8 +28,8 @@ export default function PrivacyPolicy() {
         <section className={styles.section}>
           <h2>1. Introduction</h2>
           <p>
-            SearchMadarth (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;), a
-            division of Madarth, is committed to protecting your privacy. This
+            SearchMadarth<sup>&reg;</sup> (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;), a
+            division of Madarth<sup>&reg;</sup>, is committed to protecting your privacy. This
             Privacy Policy explains how we collect, use, disclose, and safeguard
             your information when you visit our website search.madarth.com.
           </p>
@@ -114,7 +114,7 @@ export default function PrivacyPolicy() {
           </ul>
           <p>
             To exercise any of these rights, please contact us at{" "}
-            <a href="mailto:manoj@madarth.com">manoj@madarth.com</a>.
+            <a href="mailto:admin@madarth.com">admin@madarth.com</a>.
           </p>
         </section>
 
@@ -123,23 +123,6 @@ export default function PrivacyPolicy() {
           <p>
             We may update this Privacy Policy from time to time. Any changes will
             be posted on this page with an updated revision date.
-          </p>
-        </section>
-
-        <section className={styles.section}>
-          <h2>10. Contact Us</h2>
-          <p>
-            If you have any questions about this Privacy Policy, please contact
-            us at:
-          </p>
-          <p>
-            <strong>SearchMadarth (a division of Madarth)</strong>
-            <br />
-            Email:{" "}
-            <a href="mailto:manoj@madarth.com">manoj@madarth.com</a>
-            <br />
-            Phone:{" "}
-            <a href="tel:+918667767447">+91 86677 67447</a>
           </p>
         </section>
       </main>

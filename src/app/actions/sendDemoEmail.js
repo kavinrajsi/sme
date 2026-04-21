@@ -80,7 +80,7 @@ export async function sendQuizEmail({ phone, score, pillars, questions }) {
           },
         },
       ],
-      subject: `New Form Submission in SME Page — Quiz Score: ${score}/100 -- ${phone}`,
+      subject: `New Form Submission in SME Page - Quiz Score: ${score}/100 -- ${phone}`,
       htmlbody,
     });
 
@@ -100,7 +100,7 @@ export async function sendDemoEmail(formData) {
       <table style="width: 100%; border-collapse: collapse;">
         <tr>
           <td style="padding: 8px; font-weight: bold; color: #004c43;">Company Name</td>
-          <td style="padding: 8px;">${company || "—"}</td>
+          <td style="padding: 8px;">${company || "-"}</td>
         </tr>
         <tr style="background: #f6f5f3;">
           <td style="padding: 8px; font-weight: bold; color: #004c43;">Name</td>
@@ -116,7 +116,7 @@ export async function sendDemoEmail(formData) {
         </tr>
         <tr>
           <td style="padding: 8px; font-weight: bold; color: #004c43;">Message</td>
-          <td style="padding: 8px;">${message || "—"}</td>
+          <td style="padding: 8px;">${message || "-"}</td>
         </tr>
       </table>
     </div>

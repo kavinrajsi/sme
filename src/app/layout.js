@@ -1,6 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import { GoogleTagManager } from "@next/third-parties/google";
 import "./globals.css";
 import AosInit from "./components/AosInit";
+
+const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +30,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      {gtmId && <GoogleTagManager gtmId={gtmId} />}
       <body>
         <AosInit />
         {children}

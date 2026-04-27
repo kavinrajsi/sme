@@ -4,6 +4,9 @@ import { SendMailClient } from "zeptomail";
 
 const url = "https://api.zeptomail.com/v1.1/email";
 
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "").replace(/\/$/, "");
+const subjectPagePrefix = `New Form Submission in SME${siteUrl ? ` [${siteUrl}/]` : ""} Page`;
+
 function getMailConfig() {
   const apiKey = process.env.ZEPTO_API_KEY;
   const from = process.env.ZEPTO_FROM_NO_REPLY;
@@ -113,7 +116,7 @@ export async function sendQuizEmail({ phone, score, pillars, questions }) {
   `;
 
   return sendViaZepto({
-    subject: `New Form Submission in SME Page - Quiz Score: ${score}/100 -- ${phone}`,
+    subject: `${subjectPagePrefix} - Quiz Score: ${score}/100 -- ${phone}`,
     htmlbody,
   });
 }
@@ -150,7 +153,7 @@ export async function sendDemoEmail(formData) {
   `;
 
   return sendViaZepto({
-    subject: "New Form Submission in SME Page",
+    subject: subjectPagePrefix,
     htmlbody,
   });
 }

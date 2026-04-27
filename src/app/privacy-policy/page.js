@@ -7,15 +7,49 @@ const anekTamil = Anek_Tamil({
   weight: ["300", "400", "500", "600", "700"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
 export const metadata = {
-  title: "Privacy Policy - SearchMadarth",
+  title: "Privacy Policy",
   description:
-    "Learn how SearchMadarth collects, uses, and protects your personal information.",
+    "Learn how SearchMadarth collects, uses, and protects your personal information when you use our website and services.",
+  alternates: {
+    canonical: "/privacy-policy",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    type: "article",
+    url: "/privacy-policy",
+    title: "Privacy Policy | SearchMadarth",
+    description:
+      "Learn how SearchMadarth collects, uses, and protects your personal information.",
+  },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Privacy Policy",
+      item: siteUrl ? `${siteUrl}/privacy-policy` : undefined,
+    },
+  ],
 };
 
 export default function PrivacyPolicy() {
   return (
     <div className={`${styles.page} ${anekTamil.className}`}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <header className={styles.header}>
         <Link href="/" className={styles.back}>
           ← Back to Home

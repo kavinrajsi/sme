@@ -7,15 +7,49 @@ const anekTamil = Anek_Tamil({
   weight: ["300", "400", "500", "600", "700"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
 export const metadata = {
-  title: "Terms and Conditions - SearchMadarth",
+  title: "Terms and Conditions",
   description:
     "Read the terms and conditions for using the SearchMadarth website and services.",
+  alternates: {
+    canonical: "/terms-and-conditions",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    type: "article",
+    url: "/terms-and-conditions",
+    title: "Terms and Conditions | SearchMadarth",
+    description:
+      "Read the terms and conditions for using the SearchMadarth website and services.",
+  },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Terms and Conditions",
+      item: siteUrl ? `${siteUrl}/terms-and-conditions` : undefined,
+    },
+  ],
 };
 
 export default function TermsAndConditions() {
   return (
     <div className={`${styles.page} ${anekTamil.className}`}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <header className={styles.header}>
         <Link href="/" className={styles.back}>
           ← Back to Home

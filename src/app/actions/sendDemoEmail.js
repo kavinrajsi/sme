@@ -3,7 +3,63 @@
 import { SendMailClient } from "zeptomail";
 
 const url = "https://api.zeptomail.com/v1.1/email";
-const token = process.env.ZEPTOMAIL_TOKEN;
+
+function getMailConfig() {
+  const apiKey = process.env.ZEPTO_API_KEY;
+  const from = process.env.ZEPTO_FROM_NO_REPLY;
+  const to = process.env.ZEPTO_TO_BUSINESS;
+
+  const missing = [];
+  if (!apiKey) missing.push("ZEPTO_API_KEY");
+  if (!from) missing.push("ZEPTO_FROM_NO_REPLY");
+  if (!to) missing.push("ZEPTO_TO_BUSINESS");
+  if (missing.length) {
+    return { ok: false, error: `Email not configured: missing ${missing.join(", ")}` };
+  }
+
+  return {
+    ok: true,
+    apiKey,
+    from: { address: from },
+    to: [{ email_address: { address: to } }],
+    cc: process.env.ZEPTO_CC
+      ? [{ email_address: { address: process.env.ZEPTO_CC } }]
+      : undefined,
+    bcc: process.env.ZEPTO_BCC
+      ? [{ email_address: { address: process.env.ZEPTO_BCC } }]
+      : undefined,
+  };
+}
+
+async function sendViaZepto({ subject, htmlbody }) {
+  if (process.env.EMAIL_DISABLED === "true") {
+    console.warn(`[mail] EMAIL_DISABLED=true, skipping send: ${subject}`);
+    return { success: true, skipped: true };
+  }
+
+  const config = getMailConfig();
+  if (!config.ok) {
+    console.error(`[mail] ${config.error}`);
+    return { success: false, error: "Failed to send email. Please try again." };
+  }
+
+  const client = new SendMailClient({ url, token: config.apiKey });
+
+  try {
+    await client.sendMail({
+      from: config.from,
+      to: config.to,
+      cc: config.cc,
+      bcc: config.bcc,
+      subject,
+      htmlbody,
+    });
+    return { success: true };
+  } catch (error) {
+    console.error("ZeptoMail error:", error);
+    return { success: false, error: "Failed to send email. Please try again." };
+  }
+}
 
 export async function sendQuizEmail({ phone, score, pillars, questions }) {
   const pillarRows = Object.values(pillars)
@@ -56,39 +112,10 @@ export async function sendQuizEmail({ phone, score, pillars, questions }) {
     </div>
   `;
 
-  const client = new SendMailClient({ url, token });
-
-  try {
-    await client.sendMail({
-      from: {
-        address: "noreply@madarth.com",
-        name: "SearchMadarth",
-      },
-      to: [
-        {
-          email_address: {
-            address: "manoj@madarth.com",
-            name: "Manoj",
-          },
-        },
-      ],
-      bcc: [
-        {
-          email_address: {
-            address: "kavin@madarth.com",
-            name: "Kavinraj",
-          },
-        },
-      ],
-      subject: `New Form Submission in SME Page - Quiz Score: ${score}/100 -- ${phone}`,
-      htmlbody,
-    });
-
-    return { success: true };
-  } catch (error) {
-    console.error("ZeptoMail error:", error);
-    return { success: false };
-  }
+  return sendViaZepto({
+    subject: `New Form Submission in SME Page - Quiz Score: ${score}/100 -- ${phone}`,
+    htmlbody,
+  });
 }
 
 export async function sendDemoEmail(formData) {
@@ -122,37 +149,8 @@ export async function sendDemoEmail(formData) {
     </div>
   `;
 
-  const client = new SendMailClient({ url, token });
-
-  try {
-    await client.sendMail({
-      from: {
-        address: "noreply@madarth.com",
-        name: "SearchMadarth",
-      },
-      to: [
-        {
-          email_address: {
-            address: "manoj@madarth.com",
-            name: "Manoj",
-          },
-        },
-      ],
-      bcc: [
-        {
-          email_address: {
-            address: "kavin@madarth.com",
-            name: "Kavinraj",
-          },
-        },
-      ],
-      subject: `New Form Submission in SME Page`,
-      htmlbody,
-    });
-
-    return { success: true };
-  } catch (error) {
-    console.error("ZeptoMail error:", error);
-    return { success: false, error: "Failed to send email. Please try again." };
-  }
+  return sendViaZepto({
+    subject: "New Form Submission in SME Page",
+    htmlbody,
+  });
 }

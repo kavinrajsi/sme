@@ -12,7 +12,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 export const metadata = {
   title: "Terms and Conditions",
   description:
-    "Read the terms and conditions for using the SearchMadarth website and services.",
+    "Read the terms and conditions for using the SearchMadarth® website and services.",
   alternates: {
     canonical: "/terms-and-conditions",
   },
@@ -23,9 +23,9 @@ export const metadata = {
   openGraph: {
     type: "article",
     url: "/terms-and-conditions",
-    title: "Terms and Conditions | SearchMadarth",
+    title: "Terms and Conditions | SearchMadarth®",
     description:
-      "Read the terms and conditions for using the SearchMadarth website and services.",
+      "Read the terms and conditions for using the SearchMadarth® website and services.",
   },
 };
 
@@ -72,7 +72,7 @@ export default function TermsAndConditions() {
         <section className={styles.section}>
           <h2>2. Services</h2>
           <p>
-            SearchMadarth, a division of Madarth, provides digital marketing and
+            SearchMadarth<sup>&reg;</sup>, a division of Madarth, provides digital marketing and
             growth services for SMEs in India. Our website offers information
             about our services, a digital readiness quiz, and the ability to
             request demo calls.
@@ -124,7 +124,7 @@ export default function TermsAndConditions() {
         <section className={styles.section}>
           <h2>7. Limitation of Liability</h2>
           <p>
-            To the fullest extent permitted by law, SearchMadarth and Madarth
+            To the fullest extent permitted by law, SearchMadarth<sup>&reg;</sup> and Madarth
             shall not be liable for any direct, indirect, incidental, or
             consequential damages arising from your use of or inability to use
             this website or our services.
@@ -134,7 +134,7 @@ export default function TermsAndConditions() {
         <section className={styles.section}>
           <h2>8. Indemnification</h2>
           <p>
-            You agree to indemnify and hold harmless SearchMadarth, Madarth,
+            You agree to indemnify and hold harmless SearchMadarth<sup>&reg;</sup>, Madarth,
             and their employees from any claims, losses, or damages arising from
             your use of this website or violation of these terms.
           </p>

@@ -1,5 +1,12 @@
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
+// Bump the relevant constant when a page's content meaningfully changes.
+// Format: ISO date string. The legal-page values must match the
+// "Last updated: ..." text shown inside the page itself.
+const LASTMOD_HOME = "2026-04-27";
+const LASTMOD_PRIVACY = "2026-04-09";
+const LASTMOD_TERMS = "2026-04-09";
+
 export default function sitemap() {
   if (!siteUrl) {
     throw new Error(
@@ -8,24 +15,23 @@ export default function sitemap() {
   }
 
   const base = siteUrl.replace(/\/$/, "");
-  const lastModified = new Date();
 
   return [
     {
       url: `${base}/`,
-      lastModified,
+      lastModified: new Date(LASTMOD_HOME),
       changeFrequency: "monthly",
       priority: 1,
     },
     {
       url: `${base}/privacy-policy`,
-      lastModified,
+      lastModified: new Date(LASTMOD_PRIVACY),
       changeFrequency: "yearly",
       priority: 0.3,
     },
     {
       url: `${base}/terms-and-conditions`,
-      lastModified,
+      lastModified: new Date(LASTMOD_TERMS),
       changeFrequency: "yearly",
       priority: 0.3,
     },

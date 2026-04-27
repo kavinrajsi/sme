@@ -49,7 +49,7 @@ const services = [
 const professionalServiceSchema = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
-  name: "SearchMadarth",
+  name: "SearchMadarth®",
   description:
     "Digital marketing partner for Indian SMEs - websites, local SEO, performance marketing, social, WhatsApp automation, and growth analytics.",
   url: siteUrl,
@@ -65,7 +65,7 @@ const professionalServiceSchema = {
         "@type": "Service",
         name: service.name,
         description: service.description,
-        provider: { "@type": "Organization", name: "SearchMadarth", url: siteUrl },
+        provider: { "@type": "Organization", name: "SearchMadarth®", url: siteUrl },
         areaServed: { "@type": "Country", name: "India" },
       },
     })),
@@ -79,6 +79,48 @@ const faqSchema = {
     "@type": "Question",
     name: question,
     acceptedAnswer: { "@type": "Answer", text: answer },
+  })),
+};
+
+// Mirrors the steps rendered in components/OurProcess.js. Keep these in sync
+// when the on-page process copy changes - this drives Google "How-to" rich
+// results and AI-Overview step extraction.
+const processSteps = [
+  {
+    name: "Discovery Call",
+    text: "We understand your business, goals, customers, and current digital gaps in a focused 45-minute session.",
+  },
+  {
+    name: "Digital Audit",
+    text: "A full audit of your current online presence - website, SEO, ads, social, and local listings - with a clear gap analysis.",
+  },
+  {
+    name: "Growth Blueprint",
+    text: "A custom 90-day roadmap with specific actions, timelines, budget allocation, and expected outcomes - built for your goals.",
+  },
+  {
+    name: "Execution",
+    text: "Our team implements everything - no lengthy briefs, no hand-holding needed. You focus on your business, we build your growth engine.",
+  },
+  {
+    name: "Track & Scale",
+    text: "Weekly performance reports, monthly strategy calls, and continuous optimisation to compound your results over time.",
+  },
+];
+
+const howToSchema = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  name: "How SearchMadarth® Helps Indian SMEs Grow Digitally",
+  description:
+    "A 5-step engagement that turns digital marketing for Indian SMEs into measurable revenue growth - typically within 60 to 90 days.",
+  totalTime: "P90D",
+  step: processSteps.map((s, i) => ({
+    "@type": "HowToStep",
+    position: i + 1,
+    name: s.name,
+    text: s.text,
+    url: siteUrl ? `${siteUrl}/#process` : undefined,
   })),
 };
 
@@ -108,6 +150,10 @@ export default function Home() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
       />
     </>
   );

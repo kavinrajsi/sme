@@ -17,9 +17,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteName = "SearchMadarth";
+const siteName = "SearchMadarth®";
 const siteTitle =
-  "SearchMadarth - India's SME Growth Engine | Digital Marketing for SMEs";
+  "SearchMadarth® - India's SME Growth Engine | Digital Marketing for SMEs";
 const siteDescription =
   "We help Indian SMEs build a powerful digital presence that generates leads, builds trust, and grows revenue - without the complexity or corporate price tag.";
 
@@ -27,7 +27,7 @@ export const metadata = {
   metadataBase: siteUrl ? new URL(siteUrl) : undefined,
   title: {
     default: siteTitle,
-    template: "%s | SearchMadarth",
+    template: "%s | SearchMadarth®",
   },
   description: siteDescription,
   applicationName: siteName,
@@ -38,7 +38,7 @@ export const metadata = {
     "SEO for SMEs",
     "digital presence India",
     "lead generation for SMEs",
-    "SearchMadarth",
+    "SearchMadarth®",
   ],
   authors: [{ name: siteName }],
   creator: siteName,
@@ -75,7 +75,7 @@ export const metadata = {
         url: "/meta-og-image.png",
         width: 1200,
         height: 630,
-        alt: "SearchMadarth - India's SME Growth Engine",
+        alt: "SearchMadarth® - India's SME Growth Engine",
       },
     ],
   },

@@ -69,7 +69,7 @@ export default function Footer() {
       </div>
       <div className={styles.middle}>
         <p className={styles.copyright}>
-          &copy; 2026 SearchMadarth | All rights reserved.
+          &copy; 2026 SearchMadarth<sup>&reg;</sup> | All rights reserved.
         </p>
         <div className={styles.legalLinks}>
           <Link href="/privacy-policy" className={styles.legalLink}>

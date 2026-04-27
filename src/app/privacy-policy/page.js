@@ -12,7 +12,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 export const metadata = {
   title: "Privacy Policy",
   description:
-    "Learn how SearchMadarth collects, uses, and protects your personal information when you use our website and services.",
+    "Learn how SearchMadarth® collects, uses, and protects your personal information when you use our website and services.",
   alternates: {
     canonical: "/privacy-policy",
   },
@@ -23,9 +23,9 @@ export const metadata = {
   openGraph: {
     type: "article",
     url: "/privacy-policy",
-    title: "Privacy Policy | SearchMadarth",
+    title: "Privacy Policy | SearchMadarth®",
     description:
-      "Learn how SearchMadarth collects, uses, and protects your personal information.",
+      "Learn how SearchMadarth® collects, uses, and protects your personal information.",
   },
 };
 

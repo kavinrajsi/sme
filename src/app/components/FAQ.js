@@ -8,9 +8,9 @@ const anekTamil = Anek_Tamil({
 
 export const faqs = [
   {
-    question: "What does SearchMadarth do?",
+    question: "What does SearchMadarth® do?",
     answer:
-      "SearchMadarth is a digital marketing agency that helps Indian small and medium enterprises (SMEs) build a powerful digital presence to generate leads, build trust, and grow revenue - without the complexity or corporate price tag.",
+      "SearchMadarth® is a digital marketing agency that helps Indian small and medium enterprises (SMEs) build a powerful digital presence to generate leads, build trust, and grow revenue - without the complexity or corporate price tag.",
   },
   {
     question: "Who do you work with?",
@@ -62,7 +62,7 @@ export default function FAQ() {
         </div>
         <div className={styles.list}>
           {faqs.map((item, i) => (
-            <details key={i} className={styles.item}>
+            <details key={i} className={styles.item} name="faq-accordion">
               <summary className={styles.question}>
                 <span>{item.question}</span>
                 <span aria-hidden="true" className={styles.icon} />

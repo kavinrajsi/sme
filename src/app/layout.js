@@ -4,6 +4,7 @@ import "./globals.css";
 import AosInit from "./components/AosInit";
 
 const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,8 +17,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
+  metadataBase: siteUrl ? new URL(siteUrl) : undefined,
   title: "Search Madarth - India's SME Growth Engine | Digital Marketing for SMEs",
   description: "We help Indian SMEs build a powerful digital presence that generates leads, builds trust, and grows revenue - without the complexity or corporate price tag.",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     images: ["/meta-og-image.png"],
   },

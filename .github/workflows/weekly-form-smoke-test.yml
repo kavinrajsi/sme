@@ -1,0 +1,37 @@
+name: Weekly form smoke test
+
+on:
+  schedule:
+    # Thursdays at 15:30 UTC = 21:00 IST
+    - cron: "30 15 * * 4"
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - run: npm ci
+
+      - name: Run smoke test
+        run: npm run smoke:forms
+        env:
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          SMOKE_TARGET_URL: https://sme.searchmadarth.com
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-artifacts-${{ github.run_id }}
+          path: smoke-artifacts/
+          if-no-files-found: ignore
+          retention-days: 30

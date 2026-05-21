@@ -103,6 +103,16 @@ Behavior:
 | `ZEPTO_BCC` | no | Optional `Bcc:` recipient |
 | `EMAIL_DISABLED` | no | `"true"` to skip all sends and log subjects only |
 
+### CI-only (used by the weekly smoke test in GitHub Actions)
+
+| Variable | Required | Purpose |
+|---|---|---|
+| `BROWSERBASE_API_KEY` | yes (for CI) | Browserbase API key used by `scripts/weekly-form-smoke-test.mjs` |
+| `BROWSERBASE_PROJECT_ID` | yes (for CI) | Browserbase project ID for session creation |
+| `SMOKE_TARGET_URL` | no | Override the URL the smoke test hits. Defaults to `https://sme.searchmadarth.com` |
+
+Set `BROWSERBASE_*` in **Settings → Secrets and variables → Actions** on the GitHub repo. Adding them to `.env.local` also lets you run `npm run smoke:forms` locally — see [Smoke tests](#smoke-tests).
+
 ### Public (exposed to the browser - never put secrets here)
 
 | Variable | Required | Purpose |
@@ -161,6 +171,29 @@ After deploy, verify:
 - `https://<host>/robots.txt` references the sitemap
 - `https://<host>/llms.txt` renders the project summary
 - The demo modal and quiz successfully send mail (check the inbox for the configured `ZEPTO_TO_BUSINESS`)
+
+---
+
+## Smoke tests
+
+A GitHub Actions workflow (`.github/workflows/weekly-form-smoke-test.yml`) runs every **Thursday 15:30 UTC (21:00 IST)** and exercises both lead forms end-to-end against production using a Browserbase-driven Chromium session.
+
+| | |
+|---|---|
+| Script | `scripts/weekly-form-smoke-test.mjs` (`npm run smoke:forms`) |
+| Workflow | `.github/workflows/weekly-form-smoke-test.yml` (also `workflow_dispatch` for manual runs) |
+| Required secrets | `BROWSERBASE_API_KEY`, `BROWSERBASE_PROJECT_ID` in repo Actions secrets |
+| Target | `SMOKE_TARGET_URL` env var (default `https://sme.searchmadarth.com`) |
+| Output | Screenshots + JSON summary uploaded as `smoke-artifacts-<run_id>` (30-day retention). Locally written to `./smoke-artifacts/` (gitignored) |
+
+What it submits (intentionally identifiable so the business inbox can filter):
+
+- **Demo form**: Company `Browserbase Weekly Smoke Test`, Name `Browserbase Test`, Email `qa+browserbase@madarth.com`, Phone `9876543210`
+- **Quiz**: A fast path through all 10 questions, then phone `9000000099`
+
+Each fire sends one demo email and one quiz email to the configured `ZEPTO_TO_BUSINESS` / CC / BCC recipients. To temporarily disable it without deleting the workflow, set `enabled: false` in the workflow file or disable it in the GitHub Actions UI.
+
+To run locally: ensure `BROWSERBASE_API_KEY` and `BROWSERBASE_PROJECT_ID` are in `.env.local`, then `npm run smoke:forms`. Use `SMOKE_TARGET_URL=http://localhost:3000 npm run smoke:forms` to point at a local dev server (set `EMAIL_DISABLED=true` to avoid sending real mail).
 
 ---
 

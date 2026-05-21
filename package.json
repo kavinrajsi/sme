@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "smoke:forms": "node scripts/weekly-form-smoke-test.mjs"
   },
   "dependencies": {
     "@next/third-parties": "^16.2.4",
@@ -18,8 +19,10 @@
     "zeptomail": "^7.0.2"
   },
   "devDependencies": {
+    "@browserbasehq/sdk": "^2.12.0",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
-    "eslint-config-next": "16.2.2"
+    "eslint-config-next": "16.2.2",
+    "playwright-core": "^1.60.0"
   }
 }

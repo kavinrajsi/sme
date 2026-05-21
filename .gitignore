@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# smoke test artifacts (screenshots + summaries from scripts/weekly-form-smoke-test.mjs)
+/smoke-artifacts/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

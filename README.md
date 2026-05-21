@@ -186,12 +186,12 @@ A GitHub Actions workflow (`.github/workflows/weekly-form-smoke-test.yml`) runs 
 | Target | `SMOKE_TARGET_URL` env var (default `https://sme.searchmadarth.com`) |
 | Output | Screenshots + JSON summary uploaded as `smoke-artifacts-<run_id>` (30-day retention). Locally written to `./smoke-artifacts/` (gitignored) |
 
-What it submits (intentionally identifiable so the business inbox can filter):
+What it does:
 
-- **Demo form**: Company `Browserbase Weekly Smoke Test`, Name `Browserbase Test`, Email `qa+browserbase@madarth.com`, Phone `9876543210`
-- **Quiz**: A fast path through all 10 questions, then phone `9000000099`
+- **Demo form**: opens the modal, fills every field (Company `Browserbase Weekly Smoke Test`, Name `Browserbase Test`, Email `qa+browserbase@madarth.com`, Phone `9876543210`, plus a timestamped message), verifies React captured each value, then **closes the modal without submitting**. This catches hydration / validation / state regressions without spamming the business inbox.
+- **Quiz**: clicks the Hero "Check Your Digital Score" CTA, fast-paths all 10 questions, enters phone `9000000099`, submits. **This does send one real quiz email** per fire to the configured `ZEPTO_TO_BUSINESS` / CC / BCC recipients — identifiable by the test phone number.
 
-Each fire sends one demo email and one quiz email to the configured `ZEPTO_TO_BUSINESS` / CC / BCC recipients. To temporarily disable it without deleting the workflow, set `enabled: false` in the workflow file or disable it in the GitHub Actions UI.
+So each Thursday fire = **one real email** (quiz only). To pause it without deleting, disable the workflow in the GitHub Actions UI.
 
 To run locally: ensure `BROWSERBASE_API_KEY` and `BROWSERBASE_PROJECT_ID` are in `.env.local`, then `npm run smoke:forms`. Use `SMOKE_TARGET_URL=http://localhost:3000 npm run smoke:forms` to point at a local dev server (set `EMAIL_DISABLED=true` to avoid sending real mail).
 

@@ -47,11 +47,9 @@ async function snapshot(page, label) {
 }
 
 async function runDemo(page) {
-  console.log("→ Demo form");
+  console.log("→ Demo form (fill + validate only, no submit)");
   await page.goto(TARGET_URL, { waitUntil: "load" });
 
-  // Click the hydrated Hero CTA — auto-waits for React hydration to finish.
-  // Dispatching the event programmatically races the useEffect that registers the listener.
   await page.getByRole("button", { name: /Get Free Demo Call/i }).first().click();
 
   await page.locator('input[name="company"]').waitFor({ state: "visible", timeout: 15000 });
@@ -63,20 +61,41 @@ async function runDemo(page) {
 
   await snapshot(page, "demo-filled");
 
-  await page.getByRole("button", { name: /Request Demo Call/i }).click();
-  await page
-    .getByRole("heading", { name: /We'll Be in Touch!/i })
-    .waitFor({ timeout: 20000 });
+  // Verify React state captured every field (catches onChange regressions, masked-input bugs).
+  const filled = await page.evaluate(() => ({
+    company: document.querySelector('input[name="company"]')?.value,
+    name: document.querySelector('input[name="name"]')?.value,
+    email: document.querySelector('input[name="email"]')?.value,
+    phone: document.querySelector('input[name="phone"]')?.value,
+    message: document.querySelector('textarea[name="message"]')?.value,
+  }));
+  for (const [k, v] of Object.entries(DEMO_DATA)) {
+    if (filled[k] !== v) {
+      throw new Error(`Demo field "${k}" mismatch: expected "${v}", got "${filled[k]}"`);
+    }
+  }
 
-  await snapshot(page, "demo-success");
+  // Close the modal without submitting — keeps the business inbox clean.
+  await page.locator(`button:has-text("✕")`).first().click();
+  await page.locator('input[name="company"]').waitFor({ state: "detached", timeout: 5000 });
+
   console.log("  PASS");
 }
 
 async function runQuiz(page) {
   console.log("→ Quiz form");
-  await page.goto(`${TARGET_URL}#quiz`, { waitUntil: "domcontentloaded" });
+
+  // Defensive: if the demo flow failed mid-modal, dismiss it so the Hero CTA isn't blocked.
+  const closeBtn = page.locator(`button:has-text("✕")`).first();
+  if (await closeBtn.isVisible().catch(() => false)) {
+    await closeBtn.click().catch(() => {});
+  }
+
+  // Reach the quiz via the Hero CTA, the same path a real user takes.
+  await page.getByRole("link", { name: /Check Your Digital Score/i }).first().click();
 
   const quiz = page.locator("section#quiz");
+  await quiz.waitFor({ state: "visible", timeout: 10000 });
   await quiz.scrollIntoViewIfNeeded();
 
   for (let i = 0; i < QUIZ_ANSWERS.length; i++) {

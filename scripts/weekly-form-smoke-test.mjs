@@ -47,7 +47,7 @@ async function snapshot(page, label) {
 }
 
 async function runDemo(page) {
-  console.log("→ Demo form (fill + validate only, no submit)");
+  console.log("→ Demo form");
   await page.goto(TARGET_URL, { waitUntil: "load" });
 
   await page.getByRole("button", { name: /Get Free Demo Call/i }).first().click();
@@ -61,24 +61,12 @@ async function runDemo(page) {
 
   await snapshot(page, "demo-filled");
 
-  // Verify React state captured every field (catches onChange regressions, masked-input bugs).
-  const filled = await page.evaluate(() => ({
-    company: document.querySelector('input[name="company"]')?.value,
-    name: document.querySelector('input[name="name"]')?.value,
-    email: document.querySelector('input[name="email"]')?.value,
-    phone: document.querySelector('input[name="phone"]')?.value,
-    message: document.querySelector('textarea[name="message"]')?.value,
-  }));
-  for (const [k, v] of Object.entries(DEMO_DATA)) {
-    if (filled[k] !== v) {
-      throw new Error(`Demo field "${k}" mismatch: expected "${v}", got "${filled[k]}"`);
-    }
-  }
+  await page.getByRole("button", { name: /Request Demo Call/i }).click();
+  await page
+    .getByRole("heading", { name: /We'll Be in Touch!/i })
+    .waitFor({ timeout: 20000 });
 
-  // Close the modal without submitting — keeps the business inbox clean.
-  await page.locator(`button:has-text("✕")`).first().click();
-  await page.locator('input[name="company"]').waitFor({ state: "detached", timeout: 5000 });
-
+  await snapshot(page, "demo-success");
   console.log("  PASS");
 }
 

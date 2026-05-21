@@ -48,10 +48,13 @@ async function snapshot(page, label) {
 
 async function runDemo(page) {
   console.log("→ Demo form");
-  await page.goto(TARGET_URL, { waitUntil: "domcontentloaded" });
+  await page.goto(TARGET_URL, { waitUntil: "load" });
 
-  await page.evaluate(() => window.dispatchEvent(new Event("open-demo-modal")));
+  // Click the hydrated Hero CTA — auto-waits for React hydration to finish.
+  // Dispatching the event programmatically races the useEffect that registers the listener.
+  await page.getByRole("button", { name: /Get Free Demo Call/i }).first().click();
 
+  await page.locator('input[name="company"]').waitFor({ state: "visible", timeout: 15000 });
   await page.locator('input[name="company"]').fill(DEMO_DATA.company);
   await page.locator('input[name="name"]').fill(DEMO_DATA.name);
   await page.locator('input[name="email"]').fill(DEMO_DATA.email);

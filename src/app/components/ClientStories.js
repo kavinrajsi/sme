@@ -8,7 +8,7 @@ const anekTamil = Anek_Tamil({
 
 const testimonials = [
   {
-    variant: "light",
+    variant: "dark",
     paragraphs: [
       "We've been working with Madarth for our brand Indicus Paints across website development, SEO, and digital advertising. What sets them apart is their genuine integrity. They tell you exactly what's achievable and then deliver on it.",
       "Their team is result-oriented, transparent, and genuinely invested in your growth. What I appreciate most is that their involvement doesn't stop at the brief. They proactively share ideas and insights even outside the scope of work, which shows how much they care about the brands they partner with. It's a relationship built on trust.",

@@ -60,6 +60,7 @@ ${faqBlock}
 ## Pages
 
 - [Home](${base}/) - main landing page with services, process, and demo request
+- [Digital Score](${base}/digital-score) - free quiz that benchmarks an SME's online presence and delivers a personalised growth report
 - [Privacy Policy](${base}/privacy-policy) - data collection and usage
 - [Terms and Conditions](${base}/terms-and-conditions) - terms of use
 

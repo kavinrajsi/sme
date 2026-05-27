@@ -6,6 +6,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 const LASTMOD_HOME = "2026-04-27";
 const LASTMOD_PRIVACY = "2026-04-09";
 const LASTMOD_TERMS = "2026-04-09";
+const LASTMOD_DIGITAL_SCORE = "2026-05-27";
 
 export default function sitemap() {
   if (!siteUrl) {
@@ -22,6 +23,12 @@ export default function sitemap() {
       lastModified: new Date(LASTMOD_HOME),
       changeFrequency: "monthly",
       priority: 1,
+    },
+    {
+      url: `${base}/digital-score`,
+      lastModified: new Date(LASTMOD_DIGITAL_SCORE),
+      changeFrequency: "monthly",
+      priority: 0.8,
     },
     {
       url: `${base}/privacy-policy`,

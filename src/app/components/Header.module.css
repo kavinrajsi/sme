@@ -153,6 +153,18 @@
   border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+@media (prefers-color-scheme: dark) {
+  .mobileFooter :global(.btn-base) {
+    color: rgb(237, 237, 237);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .mobileFooter :global(.btn-base) {
+    color: rgb(237, 237, 237);
+  }
+}
+
 /* Desktop */
 @media (min-width: 1025px) {
   .header {

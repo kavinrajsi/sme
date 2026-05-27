@@ -1,6 +1,7 @@
 "use client";
 
 import { Anek_Tamil } from "next/font/google";
+import QuizCard from "./QuizCard";
 import styles from "./Hero.module.css";
 
 const anekTamil = Anek_Tamil({
@@ -20,7 +21,7 @@ export default function Hero() {
         playsInline
         className={styles.bgVideo}
       />
-      <div className="container">
+      <div className={`container ${styles.inner}`}>
         <div className={styles.content} data-aos="fade-right">
           <span className={styles.tagline}>India&apos;s SME Growth Engine</span>
           <div className={styles.titleGroup}>
@@ -47,6 +48,9 @@ export default function Hero() {
               Get Free Demo Call
             </button>
           </div>
+        </div>
+        <div className={styles.quizSlot}>
+          <QuizCard className={styles.quizCard} />
         </div>
       </div>
     </section>

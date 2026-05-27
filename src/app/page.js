@@ -3,7 +3,6 @@ import Hero from "./components/Hero";
 import Trust from "./components/Trust";
 import OurServices from "./components/OurServices";
 import OurProcess from "./components/OurProcess";
-import DigitalQuiz from "./components/DigitalQuiz";
 import RevenueImpact from "./components/RevenueImpact";
 import CaseStudy from "./components/CaseStudy";
 import ClientStories from "./components/ClientStories";
@@ -131,11 +130,10 @@ export default function Home() {
       <main>
         <Hero />
         <Trust />
-        <RevenueImpact />
-        <DigitalQuiz />
-        <OurServices />
         <CaseStudy />
         <OurProcess />
+        <RevenueImpact />
+        <OurServices />
         <ClientStories />
         <FAQ />
       </main>

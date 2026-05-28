@@ -43,6 +43,36 @@ function SendIcon() {
   );
 }
 
+function PrevArrow() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="24px"
+      viewBox="0 -960 960 960"
+      width="24px"
+      fill="#e3e3e3"
+      aria-hidden="true"
+    >
+      <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
+    </svg>
+  );
+}
+
+function NextArrow() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="24px"
+      viewBox="0 -960 960 960"
+      width="24px"
+      fill="#e3e3e3"
+      aria-hidden="true"
+    >
+      <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
+    </svg>
+  );
+}
+
 function BrandLogo() {
   return (
     <svg
@@ -440,7 +470,8 @@ export default function QuizChat() {
                   onClick={handlePrev}
                   disabled={isFirstStep}
                 >
-                  ← Prev
+                  <PrevArrow />
+                  Prev
                 </button>
                 <button
                   type="button"
@@ -449,7 +480,7 @@ export default function QuizChat() {
                   disabled={question.required && !hasAnswerForCurrent()}
                 >
                   Next
-                  <SendIcon />
+                  <NextArrow />
                 </button>
               </div>
             </div>
@@ -477,7 +508,8 @@ export default function QuizChat() {
                   className={styles.prevBtn}
                   onClick={handlePrev}
                 >
-                  ← Prev
+                  <PrevArrow />
+                  Prev
                 </button>
                 {chatEmail && (
                   <button
@@ -486,7 +518,7 @@ export default function QuizChat() {
                     onClick={() => setPhase("phone")}
                   >
                     Next
-                    <SendIcon />
+                    <NextArrow />
                   </button>
                 )}
               </div>
@@ -540,7 +572,8 @@ export default function QuizChat() {
                   className={styles.prevBtn}
                   onClick={handlePrev}
                 >
-                  ← Prev
+                  <PrevArrow />
+                  Prev
                 </button>
               </div>
             </div>

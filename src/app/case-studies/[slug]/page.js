@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Anek_Tamil } from "next/font/google";
-import { caseStudies, getCaseStudy } from "../../components/caseStudiesData";
+import { loadAllCaseStudies, loadCaseStudy } from "@/lib/caseStudies";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import styles from "./page.module.css";
@@ -14,13 +14,14 @@ const anekTamil = Anek_Tamil({
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
-export function generateStaticParams() {
-  return caseStudies.map((c) => ({ slug: c.slug }));
+export async function generateStaticParams() {
+  const all = await loadAllCaseStudies();
+  return all.map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const study = getCaseStudy(slug);
+  const study = await loadCaseStudy(slug);
   if (!study) return {};
 
   const title = `${study.title} Case Study | SearchMadarth®`;
@@ -44,8 +45,11 @@ export async function generateMetadata({ params }) {
 
 export default async function CaseStudyDetailPage({ params }) {
   const { slug } = await params;
-  const study = getCaseStudy(slug);
+  const study = await loadCaseStudy(slug);
   if (!study) notFound();
+  const related = (await loadAllCaseStudies())
+    .filter((c) => c.slug !== study.slug)
+    .slice(0, 3);
 
   const detailUrl = siteUrl ? `${siteUrl}/case-studies/${study.slug}` : undefined;
 
@@ -194,10 +198,7 @@ export default async function CaseStudyDetailPage({ params }) {
           >
             <h2 className={styles.relatedTitle}>More case studies</h2>
             <div className={styles.relatedGrid}>
-              {caseStudies
-                .filter((c) => c.slug !== study.slug)
-                .slice(0, 3)
-                .map((c) => (
+              {related.map((c) => (
                   <Link
                     key={c.slug}
                     href={`/case-studies/${c.slug}`}

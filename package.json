@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "smoke:forms": "node scripts/weekly-form-smoke-test.mjs"
+    "smoke:forms": "node scripts/weekly-form-smoke-test.mjs",
+    "payload": "PAYLOAD_CONFIG_PATH=src/payload.config.js payload",
+    "payload:seed": "node scripts/seed-case-studies.mjs"
   },
   "dependencies": {
     "@next/third-parties": "^16.2.4",

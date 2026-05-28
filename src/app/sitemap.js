@@ -1,4 +1,4 @@
-import { caseStudies } from "./components/caseStudiesData";
+import { loadAllCaseStudies } from "@/lib/caseStudies";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
@@ -11,7 +11,7 @@ const LASTMOD_TERMS = "2026-04-09";
 const LASTMOD_DIGITAL_SCORE = "2026-05-27";
 const LASTMOD_CASE_STUDIES = "2026-05-28";
 
-export default function sitemap() {
+export default async function sitemap() {
   if (!siteUrl) {
     throw new Error(
       "NEXT_PUBLIC_SITE_URL is required to generate sitemap.xml. Set it in .env.local (and your deploy environment)."
@@ -19,8 +19,9 @@ export default function sitemap() {
   }
 
   const base = siteUrl.replace(/\/$/, "");
+  const studies = await loadAllCaseStudies();
 
-  const caseStudyEntries = caseStudies.map((study) => ({
+  const caseStudyEntries = studies.map((study) => ({
     url: `${base}/case-studies/${study.slug}`,
     lastModified: new Date(LASTMOD_CASE_STUDIES),
     changeFrequency: "monthly",

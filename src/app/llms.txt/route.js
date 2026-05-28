@@ -1,5 +1,5 @@
 import { faqs } from "../components/FAQ";
-import { caseStudies } from "../components/caseStudiesData";
+import { loadAllCaseStudies } from "@/lib/caseStudies";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
@@ -10,7 +10,8 @@ export async function GET() {
     .map(({ question, answer }) => `### ${question}\n\n${answer}`)
     .join("\n\n");
 
-  const caseStudyBlock = caseStudies
+  const studies = await loadAllCaseStudies();
+  const caseStudyBlock = studies
     .map(
       (c) =>
         `- [${c.title}](${base}/case-studies/${c.slug}) - ${c.description}`,

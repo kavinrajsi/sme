@@ -15,16 +15,13 @@ function ArrowLeft() {
   return (
     <svg
       className={styles.arrowIcon}
-      viewBox="0 0 10.4142 10"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      height="24px"
+      viewBox="0 -960 960 960"
+      width="24px"
+      fill="#e3e3e3"
     >
-      <path
-        d="M9 5H1M1 5L5 1M1 5L5 9"
-        stroke="#004C43"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
+      <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
     </svg>
   );
 }
@@ -33,16 +30,13 @@ function ArrowRight() {
   return (
     <svg
       className={styles.arrowIcon}
-      viewBox="0 0 10.4142 10"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      height="24px"
+      viewBox="0 -960 960 960"
+      width="24px"
+      fill="#e3e3e3"
     >
-      <path
-        d="M1 5H9M9 5L5 1M9 5L5 9"
-        stroke="white"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
+      <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
     </svg>
   );
 }

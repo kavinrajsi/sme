@@ -11,17 +11,52 @@ export async function GET() {
     .join("\n\n");
 
   const caseStudyBlock = caseStudies
-    .map(
-      (c) =>
-        `- [${c.title}](${base}/case-studies/${c.slug}) - ${c.description}`,
-    )
-    .join("\n");
+    .map((c) => {
+      const services = c.services.join(", ");
+      const metrics = c.metrics
+        .map((m) => `- ${m.label}: ${m.value}`)
+        .join("\n");
+      const approach = c.approach.map((step, i) => `${i + 1}. ${step}`).join("\n");
+      return `### ${c.title}
 
-  const body = `# SearchMadarth®
+- URL: ${base}/case-studies/${c.slug}
+- Industry: ${c.industry}
+- Engagement length: ${c.duration}
+- Services delivered: ${services}
+- One-line summary: ${c.description}
 
-> India's SME Growth Engine - a digital marketing partner that helps small and medium enterprises in India build a powerful digital presence that generates leads, builds trust, and grows revenue. Operates without the complexity or corporate price tag of large agencies.
+**Impact at a glance**
 
-## What we do
+${metrics}
+
+**The challenge**
+
+${c.challenge}
+
+**Our approach**
+
+${approach}
+
+**The results**
+
+${c.results}`;
+    })
+    .join("\n\n");
+
+  const body = `# SearchMadarth® - Full reference
+
+> Long-form companion to [llms.txt](${base}/llms.txt). Covers the full SearchMadarth® offering, every case study with structured detail, and every published FAQ. Suitable for LLM ingestion when the shorter index isn't enough.
+
+## About SearchMadarth®
+
+SearchMadarth® is India's SME Growth Engine - a digital marketing partner that helps small and medium enterprises in India build a powerful digital presence that generates leads, builds trust, and grows revenue. The agency operates without the complexity or corporate price tag of large agencies, with engagements designed around weeks-to-results rather than quarters.
+
+- Primary site: ${base || "https://sme.searchmadarth.com"}
+- Service area: India only
+- Industries served: Textiles, food and beverage, education, logistics, retail, FMCG, manufacturing
+- Sample clients: Sundari Silks, Veranda IAS, Annapoorna Masalas and Spices, Adyar Ananda Bhavan, Frankfinn, DahNAY, Nithya Amirtham, Dheepam Lamp Oil
+
+## Services
 
 SearchMadarth® offers six focused digital marketing services for Indian SMEs:
 
@@ -51,15 +86,13 @@ Across the SearchMadarth® client portfolio:
 - 60 days median time from onboarding to first measurable ROI
 - 4.1x average return on investment in the first year
 
-## Service area
+## Digital Score quiz
 
-India - Indian small and medium enterprises only.
+A free 10-question quiz at ${base}/digital-score that benchmarks an SME's online presence across five growth pillars and emails a personalised report. Quiz takers verify their email with a 6-digit one-time code before results are released. Bookings for a 30-minute strategy call can be made directly from the result screen.
 
-## Industries served
+## Case studies
 
-Textiles, food and beverage, education, logistics, retail, FMCG, manufacturing.
-
-Sample clients: Sundari Silks, Veranda IAS, Annapoorna Masalas and Spices, Adyar Ananda Bhavan, Frankfinn, DahNAY, Nithya Amirtham, Dheepam Lamp Oil.
+${caseStudyBlock}
 
 ## Frequently asked questions
 
@@ -67,19 +100,15 @@ ${faqBlock}
 
 ## Pages
 
-- [Home](${base}/) - main landing page with services, process, and demo request
+- [Home](${base}/) - main landing page with services, process, testimonials, and demo request
 - [Digital Score](${base}/digital-score) - free quiz that benchmarks an SME's online presence and delivers a personalised growth report
 - [Privacy Policy](${base}/privacy-policy) - data collection and usage
 - [Terms and Conditions](${base}/terms-and-conditions) - terms of use
-- [llms-full.txt](${base}/llms-full.txt) - long-form companion with full case-study breakdowns
-
-## Case studies
-
-${caseStudyBlock}
+- [llms.txt](${base}/llms.txt) - short-form index for LLM crawlers
 
 ## Get in touch
 
-Demo calls (45 minutes, no commitment) and a free Digital Score quiz can be requested directly from the homepage.
+Demo calls (45 minutes, no commitment) and a free Digital Score quiz can be requested directly from the homepage. Email replies and reports are sent from \`@madarth.com\`.
 `;
 
   return new Response(body, {

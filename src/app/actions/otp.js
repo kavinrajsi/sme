@@ -15,20 +15,88 @@ const ZEPTO_URL = "https://api.zeptomail.com/v1.1/email";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function buildOtpEmailHtml(code) {
-  return `
-    <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto;">
-      <h2 style="color: #004c43;">Your SearchMadarth verification code</h2>
-      <p style="font-size: 15px; color: #333;">
-        Use the code below to verify your email. It expires in 10 minutes.
-      </p>
-      <p style="font-size: 32px; font-weight: 700; letter-spacing: 6px; color: #004c43; background: #f6f5f3; padding: 16px 24px; border-radius: 12px; text-align: center; margin: 24px 0;">
-        ${code}
-      </p>
-      <p style="font-size: 13px; color: #666;">
-        If you didn&apos;t request this, you can safely ignore this email.
-      </p>
-    </div>
-  `;
+  const spacedCode = String(code).split("").join("&nbsp;&nbsp;");
+  return `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Your SearchMadarth verification code</title>
+  </head>
+  <body style="margin:0;padding:0;background:#f1f5f8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;color:#0f1a12;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#f1f5f8;padding:32px 16px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:560px;">
+            <tr>
+              <td align="center" style="padding:0 0 24px 0;">
+                <div style="display:inline-block;background:#004c43;color:#cadb3f;padding:8px 14px;border-radius:6px;font-weight:800;font-size:14px;letter-spacing:0.5px;">
+                  SearchMadarth&reg;
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="background:#ffffff;border-radius:14px;border-top:6px solid #cadb3f;box-shadow:0 4px 18px rgba(15,26,18,0.06);padding:28px 28px 24px;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                  <tr>
+                    <td style="padding-bottom:18px;">
+                      <div style="width:44px;height:44px;background:#e6f4f2;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:44px;">
+                        <span style="font-size:20px;color:#004c43;">&#128274;</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding-bottom:14px;">
+                      <h1 style="margin:0;font-size:22px;line-height:1.3;font-weight:700;color:#0f1a12;">
+                        Let&rsquo;s verify your email
+                      </h1>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding-bottom:12px;">
+                      <p style="margin:0;font-size:15px;line-height:1.55;color:#3f4a45;">
+                        Hi there,
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding-bottom:20px;">
+                      <p style="margin:0;font-size:15px;line-height:1.55;color:#3f4a45;">
+                        Please use the verification code below to confirm your email on SearchMadarth.
+                        The code will expire in <strong style="color:#0f1a12;">10 minutes</strong>.
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div style="background:#f1f5f8;border-radius:12px;padding:22px 20px;text-align:center;font-family:'SF Mono',Menlo,Consolas,monospace;font-size:30px;font-weight:700;letter-spacing:2px;color:#0f1a12;">
+                        ${spacedCode}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding-top:22px;">
+                      <p style="margin:0;font-size:13px;line-height:1.55;color:#6b7a73;">
+                        Didn&rsquo;t request this code? You can safely ignore this email &mdash; someone may have typed your address by mistake.
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="padding:18px 0 0 0;">
+                <p style="margin:0;font-size:12px;color:#7c8a83;">
+                  &copy; 2026 SearchMadarth&reg; &middot; sme.searchmadarth.com
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`;
 }
 
 async function sendOtpMail(email, code) {

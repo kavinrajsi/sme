@@ -2,11 +2,38 @@
 
 import { SendMailClient } from "zeptomail";
 import { assertVerified, normalizeEmail } from "@/lib/otp";
+import { getSupabaseAdmin } from "@/lib/supabase";
 
 const url = "https://api.zeptomail.com/v1.1/email";
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "").replace(/\/$/, "");
 const subjectPagePrefix = `New Form Submission in SME${siteUrl ? ` [${siteUrl}/]` : ""} Page`;
+
+async function recordSubmission(table, row) {
+  try {
+    const supabase = getSupabaseAdmin();
+    const { data, error } = await supabase
+      .from(table)
+      .insert(row)
+      .select("id")
+      .single();
+    if (error) throw error;
+    return data?.id || null;
+  } catch (error) {
+    console.error(`[supabase] insert into ${table} failed:`, error);
+    return null;
+  }
+}
+
+async function markEmailSent(table, id) {
+  if (!id) return;
+  try {
+    const supabase = getSupabaseAdmin();
+    await supabase.from(table).update({ email_sent: true }).eq("id", id);
+  } catch (error) {
+    console.error(`[supabase] mark email_sent on ${table} failed:`, error);
+  }
+}
 
 async function guardVerifiedEmail(email) {
   const normalized = normalizeEmail(email);
@@ -89,6 +116,14 @@ export async function sendQuizEmail({ email, phone, score, pillars, questions })
   const guard = await guardVerifiedEmail(email);
   if (!guard.ok) return { success: false, error: guard.error };
 
+  const submissionId = await recordSubmission("quiz_submissions", {
+    email: guard.email,
+    phone,
+    score,
+    pillars,
+    answers: questions,
+  });
+
   const pillarRows = Object.values(pillars)
     .map(
       (p, i) =>
@@ -143,10 +178,12 @@ export async function sendQuizEmail({ email, phone, score, pillars, questions })
     </div>
   `;
 
-  return sendViaZepto({
+  const result = await sendViaZepto({
     subject: `${subjectPagePrefix} - Quiz Score: ${score}/100 -- ${guard.email}`,
     htmlbody,
   });
+  if (result.success) await markEmailSent("quiz_submissions", submissionId);
+  return result;
 }
 
 export async function sendBookingEmail({
@@ -160,6 +197,16 @@ export async function sendBookingEmail({
 }) {
   const guard = await guardVerifiedEmail(email);
   if (!guard.ok) return { success: false, error: guard.error };
+
+  const submissionId = await recordSubmission("booking_submissions", {
+    email: guard.email,
+    phone,
+    name,
+    business: business || null,
+    booking_date: date,
+    slot,
+    score: typeof score === "number" ? score : null,
+  });
 
   const htmlbody = `
     <div style="font-family: Arial, sans-serif; max-width: 600px;">
@@ -197,10 +244,12 @@ export async function sendBookingEmail({
     </div>
   `;
 
-  return sendViaZepto({
+  const result = await sendViaZepto({
     subject: `${subjectPagePrefix} - Strategy Call Booking - ${name} (${guard.email})`,
     htmlbody,
   });
+  if (result.success) await markEmailSent("booking_submissions", submissionId);
+  return result;
 }
 
 export async function sendDemoEmail(formData) {
@@ -208,6 +257,14 @@ export async function sendDemoEmail(formData) {
 
   const guard = await guardVerifiedEmail(email);
   if (!guard.ok) return { success: false, error: guard.error };
+
+  const submissionId = await recordSubmission("demo_submissions", {
+    email: guard.email,
+    phone,
+    name,
+    company: company || null,
+    message: message || null,
+  });
 
   const htmlbody = `
     <div style="font-family: Arial, sans-serif; max-width: 600px;">
@@ -237,8 +294,10 @@ export async function sendDemoEmail(formData) {
     </div>
   `;
 
-  return sendViaZepto({
+  const result = await sendViaZepto({
     subject: subjectPagePrefix,
     htmlbody,
   });
+  if (result.success) await markEmailSent("demo_submissions", submissionId);
+  return result;
 }

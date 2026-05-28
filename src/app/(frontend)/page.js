@@ -1,14 +1,14 @@
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import Trust from "./components/Trust";
-import OurServices from "./components/OurServices";
-import OurProcess from "./components/OurProcess";
-import RevenueImpact from "./components/RevenueImpact";
-import CaseStudy from "./components/CaseStudy";
-import ClientStories, { testimonials } from "./components/ClientStories";
-import Footer from "./components/Footer";
-import DemoModal from "./components/DemoModal";
-import FAQ, { faqs } from "./components/FAQ";
+import Header from "../components/Header";
+import Hero from "../components/Hero";
+import Trust from "../components/Trust";
+import OurServices from "../components/OurServices";
+import OurProcess from "../components/OurProcess";
+import RevenueImpact from "../components/RevenueImpact";
+import CaseStudy from "../components/CaseStudy";
+import ClientStories, { testimonials } from "../components/ClientStories";
+import Footer from "../components/Footer";
+import DemoModal from "../components/DemoModal";
+import FAQ, { faqs } from "../components/FAQ";
 import { loadAllCaseStudies } from "@/lib/caseStudies";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;

@@ -3,8 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Anek_Tamil } from "next/font/google";
 import { loadAllCaseStudies, loadCaseStudy } from "@/lib/caseStudies";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
+import Header from "../../../components/Header";
+import Footer from "../../../components/Footer";
 import styles from "./page.module.css";
 
 const anekTamil = Anek_Tamil({

@@ -1,5 +1,5 @@
-import QuizChat from "../components/QuizChat";
-import { quizData } from "../components/quizConfig";
+import QuizChat from "../../components/QuizChat";
+import { quizData } from "../../components/quizConfig";
 import styles from "./page.module.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;

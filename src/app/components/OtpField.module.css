@@ -149,17 +149,21 @@
 }
 
 .checkIcon {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: #004c43;
   color: #cadb3f;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: 800;
-  font-size: 14px;
   flex-shrink: 0;
+}
+
+.checkIcon svg {
+  width: 16px;
+  height: 16px;
+  display: block;
 }
 
 .verifiedEmail {

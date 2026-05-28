@@ -85,7 +85,17 @@ export default function OtpField({
           {required ? <span className={styles.required}> *</span> : null}
         </label>
         <div className={styles.verifiedRow}>
-          <span className={styles.checkIcon} aria-hidden="true">✓</span>
+          <span className={styles.checkIcon} aria-hidden="true">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="16"
+              width="16"
+              viewBox="0 -960 960 960"
+              fill="currentColor"
+            >
+              <path d="M400-304 240-464l56-56 104 104 264-264 56 56-320 320Z" />
+            </svg>
+          </span>
           <span className={styles.verifiedEmail}>{email}</span>
           <button type="button" className={styles.linkBtn} onClick={handleChangeEmail}>
             Change

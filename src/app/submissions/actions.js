@@ -22,13 +22,13 @@ export async function loginAction(_prevState, formData) {
   }
   const cookieStore = await cookies();
   cookieStore.set(buildSessionCookie());
-  redirect("/admin");
+  redirect("/submissions");
 }
 
 export async function logoutAction() {
   const cookieStore = await cookies();
   cookieStore.set(clearSessionCookie());
-  redirect("/admin");
+  redirect("/submissions");
 }
 
 export async function clearSessionOnRequest() {

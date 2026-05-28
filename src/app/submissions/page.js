@@ -12,7 +12,7 @@ const anekTamil = Anek_Tamil({
 });
 
 export const metadata = {
-  title: "Admin · SearchMadarth",
+  title: "Submissions · SearchMadarth",
   robots: { index: false, follow: false },
 };
 

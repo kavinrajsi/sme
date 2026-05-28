@@ -26,8 +26,8 @@ export default function robots() {
 
   return {
     rules: [
-      { userAgent: "*", allow: "/", disallow: ["/admin"] },
-      { userAgent: aiCrawlers, allow: "/", disallow: ["/admin"] },
+      { userAgent: "*", allow: "/", disallow: ["/admin", "/submissions"] },
+      { userAgent: aiCrawlers, allow: "/", disallow: ["/admin", "/submissions"] },
     ],
     sitemap,
   };

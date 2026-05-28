@@ -105,8 +105,8 @@ Behavior:
 | `SUPABASE_URL` | yes | Supabase project URL (e.g. `https://<ref>.supabase.co`). Backs `otp_codes` plus the `demo_submissions` / `quiz_submissions` / `booking_submissions` tables. |
 | `SUPABASE_SERVICE_ROLE_KEY` | yes | Service-role key for the same project. Server-only — never expose to the browser. |
 | `OTP_PEPPER` | yes | Random ≥32-char string mixed into OTP hashes before they're stored. Rotating it invalidates every outstanding code. |
-| `ADMIN_PASSWORD` | yes (for `/admin`) | Shared password for the `/admin` data-view page. Anyone with it sees every submission, so treat it like a production secret. |
-| `ADMIN_SESSION_SECRET` | yes (for `/admin`) | Random ≥32-char string used to HMAC-sign the admin session cookie. Rotating it logs everyone out. |
+| `ADMIN_PASSWORD` | yes (for `/submissions`) | Shared password for the `/submissions` data-view page. Anyone with it sees every form submission, so treat it like a production secret. |
+| `ADMIN_SESSION_SECRET` | yes (for `/submissions`) | Random ≥32-char string used to HMAC-sign the submissions session cookie. Rotating it logs everyone out. |
 
 ### CI-only (used by the weekly smoke test in GitHub Actions)
 

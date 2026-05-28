@@ -1,3 +1,76 @@
+const textNode = (text) => ({
+  type: "text",
+  detail: 0,
+  format: 0,
+  mode: "normal",
+  style: "",
+  text,
+  version: 1,
+});
+
+const paragraph = (text) => ({
+  type: "paragraph",
+  children: [textNode(text)],
+  direction: "ltr",
+  format: "",
+  indent: 0,
+  textFormat: 0,
+  textStyle: "",
+  version: 1,
+});
+
+const heading = (text, tag = "h2") => ({
+  type: "heading",
+  tag,
+  children: [textNode(text)],
+  direction: "ltr",
+  format: "",
+  indent: 0,
+  version: 1,
+});
+
+const orderedList = (items) => ({
+  type: "list",
+  listType: "number",
+  tag: "ol",
+  start: 1,
+  direction: "ltr",
+  format: "",
+  indent: 0,
+  version: 1,
+  children: items.map((text, i) => ({
+    type: "listitem",
+    value: i + 1,
+    children: [textNode(text)],
+    direction: "ltr",
+    format: "",
+    indent: 0,
+    version: 1,
+  })),
+});
+
+const richTextRoot = (children) => ({
+  root: {
+    type: "root",
+    children,
+    direction: "ltr",
+    format: "",
+    indent: 0,
+    version: 1,
+  },
+});
+
+const richTextBlock = (children) => ({
+  blockType: "richText",
+  content: richTextRoot(children),
+});
+
+const body = ({ challenge, approach, results }) => [
+  richTextBlock([heading("The challenge"), paragraph(challenge)]),
+  richTextBlock([heading("Our approach"), orderedList(approach)]),
+  richTextBlock([heading("The results"), paragraph(results)]),
+];
+
 export const caseStudies = [
   {
     slug: "sundari-silks",
@@ -13,15 +86,17 @@ export const caseStudies = [
       { label: "Revenue uplift", value: "TBD" },
       { label: "Time to first ROI", value: "TBD" },
     ],
-    challenge:
-      "Add the business problem Sundari Silks came to us with — what was broken, what was at stake, and what the team had already tried.",
-    approach: [
-      "Outline the first pillar of the engagement (e.g. website rebuild, technical SEO foundations).",
-      "Outline the second pillar (e.g. local search & Google Business Profile work).",
-      "Outline the third pillar (e.g. paid acquisition strategy).",
-    ],
-    results:
-      "Add the measurable outcomes — lead growth, revenue numbers, ranking improvements, store-visit lifts, anything quotable.",
+    body: body({
+      challenge:
+        "Add the business problem Sundari Silks came to us with — what was broken, what was at stake, and what the team had already tried.",
+      approach: [
+        "Outline the first pillar of the engagement (e.g. website rebuild, technical SEO foundations).",
+        "Outline the second pillar (e.g. local search & Google Business Profile work).",
+        "Outline the third pillar (e.g. paid acquisition strategy).",
+      ],
+      results:
+        "Add the measurable outcomes — lead growth, revenue numbers, ranking improvements, store-visit lifts, anything quotable.",
+    }),
   },
   {
     slug: "veranda-ias",
@@ -37,15 +112,17 @@ export const caseStudies = [
       { label: "Qualified admissions", value: "TBD" },
       { label: "Cost per lead reduction", value: "TBD" },
     ],
-    challenge:
-      "Describe Veranda IAS's launch context — new brand, tight admission deadline, competitive coaching market.",
-    approach: [
-      "Detail the campaign launch playbook (audience segments, channel mix).",
-      "Detail the creative + landing page testing cadence.",
-      "Detail the admissions-funnel handoff with the sales team.",
-    ],
-    results:
-      "Document the admissions closed, CPL trends, and what specifically drove the result.",
+    body: body({
+      challenge:
+        "Describe Veranda IAS's launch context — new brand, tight admission deadline, competitive coaching market.",
+      approach: [
+        "Detail the campaign launch playbook (audience segments, channel mix).",
+        "Detail the creative + landing page testing cadence.",
+        "Detail the admissions-funnel handoff with the sales team.",
+      ],
+      results:
+        "Document the admissions closed, CPL trends, and what specifically drove the result.",
+    }),
   },
   {
     slug: "annapoorna-masalas-and-spices",
@@ -61,15 +138,17 @@ export const caseStudies = [
       { label: "Geo-targeted reach", value: "TBD" },
       { label: "ROAS", value: "TBD" },
     ],
-    challenge:
-      "Capture the hyper-local distribution challenge — concentrated retail footprint, competition from heritage brands.",
-    approach: [
-      "Hyper-local audience modelling and creative localisation.",
-      "Geo-fenced campaign structure across Meta and Google.",
-      "Retail partner coordination and offer mechanics.",
-    ],
-    results:
-      "Quantify the store-visit lift, online conversation share, and any sell-through changes the brand reported.",
+    body: body({
+      challenge:
+        "Capture the hyper-local distribution challenge — concentrated retail footprint, competition from heritage brands.",
+      approach: [
+        "Hyper-local audience modelling and creative localisation.",
+        "Geo-fenced campaign structure across Meta and Google.",
+        "Retail partner coordination and offer mechanics.",
+      ],
+      results:
+        "Quantify the store-visit lift, online conversation share, and any sell-through changes the brand reported.",
+    }),
   },
   {
     slug: "nithya-amirtham",
@@ -84,15 +163,17 @@ export const caseStudies = [
       { label: "Repeat purchase rate", value: "TBD" },
       { label: "ROAS", value: "TBD" },
     ],
-    challenge:
-      "Describe how a trusted offline heritage brand needed to enter D2C without diluting its equity.",
-    approach: [
-      "Brand and packaging audit feeding into website narrative.",
-      "Conversion-focused D2C storefront with subscription mechanics.",
-      "Always-on performance marketing tied to LTV cohorts.",
-    ],
-    results:
-      "Tell the story of online revenue ramp, repeat-purchase cohorts, and how offline channels reacted.",
+    body: body({
+      challenge:
+        "Describe how a trusted offline heritage brand needed to enter D2C without diluting its equity.",
+      approach: [
+        "Brand and packaging audit feeding into website narrative.",
+        "Conversion-focused D2C storefront with subscription mechanics.",
+        "Always-on performance marketing tied to LTV cohorts.",
+      ],
+      results:
+        "Tell the story of online revenue ramp, repeat-purchase cohorts, and how offline channels reacted.",
+    }),
   },
   {
     slug: "adyar-ananda-bhavan",
@@ -108,15 +189,17 @@ export const caseStudies = [
       { label: "PageSpeed score", value: "TBD" },
       { label: "Outlets onboarded", value: "TBD" },
     ],
-    challenge:
-      "Note the 20-day deadline, multi-outlet content scope, and the franchise stakeholders involved.",
-    approach: [
-      "Locked information architecture in week one with stakeholders.",
-      "Headless CMS to let franchise teams update menus directly.",
-      "Performance budget enforced through Core Web Vitals checks.",
-    ],
-    results:
-      "Capture launch velocity, PageSpeed scores, and the operational handover to AAB's internal team.",
+    body: body({
+      challenge:
+        "Note the 20-day deadline, multi-outlet content scope, and the franchise stakeholders involved.",
+      approach: [
+        "Locked information architecture in week one with stakeholders.",
+        "Headless CMS to let franchise teams update menus directly.",
+        "Performance budget enforced through Core Web Vitals checks.",
+      ],
+      results:
+        "Capture launch velocity, PageSpeed scores, and the operational handover to AAB's internal team.",
+    }),
   },
   {
     slug: "dheepam-lamp-oil",
@@ -132,15 +215,17 @@ export const caseStudies = [
       { label: "Engagement rate", value: "TBD" },
       { label: "Retail sell-through", value: "TBD" },
     ],
-    challenge:
-      "Describe the seasonal window for Karthigai Dheepam and how Dheepam Lamp Oil wanted to dominate share of voice.",
-    approach: [
-      "Festival-led creative concept rooted in cultural insight.",
-      "Multi-format video distribution across YouTube, Meta, and regional OTT.",
-      "Retailer collateral to convert digital intent into in-store demand.",
-    ],
-    results:
-      "Document the engagement numbers, share-of-voice movement, and any retail sales evidence.",
+    body: body({
+      challenge:
+        "Describe the seasonal window for Karthigai Dheepam and how Dheepam Lamp Oil wanted to dominate share of voice.",
+      approach: [
+        "Festival-led creative concept rooted in cultural insight.",
+        "Multi-format video distribution across YouTube, Meta, and regional OTT.",
+        "Retailer collateral to convert digital intent into in-store demand.",
+      ],
+      results:
+        "Document the engagement numbers, share-of-voice movement, and any retail sales evidence.",
+    }),
   },
   {
     slug: "frankfinn",
@@ -155,15 +240,17 @@ export const caseStudies = [
       { label: "Subscriber growth", value: "TBD" },
       { label: "Inbound lead lift", value: "TBD" },
     ],
-    challenge:
-      "Frame Frankfinn's category challenge — institute brand needing trust signals for a young digital-native audience.",
-    approach: [
-      "YouTube channel strategy aligned to admissions funnel.",
-      "Format experimentation (shorts, alumni interviews, on-campus diaries).",
-      "Search-optimised metadata and end-card routing to admissions enquiry.",
-    ],
-    results:
-      "Detail watch-time growth, channel authority signals, and how inbound enquiries shifted.",
+    body: body({
+      challenge:
+        "Frame Frankfinn's category challenge — institute brand needing trust signals for a young digital-native audience.",
+      approach: [
+        "YouTube channel strategy aligned to admissions funnel.",
+        "Format experimentation (shorts, alumni interviews, on-campus diaries).",
+        "Search-optimised metadata and end-card routing to admissions enquiry.",
+      ],
+      results:
+        "Detail watch-time growth, channel authority signals, and how inbound enquiries shifted.",
+    }),
   },
   {
     slug: "dahnay",
@@ -179,15 +266,17 @@ export const caseStudies = [
       { label: "Lead volume", value: "TBD" },
       { label: "Cost per SQL", value: "TBD" },
     ],
-    challenge:
-      "Describe DahNAY's B2B logistics ICP, the long sales cycle, and the existing lead quality gap.",
-    approach: [
-      "ICP definition with the sales team to anchor qualification criteria.",
-      "Account-aware campaign structure on LinkedIn and Google.",
-      "Lifecycle nurture sequences with the in-house sales tooling.",
-    ],
-    results:
-      "Quote the 10.9% SQL rate, pipeline contribution, and how attribution was validated.",
+    body: body({
+      challenge:
+        "Describe DahNAY's B2B logistics ICP, the long sales cycle, and the existing lead quality gap.",
+      approach: [
+        "ICP definition with the sales team to anchor qualification criteria.",
+        "Account-aware campaign structure on LinkedIn and Google.",
+        "Lifecycle nurture sequences with the in-house sales tooling.",
+      ],
+      results:
+        "Quote the 10.9% SQL rate, pipeline contribution, and how attribution was validated.",
+    }),
   },
   {
     slug: "sundari-silks-aadi-sale",
@@ -203,15 +292,17 @@ export const caseStudies = [
       { label: "Footfall lift", value: "TBD" },
       { label: "New customer share", value: "TBD" },
     ],
-    challenge:
-      "Aadi Sale is the largest sale window for textiles — describe the noise level and how Sundari Silks needed to stand out.",
-    approach: [
-      "Audience segmentation across loyalists and new buyers.",
-      "Creative variants that preserved heritage tone while pushing offers.",
-      "Daily optimisation against ROAS guardrails set with the brand team.",
-    ],
-    results:
-      "Share the ROAS, footfall, and brand-perception read from this Aadi Sale window.",
+    body: body({
+      challenge:
+        "Aadi Sale is the largest sale window for textiles — describe the noise level and how Sundari Silks needed to stand out.",
+      approach: [
+        "Audience segmentation across loyalists and new buyers.",
+        "Creative variants that preserved heritage tone while pushing offers.",
+        "Daily optimisation against ROAS guardrails set with the brand team.",
+      ],
+      results:
+        "Share the ROAS, footfall, and brand-perception read from this Aadi Sale window.",
+    }),
   },
 ];
 

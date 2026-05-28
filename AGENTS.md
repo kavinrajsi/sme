@@ -6,7 +6,7 @@ This version has breaking changes - APIs, conventions, and file structure may al
 
 ## Stack quick-reference (so you don't reach for the wrong tool)
 
-- **Framework**: Next.js 16 App Router, React 19, React Compiler enabled. Plain JavaScript - **no TypeScript**.
+- **Framework**: Next.js 16 App Router, React 19. Plain JavaScript - **no TypeScript**. React Compiler is **disabled** (`reactCompiler: false` in `next.config.mjs`) because it crashes Payload's admin UI; do not flip it back on without a scoped workaround.
 - **Styling**: CSS Modules co-located with components (`Foo.js` + `Foo.module.css`) plus `globals.css`. No Tailwind, no styled-components.
 - **Forms**: server actions in `src/app/actions/` (files start with `"use server";`). Not API routes.
 - **Email**: ZeptoMail via the `zeptomail` package. **Do not** reach for nodemailer / resend / SES.

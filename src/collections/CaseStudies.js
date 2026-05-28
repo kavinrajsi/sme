@@ -1,3 +1,5 @@
+import { caseStudyBodyBlocks } from "./blocks.js";
+
 const CaseStudies = {
   slug: "case-studies",
   admin: {
@@ -98,36 +100,15 @@ const CaseStudies = {
       ],
     },
     {
-      name: "challenge",
-      type: "textarea",
-      required: true,
-      admin: {
-        description: "What the business problem was when the engagement started.",
-      },
-    },
-    {
-      name: "approach",
-      type: "array",
+      name: "body",
+      type: "blocks",
       required: true,
       minRows: 1,
-      labels: {
-        singular: "Approach step",
-        plural: "Approach steps",
-      },
-      fields: [
-        {
-          name: "step",
-          type: "textarea",
-          required: true,
-        },
-      ],
-    },
-    {
-      name: "results",
-      type: "textarea",
-      required: true,
+      labels: { singular: "Block", plural: "Blocks" },
+      blocks: caseStudyBodyBlocks,
       admin: {
-        description: "Measurable outcomes worth quoting.",
+        description:
+          "Long-form story. Compose with rich text, images, quotes, callouts, stats, videos, and code blocks.",
       },
     },
   ],

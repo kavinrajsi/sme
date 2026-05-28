@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-async-client-component */
+import "@payloadcms/next/css";
 import { handleServerFunctions, RootLayout } from "@payloadcms/next/layouts";
 import { importMap } from "./admin/importMap.js";
 import config from "../../payload.config.js";

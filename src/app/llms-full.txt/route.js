@@ -3,6 +3,60 @@ import { loadAllCaseStudies } from "@/lib/caseStudies";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
+function lexicalNodeToText(node) {
+  if (!node) return "";
+  if (node.type === "text") return node.text || "";
+  if (node.type === "linebreak") return "\n";
+  const children = Array.isArray(node.children)
+    ? node.children.map(lexicalNodeToText).join("")
+    : "";
+  if (node.type === "heading") {
+    const level = Number((node.tag || "h2").replace("h", "")) || 2;
+    return `\n\n${"#".repeat(level)} ${children}\n`;
+  }
+  if (node.type === "paragraph") return `\n${children}\n`;
+  if (node.type === "list") {
+    const items = (node.children || []).map((li, i) => {
+      const inner = lexicalNodeToText(li).trim();
+      return node.listType === "number" ? `${i + 1}. ${inner}` : `- ${inner}`;
+    });
+    return `\n${items.join("\n")}\n`;
+  }
+  if (node.type === "listitem") return children;
+  return children;
+}
+
+function bodyToMarkdown(blocks) {
+  if (!Array.isArray(blocks)) return "";
+  return blocks
+    .map((b) => {
+      if (b.blockType === "richText" && b.content?.root) {
+        return lexicalNodeToText(b.content.root).trim();
+      }
+      if (b.blockType === "quote") {
+        return `> ${b.quote || ""}${b.attribution ? `\n> — ${b.attribution}` : ""}`;
+      }
+      if (b.blockType === "callout" && b.body?.root) {
+        return lexicalNodeToText(b.body.root).trim();
+      }
+      if (b.blockType === "stats" && Array.isArray(b.items)) {
+        return b.items.map((s) => `- ${s.label}: ${s.value}`).join("\n");
+      }
+      if (b.blockType === "image" && b.media?.url) {
+        return b.caption ? `![${b.caption}](${b.media.url})` : `![](${b.media.url})`;
+      }
+      if (b.blockType === "video" && b.url) {
+        return `Video: ${b.url}`;
+      }
+      if (b.blockType === "code" && b.code) {
+        return `\`\`\`${b.language || ""}\n${b.code}\n\`\`\``;
+      }
+      return "";
+    })
+    .filter(Boolean)
+    .join("\n\n");
+}
+
 export async function GET() {
   const base = (siteUrl || "").replace(/\/$/, "");
 
@@ -17,7 +71,7 @@ export async function GET() {
       const metrics = c.metrics
         .map((m) => `- ${m.label}: ${m.value}`)
         .join("\n");
-      const approach = c.approach.map((step, i) => `${i + 1}. ${step}`).join("\n");
+      const story = bodyToMarkdown(c.body);
       return `### ${c.title}
 
 - URL: ${base}/case-studies/${c.slug}
@@ -30,17 +84,7 @@ export async function GET() {
 
 ${metrics}
 
-**The challenge**
-
-${c.challenge}
-
-**Our approach**
-
-${approach}
-
-**The results**
-
-${c.results}`;
+${story}`;
     })
     .join("\n\n");
 

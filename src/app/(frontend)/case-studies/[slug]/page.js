@@ -5,6 +5,7 @@ import { Anek_Tamil } from "next/font/google";
 import { loadAllCaseStudies, loadCaseStudy } from "@/lib/caseStudies";
 import Header from "../../../components/Header";
 import Footer from "../../../components/Footer";
+import CaseStudyBody from "../../../components/CaseStudyBody";
 import styles from "./page.module.css";
 
 const anekTamil = Anek_Tamil({
@@ -154,24 +155,7 @@ export default async function CaseStudyDetailPage({ params }) {
           </section>
 
           <section className={styles.bodySection}>
-            <h2 className={styles.bodyTitle}>The challenge</h2>
-            <p className={styles.bodyText}>{study.challenge}</p>
-          </section>
-
-          <section className={styles.bodySection}>
-            <h2 className={styles.bodyTitle}>Our approach</h2>
-            <ol className={styles.bodyList}>
-              {study.approach.map((step, i) => (
-                <li key={i} className={styles.bodyListItem}>
-                  {step}
-                </li>
-              ))}
-            </ol>
-          </section>
-
-          <section className={styles.bodySection}>
-            <h2 className={styles.bodyTitle}>The results</h2>
-            <p className={styles.bodyText}>{study.results}</p>
+            <CaseStudyBody blocks={study.body} />
           </section>
 
           <section className={styles.cta}>

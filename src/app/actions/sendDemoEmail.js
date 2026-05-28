@@ -127,7 +127,7 @@ export async function sendQuizEmail({ email, phone, score, pillars, questions })
   const guard = await guardVerifiedEmail(email);
   if (!guard.ok) return { success: false, error: guard.error };
 
-  const submissionId = await recordSubmission("quiz_submissions", {
+  const submissionId = await recordSubmission("form_quiz_submissions", {
     email: guard.email,
     phone,
     score,
@@ -194,7 +194,7 @@ export async function sendQuizEmail({ email, phone, score, pillars, questions })
     subject: `${subjectPagePrefix} - Quiz Score: ${score}/100 -- ${guard.email}`,
     htmlbody,
   });
-  if (result.success) await markEmailSent("quiz_submissions", submissionId);
+  if (result.success) await markEmailSent("form_quiz_submissions", submissionId);
   return result;
 }
 
@@ -210,7 +210,7 @@ export async function sendBookingEmail({
   const guard = await guardVerifiedEmail(email);
   if (!guard.ok) return { success: false, error: guard.error };
 
-  const submissionId = await recordSubmission("booking_submissions", {
+  const submissionId = await recordSubmission("form_booking_submissions", {
     email: guard.email,
     phone,
     name,
@@ -250,7 +250,7 @@ export async function sendBookingEmail({
         </tr>
         <tr>
           <td style="padding: 8px; font-weight: bold; color: #004c43;">Digital Score</td>
-          <td style="padding: 8px;">${score} / 100</td>
+          <td style="padding: 8px;">${typeof score === "number" ? `${score} / 100` : "—"}</td>
         </tr>
       </table>
       ${siteFooter("booking")}
@@ -261,7 +261,7 @@ export async function sendBookingEmail({
     subject: `${subjectPagePrefix} - Strategy Call Booking - ${name} (${guard.email})`,
     htmlbody,
   });
-  if (result.success) await markEmailSent("booking_submissions", submissionId);
+  if (result.success) await markEmailSent("form_booking_submissions", submissionId);
   return result;
 }
 
@@ -271,7 +271,7 @@ export async function sendDemoEmail(formData) {
   const guard = await guardVerifiedEmail(email);
   if (!guard.ok) return { success: false, error: guard.error };
 
-  const submissionId = await recordSubmission("demo_submissions", {
+  const submissionId = await recordSubmission("form_demo_submissions", {
     email: guard.email,
     phone,
     name,
@@ -312,6 +312,6 @@ export async function sendDemoEmail(formData) {
     subject: subjectPagePrefix,
     htmlbody,
   });
-  if (result.success) await markEmailSent("demo_submissions", submissionId);
+  if (result.success) await markEmailSent("form_demo_submissions", submissionId);
   return result;
 }

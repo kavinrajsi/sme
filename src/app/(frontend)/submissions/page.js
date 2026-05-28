@@ -24,17 +24,17 @@ async function fetchAll() {
   const supabase = getSupabaseAdmin();
   const [demoRes, quizRes, bookingRes] = await Promise.all([
     supabase
-      .from("demo_submissions")
+      .from("form_demo_submissions")
       .select("*")
       .order("created_at", { ascending: false })
       .limit(ROW_LIMIT),
     supabase
-      .from("quiz_submissions")
+      .from("form_quiz_submissions")
       .select("*")
       .order("created_at", { ascending: false })
       .limit(ROW_LIMIT),
     supabase
-      .from("booking_submissions")
+      .from("form_booking_submissions")
       .select("*")
       .order("created_at", { ascending: false })
       .limit(ROW_LIMIT),

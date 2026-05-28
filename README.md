@@ -1,6 +1,6 @@
 # SearchMadarth - SME Landing Site
 
-Marketing site for **SearchMadarth**, a digital marketing partner for Indian SMEs. Single-page landing experience with a quiz-driven lead capture, a demo request modal, two legal pages, and machine-readable surfaces (sitemap, robots, llms.txt) for SEO/AEO/AIO.
+Marketing site for **SearchMadarth**, a digital marketing partner for Indian SMEs. Features a public marketing site with quiz-driven lead capture and demo request modal, a Payload CMS admin panel for case studies, a Supabase-backed submissions viewer, and machine-readable surfaces (sitemap, robots, llms.txt) for SEO/AEO/AIO.
 
 Production: https://sme.searchmadarth.com
 
@@ -11,10 +11,14 @@ Production: https://sme.searchmadarth.com
 | Layer | Choice | Notes |
 |---|---|---|
 | Framework | [Next.js 16](https://nextjs.org/docs) (App Router) | Read `node_modules/next/dist/docs/` before assuming API shape - 16 has breaking changes from older Next.js |
-| Runtime | React 19 | React Compiler enabled (`reactCompiler: true` in `next.config.mjs`) |
+| Runtime | React 19 | React Compiler is **disabled** (`reactCompiler: false` in `next.config.mjs`) because it crashes Payload's admin UI. See the [Conventions](#conventions-and-gotchas) section. |
 | Language | JavaScript (no TypeScript) | Path alias `@/*` -> `./src/*` (see `jsconfig.json`) |
+| CMS | [Payload CMS 3](https://payloadcms.com/) | Embedded admin at `/admin` (under `(payload)` route group). Collections live in `src/collections/`. |
+| Database | [Supabase](https://supabase.com/) (Postgres) | One project hosts both Payload's tables (via `DATABASE_URI` pooler) and the form-submission / OTP tables (via `supabase-js` service role) |
+| Storage | [Vercel Blob](https://vercel.com/docs/storage/vercel-blob) | Payload Media uploads, configured via `@payloadcms/storage-vercel-blob` |
 | Styling | CSS Modules + a single `globals.css` | One `*.module.css` co-located per component |
-| Fonts | `next/font` - Geist Sans + Geist Mono | Loaded in `src/app/layout.js` |
+| Fonts | `next/font` - Geist Sans + Geist Mono + Anek Tamil | Loaded in `src/app/(frontend)/layout.js` |
+| Rich text | [`@payloadcms/richtext-lexical`](https://payloadcms.com/docs/rich-text/overview) | Lexical editor for Payload + `RichText` from the `/react` subpath for SSR |
 | Animation on scroll | [`aos`](https://github.com/michalsnik/aos) | Initialized client-side via `components/AosInit.js` |
 | Carousels | [`swiper`](https://swiperjs.com/) | Used in client stories / case study sections |
 | Email | [`zeptomail`](https://www.npmjs.com/package/zeptomail) | Server actions only - never call from the client |
@@ -25,33 +29,48 @@ Production: https://sme.searchmadarth.com
 
 ## Project structure
 
+The `src/app/` tree is split into two Next.js [route groups](https://nextjs.org/docs/app/building-your-application/routing/route-groups). The parens don't appear in URLs — they exist to keep the public site and the Payload CMS on independent layouts.
+
 ```
-src/app/
-  layout.js                  # Root layout: metadata, JSON-LD (Organization, WebSite), GTM, GA, fonts
-  page.js                    # Home (/) - composes all sections + ProfessionalService & FAQ JSON-LD
-  globals.css                # Global styles
-  legal.module.css           # Shared styles for /privacy-policy and /terms-and-conditions
-  sitemap.js                 # Generates /sitemap.xml (requires NEXT_PUBLIC_SITE_URL)
-  robots.js                  # Generates /robots.txt (sitemap reference if NEXT_PUBLIC_SITE_URL is set)
-  llms.txt/route.js          # /llms.txt - markdown summary for LLM crawlers (AEO/AIO)
-  privacy-policy/page.js     # /privacy-policy
-  terms-and-conditions/page.js  # /terms-and-conditions
-  actions/
-    sendDemoEmail.js         # "use server" - sendDemoEmail() and sendQuizEmail() via ZeptoMail
-  components/
-    AosInit.js               # Client-only AOS initializer
-    Header.js                # Sticky top nav, demo CTA
-    Hero.js                  # Above-the-fold pitch
-    Trust.js                 # Client logos / trust badges
-    RevenueImpact.js         # Outcome stats
-    DigitalQuiz.js           # Multi-step quiz, posts to sendQuizEmail server action
-    OurServices.js           # Six-service grid
-    CaseStudy.js             # Featured case study
-    OurProcess.js            # 5-step engagement process
-    ClientStories.js         # Testimonials carousel (Swiper)
-    FAQ.js                   # Exports faqs[] (consumed by page.js for FAQPage JSON-LD)
-    Footer.js                # Footer + legal links
-    DemoModal.js             # Global demo request modal, posts to sendDemoEmail server action
+src/
+  app/
+    (frontend)/               # Public marketing site
+      layout.js               # Site chrome: metadata, JSON-LD (Organization, WebSite), GTM, GA, fonts
+      page.js                 # Home (/)
+      globals.css
+      legal.module.css        # Shared styles for /privacy-policy + /terms-and-conditions
+      case-studies/[slug]/    # /case-studies/<slug> — Payload-driven detail page
+      digital-score/          # /digital-score — quiz + booking flow
+      submissions/            # /submissions — password-gated viewer for form rows
+      privacy-policy/, terms-and-conditions/
+    (payload)/                # Payload CMS — DO NOT add public pages here
+      layout.js               # Imports `@payloadcms/next/css` then `custom.scss`
+      admin/                  # Auto-generated by `payload generate:importMap`
+      api/                    # Auto-generated; serves /api/* (REST, GraphQL, media files)
+      custom.scss
+    sitemap.js, robots.js     # Generated routes (top-level so they sit at /)
+    llms.txt/route.js         # /llms.txt — short LLM-friendly index
+    llms-full.txt/route.js    # /llms-full.txt — long-form companion
+    actions/
+      sendDemoEmail.js        # "use server": sendDemoEmail, sendQuizEmail, sendBookingEmail
+      otp.js                  # "use server": requestOtp, verifyOtp
+    components/               # Flat folder; one *.module.css per component
+      AosInit, Header, Hero, Trust, RevenueImpact, DigitalQuiz, OurServices,
+      CaseStudy, OurProcess, ClientStories, FAQ, Footer, DemoModal,
+      CaseStudyBody (renders Payload Lexical + the 7 case-study block types)
+  collections/                # Payload collection configs
+    Users.js, Media.js, CaseStudies.js
+    blocks.js                 # RichText / Image / Quote / Callout / Stats / Video / Code blocks
+  lib/
+    caseStudies.js            # Loads case studies via Payload, falls back to caseStudiesData.js
+    otp.js, supabase.js, adminAuth.js
+  migrations/                 # Payload Postgres migrations (currently empty — regenerate with `payload migrate:create`)
+  payload.config.js
+  payload-types.ts            # Generated by `npm run payload -- generate:types`
+supabase/migrations/          # SQL for tables consumed via supabase-js (currently empty/missing — recreate when adding form-side schema changes)
+scripts/
+  seed-case-studies.mjs       # Wipe + reseed CaseStudies from caseStudiesData.js (caseStudiesData.js is currently the empty fallback)
+  weekly-form-smoke-test.mjs  # Browserbase smoke test (see Smoke tests)
 ```
 
 ---
@@ -60,29 +79,39 @@ src/app/
 
 | Path | Source | Purpose |
 |---|---|---|
-| `/` | `src/app/page.js` | Home page |
-| `/privacy-policy` | `src/app/privacy-policy/page.js` | Legal |
-| `/terms-and-conditions` | `src/app/terms-and-conditions/page.js` | Legal |
+| `/` | `src/app/(frontend)/page.js` | Home page |
+| `/case-studies/[slug]` | `src/app/(frontend)/case-studies/[slug]/page.js` | Case study detail. Sourced from Payload; falls back to `caseStudiesData.js` (currently empty, so unknown slugs 404 until content is added via `/admin`) |
+| `/digital-score` | `src/app/(frontend)/digital-score/page.js` | Quiz + booking flow |
+| `/privacy-policy` | `src/app/(frontend)/privacy-policy/page.js` | Legal |
+| `/terms-and-conditions` | `src/app/(frontend)/terms-and-conditions/page.js` | Legal |
+| `/submissions` | `src/app/(frontend)/submissions/page.js` | Password-gated viewer for the `form_*_submissions` tables |
+| `/admin` and `/admin/*` | `src/app/(payload)/admin/...` (auto-generated) | Payload CMS — case studies, media, users |
+| `/api/*` | `src/app/(payload)/api/...` (auto-generated) | Payload REST + GraphQL, including `/api/media/file/<filename>` for uploaded images |
 | `/sitemap.xml` | `src/app/sitemap.js` | Auto-generated. Throws at build/render if `NEXT_PUBLIC_SITE_URL` is unset |
 | `/robots.txt` | `src/app/robots.js` | Auto-generated. Sitemap reference omitted if `NEXT_PUBLIC_SITE_URL` is unset |
 | `/llms.txt` | `src/app/llms.txt/route.js` | Plain-text summary for LLM crawlers; cached `s-maxage=86400` |
+| `/llms-full.txt` | `src/app/llms-full.txt/route.js` | Long-form companion with every case study + FAQ; same cache headers |
 
 ---
 
-## Forms and email
+## Forms, OTP, and email
 
-Both forms post to **server actions** in `src/app/actions/sendDemoEmail.js`. They share a common `sendViaZepto()` helper.
+All forms post to **server actions** (no API routes). Each one verifies the user's email via the OTP flow before sending the notification email and writing to Supabase.
 
-| Form | Action | Trigger |
-|---|---|---|
-| Demo request modal | `sendDemoEmail()` | `DemoModal.js` |
-| Digital Quiz | `sendQuizEmail()` | `DigitalQuiz.js` |
+| Form | Action | Server file | Submissions table |
+|---|---|---|---|
+| Demo request modal | `sendDemoEmail()` | `src/app/actions/sendDemoEmail.js` | `form_demo_submissions` |
+| Digital Quiz | `sendQuizEmail()` | same | `form_quiz_submissions` |
+| Strategy call booking | `sendBookingEmail()` | same | `form_booking_submissions` |
+| Email verification | `requestOtp()` / `verifyOtp()` | `src/app/actions/otp.js` | `form_otp_codes` |
 
 Behavior:
 
 - **Mail provider is ZeptoMail** (not nodemailer / resend / SES). All sends go through `SendMailClient` from the `zeptomail` package against `https://api.zeptomail.com/v1.1/email`.
+- **Email gate before send**: every submission action calls `assertVerified()` (`src/lib/otp.js`) which checks `form_otp_codes` for a row consumed in the last 30 minutes. If the user hasn't verified their email recently, the submission is rejected before mail is sent.
 - The email subject prefix includes the site URL so submissions from staging vs. production are distinguishable in the inbox.
-- If `EMAIL_DISABLED=true`, sends are skipped (subject is logged) and the action returns `{ success: true, skipped: true }`. Useful for local dev.
+- Each notification email has a UTM-tagged footer link to `sme.searchmadarth.com`. Centralized helper: `siteFooter(campaign)` in `sendDemoEmail.js`. Per-email campaign names: `demo_submission`, `quiz_submission`, `booking`, plus `verification` for the OTP email.
+- If `EMAIL_DISABLED=true`, sends are skipped (subject is logged) and the action returns `{ success: true, skipped: true }`. The OTP flow logs the code to the server console in this mode. Useful for local dev.
 - If any of `ZEPTO_API_KEY`, `ZEPTO_FROM_NO_REPLY`, or `ZEPTO_TO_BUSINESS` are missing, the action returns a generic failure to the client and logs the missing keys server-side.
 
 ---
@@ -102,7 +131,7 @@ Behavior:
 | `ZEPTO_CC` | no | Optional `Cc:` recipient |
 | `ZEPTO_BCC` | no | Optional `Bcc:` recipient |
 | `EMAIL_DISABLED` | no | `"true"` to skip all sends and log subjects only. In OTP flows the code is logged instead of emailed. |
-| `SUPABASE_URL` | yes | Supabase project URL (e.g. `https://<ref>.supabase.co`). Backs `otp_codes` plus the `demo_submissions` / `quiz_submissions` / `booking_submissions` tables. |
+| `SUPABASE_URL` | yes | Supabase project URL (e.g. `https://<ref>.supabase.co`). Backs `form_otp_codes` plus the `form_demo_submissions` / `form_quiz_submissions` / `form_booking_submissions` tables. |
 | `SUPABASE_SERVICE_ROLE_KEY` | yes | Service-role key for the same project. Server-only — never expose to the browser. |
 | `OTP_PEPPER` | yes | Random ≥32-char string mixed into OTP hashes before they're stored. Rotating it invalidates every outstanding code. |
 | `ADMIN_PASSWORD` | yes (for `/submissions`) | Shared password for the `/submissions` data-view page. Anyone with it sees every form submission, so treat it like a production secret. |
@@ -162,23 +191,67 @@ npm run lint     # ESLint (Next core-web-vitals + project ignores)
 
 ---
 
+## Content management (Payload)
+
+Case studies (and Media + Users) are managed through the Payload admin at `/admin`.
+
+- **First boot**: visit `/admin/create-first-user` to create the initial admin account.
+- **Collections** live in `src/collections/`:
+  - `Users` — admin auth, scoped to `req.user` on every write
+  - `Media` — image uploads stored on Vercel Blob
+  - `CaseStudies` — title/slug/hero metadata + a `body` field composed from the 7 block types in `src/collections/blocks.js`
+- **Rendering**: `src/app/components/CaseStudyBody.js` switches on `block.blockType` and renders each. Rich-text uses `RichText` from `@payloadcms/richtext-lexical/react`.
+- **Loader + fallback**: `src/lib/caseStudies.js` calls Payload via `getPayload({ config })` and falls back to `src/app/components/caseStudiesData.js` when the DB isn't configured. The fallback array is **currently empty**, so unconfigured environments render with no case studies.
+- **CLI**: `npm run payload -- <command>` (alias for `payload migrate:create`, `migrate:status`, `migrate`, `generate:types`, etc.). Always commit the generated migration before deploying.
+- **Seeding**: `npm run payload:seed` wipes every existing `case_studies` row and reseeds from `caseStudiesData.js`. With the fallback file currently empty, the seed is a no-op until you restore (or hand-write) entries. Media uploads from previous seeds are left alone (orphaned media is safe to delete from the admin).
+
+---
+
+## Database
+
+One Supabase project (`sme-searchmadarth`) backs everything. Inside that project:
+
+- **Payload-owned tables** (`users`, `media`, `case_studies*`, `payload_*`) are managed by Payload's Drizzle migrations under `src/migrations/`. In production these run only when migrations are explicitly applied; locally, dev mode auto-syncs via Drizzle push. The migration directory is **currently empty** after a deliberate reset — recreate via `npm run payload -- migrate:create --name <name>` before your first production deploy, otherwise prod will boot against an unrecorded schema.
+- **App-owned tables** (`form_demo_submissions`, `form_quiz_submissions`, `form_booking_submissions`, `form_otp_codes`) belong under `supabase/migrations/*.sql` and are consumed via `supabase-js` (service-role only, never from the browser). The `supabase/migrations/` folder is **currently absent**; recreate it next time you change form-side schema.
+- **Schema state vs migration history**: the live schema for both groups *is* in the DB (set up via dev push and one-off MCP migrations earlier). The repo just doesn't currently record how it got there. Plan to backfill the migration files the next time you touch either schema.
+- **RLS** is on across every public table. The `service_role` role has explicit `ALL` policies (belt-and-suspenders since it already has `BYPASSRLS`). `anon` and `authenticated` get nothing — fine because the frontend never uses the anon key.
+
+When changing schema:
+
+- Payload changes → edit `src/collections/...`, then `npm run payload -- migrate:create --name <name>`, commit `src/migrations/<timestamp>.js` and `.json`.
+- Submission/OTP schema → write SQL to `supabase/migrations/<timestamp>_<name>.sql`, apply via the Supabase CLI or MCP. Keep RLS on.
+
+---
+
 ## Deployment
 
 The repo deploys cleanly on Vercel.
 
-Production env vars to set in your host:
+Production env vars to set in your host (each must also be set for Preview unless noted):
 
-- `ZEPTO_API_KEY`, `ZEPTO_FROM_NO_REPLY`, `ZEPTO_TO_BUSINESS` (and any optional `ZEPTO_*` you use)
-- `NEXT_PUBLIC_SITE_URL=https://sme.searchmadarth.com` (or your environment's public URL)
-- `NEXT_PUBLIC_GTM_ID` and/or `NEXT_PUBLIC_GA_ID` if you want analytics in that environment
+- ZeptoMail: `ZEPTO_API_KEY`, `ZEPTO_FROM_NO_REPLY`, `ZEPTO_TO_BUSINESS` (plus any optional `ZEPTO_*`)
+- Supabase: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `OTP_PEPPER`
+- Payload: `PAYLOAD_SECRET`, `DATABASE_URI`, `BLOB_READ_WRITE_TOKEN`
+- Submissions auth: `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`
+- Public: `NEXT_PUBLIC_SITE_URL=https://sme.searchmadarth.com` (or your env's public URL), and any `NEXT_PUBLIC_GTM_ID` / `NEXT_PUBLIC_GA_ID` you want active
 - Leave `EMAIL_DISABLED` unset (or `false`) in production
+
+Run Payload migrations before traffic hits the new deploy. Either:
+
+```bash
+# from your machine, pointed at production DATABASE_URI
+DATABASE_URI=... PAYLOAD_SECRET=... npm run payload -- migrate
+```
+
+or wire it into your CI/release pipeline. The Postgres adapter defaults to `push: true` in dev (auto-sync), but production reads from the committed migration files in `src/migrations/`.
 
 After deploy, verify:
 
-- `https://<host>/sitemap.xml` lists `/`, `/privacy-policy`, `/terms-and-conditions`
+- `https://<host>/sitemap.xml` lists `/`, `/case-studies/*`, `/privacy-policy`, `/terms-and-conditions`
 - `https://<host>/robots.txt` references the sitemap
-- `https://<host>/llms.txt` renders the project summary
-- The demo modal and quiz successfully send mail (check the inbox for the configured `ZEPTO_TO_BUSINESS`)
+- `https://<host>/llms.txt` and `/llms-full.txt` render
+- `/admin/create-first-user` works on a brand-new env (else `/admin` if a user already exists)
+- The demo modal, quiz, and booking flow successfully send mail and write rows to `form_*_submissions`
 
 ---
 
@@ -235,11 +308,13 @@ To activate, set `NEXT_PUBLIC_GTM_ID` and/or `NEXT_PUBLIC_GA_ID` in your environ
 
 ## Conventions and gotchas
 
-- **Don't reach for nodemailer / resend / SES** - this project uses ZeptoMail. New mail flows should go through `sendViaZepto()` in `src/app/actions/sendDemoEmail.js`.
+- **Don't reach for nodemailer / resend / SES** - this project uses ZeptoMail. New mail flows should go through `sendViaZepto()` in `src/app/actions/sendDemoEmail.js` (or copy the pattern in `src/app/actions/otp.js`).
 - **Server actions, not API routes**, for form submissions. Files start with `"use server";`.
 - **Path alias**: `@/*` resolves to `./src/*` (configured in `jsconfig.json`).
-- **No TypeScript** - the codebase is plain JS. Don't introduce `*.ts(x)` files without a clear reason.
+- **No TypeScript** - the codebase is plain JS. Don't introduce `*.ts(x)` files without a clear reason. The generated `src/payload-types.ts` is the lone exception.
 - **CSS Modules** are co-located: `Foo.js` + `Foo.module.css`. There is no Tailwind, no styled-components.
+- **React Compiler stays off.** `reactCompiler: false` in `next.config.mjs`. Flipping it on crashes the Payload admin (`TypeError: Cannot use 'in' operator to search for 'hidden' in undefined`). If you want the compiler back, scope it via `compilationMode: 'annotation'` and never opt-in components under `(payload)`.
+- **Two route groups**: `(frontend)` and `(payload)`. New public pages go in `(frontend)`. Never add public pages inside `(payload)` — that route group is wrapped by Payload's `RootLayout` and would render with Payload chrome.
 - **Production domain is `sme.searchmadarth.com`. Email domain is `@madarth.com`.** Don't conflate the two.
 - **Next.js 16 has breaking changes** from older versions. When in doubt, read the relevant guide in `node_modules/next/dist/docs/` before writing code based on memory of older Next.js APIs.
 

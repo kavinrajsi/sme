@@ -37,7 +37,7 @@ function buildOtpEmailHtml(code) {
               </td>
             </tr>
             <tr>
-              <td style="background:#ffffff;border-radius:14px;border-top:60px solid #004c43;box-shadow:0ß;padding:28px 28px 24px;">
+              <td style="background:#ffffff;border-radius:14px;border-top:60px solid #004c43;padding:28px 28px 24px;">
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                   <tr>
                     <td style="padding-bottom:14px;">

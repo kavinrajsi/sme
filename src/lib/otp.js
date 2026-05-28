@@ -26,7 +26,7 @@ export async function recordOtpAndCheckRate(email) {
   const supabase = getSupabaseAdmin();
   const since = new Date(Date.now() - REQUEST_WINDOW_MS).toISOString();
   const { count, error } = await supabase
-    .from("otp_codes")
+    .from("form_otp_codes")
     .select("id", { count: "exact", head: true })
     .eq("email", email)
     .gte("created_at", since);
@@ -41,7 +41,7 @@ export async function insertOtp(email, codeHash) {
   const supabase = getSupabaseAdmin();
   const expiresAt = new Date(Date.now() + OTP_TTL_MS).toISOString();
   const { error } = await supabase
-    .from("otp_codes")
+    .from("form_otp_codes")
     .insert({ email, code_hash: codeHash, expires_at: expiresAt });
   if (error) throw error;
 }
@@ -50,7 +50,7 @@ export async function consumeOtp(email, code) {
   const supabase = getSupabaseAdmin();
   const nowIso = new Date().toISOString();
   const { data: row, error } = await supabase
-    .from("otp_codes")
+    .from("form_otp_codes")
     .select("id, code_hash, attempts, expires_at, consumed_at")
     .eq("email", email)
     .is("consumed_at", null)
@@ -71,7 +71,7 @@ export async function consumeOtp(email, code) {
     ? { consumed_at: nowIso, attempts: row.attempts + 1 }
     : { attempts: row.attempts + 1 };
   const { error: updateError } = await supabase
-    .from("otp_codes")
+    .from("form_otp_codes")
     .update(update)
     .eq("id", row.id);
   if (updateError) throw updateError;
@@ -88,7 +88,7 @@ export async function assertVerified(email) {
   const supabase = getSupabaseAdmin();
   const since = new Date(Date.now() - VERIFIED_WINDOW_MS).toISOString();
   const { data, error } = await supabase
-    .from("otp_codes")
+    .from("form_otp_codes")
     .select("id")
     .eq("email", normalized)
     .not("consumed_at", "is", null)

@@ -121,6 +121,52 @@ export async function sendQuizEmail({ phone, score, pillars, questions }) {
   });
 }
 
+export async function sendBookingEmail({
+  name,
+  business,
+  phone,
+  date,
+  slot,
+  score,
+}) {
+  const htmlbody = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px;">
+      <h2 style="color: #004c43;">New Strategy Call Booking</h2>
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="padding: 8px; font-weight: bold; color: #004c43;">Name</td>
+          <td style="padding: 8px;">${name}</td>
+        </tr>
+        <tr style="background: #f6f5f3;">
+          <td style="padding: 8px; font-weight: bold; color: #004c43;">Business</td>
+          <td style="padding: 8px;">${business || "-"}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; font-weight: bold; color: #004c43;">WhatsApp</td>
+          <td style="padding: 8px;">${phone}</td>
+        </tr>
+        <tr style="background: #f6f5f3;">
+          <td style="padding: 8px; font-weight: bold; color: #004c43;">Preferred Date</td>
+          <td style="padding: 8px;">${date}</td>
+        </tr>
+        <tr>
+          <td style="padding: 8px; font-weight: bold; color: #004c43;">Preferred Time</td>
+          <td style="padding: 8px;">${slot}</td>
+        </tr>
+        <tr style="background: #f6f5f3;">
+          <td style="padding: 8px; font-weight: bold; color: #004c43;">Digital Score</td>
+          <td style="padding: 8px;">${score} / 100</td>
+        </tr>
+      </table>
+    </div>
+  `;
+
+  return sendViaZepto({
+    subject: `${subjectPagePrefix} - Strategy Call Booking - ${name} (${phone})`,
+    htmlbody,
+  });
+}
+
 export async function sendDemoEmail(formData) {
   const { company, name, email, phone, message } = formData;
 

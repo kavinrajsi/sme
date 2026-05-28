@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { sendQuizEmail } from "../actions/sendDemoEmail";
+import { sendBookingEmail, sendQuizEmail } from "../actions/sendDemoEmail";
 import {
   quizData,
   TIME_SLOTS,
@@ -181,12 +181,21 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
 
   const handleBookingSubmit = () => {
     const name = document.getElementById("booking-name")?.value.trim();
+    const business = document.getElementById("booking-biz")?.value.trim();
     const phoneVal = document.getElementById("booking-phone")?.value.trim();
     const date = document.getElementById("booking-date")?.value;
     if (!name || !phoneVal || !date || !selectedSlot) {
       alert("Please fill in your name, number, date, and a time slot.");
       return;
     }
+    sendBookingEmail({
+      name,
+      business,
+      phone: phoneVal,
+      date,
+      slot: selectedSlot,
+      score: finalScore,
+    });
     setBookingDone(true);
   };
 

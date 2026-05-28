@@ -133,6 +133,38 @@ export default function QuizChat() {
     setPendingSelection(null);
   };
 
+  const restorePendingFor = (q) => {
+    if (!q?.multi) {
+      setPendingSelection(null);
+      return;
+    }
+    const saved = answers[q.key];
+    if (!saved || !Array.isArray(saved.value)) {
+      setPendingSelection(null);
+      return;
+    }
+    setPendingSelection({ values: saved.value, score: saved.score });
+  };
+
+  const handlePrev = () => {
+    if (phase === "phone") {
+      setPhase("email");
+      return;
+    }
+    if (phase === "email") {
+      setPhase("quiz");
+      const lastIndex = totalQuestions - 1;
+      setCurrentQuestion(lastIndex);
+      restorePendingFor(quizData[lastIndex]);
+      return;
+    }
+    if (phase === "quiz" && currentQuestion > 0) {
+      const nextIndex = currentQuestion - 1;
+      setCurrentQuestion(nextIndex);
+      restorePendingFor(quizData[nextIndex]);
+    }
+  };
+
   const handleEmailVerified = (verifiedEmail) => {
     setChatEmail(verifiedEmail);
     setPhase("phone");
@@ -143,7 +175,6 @@ export default function QuizChat() {
       ...prev,
       [question.key]: { value: option.value, score: option.score },
     }));
-    advance();
   };
 
   const handleMultiToggle = (option) => {
@@ -185,9 +216,6 @@ export default function QuizChat() {
     advance();
   };
 
-  const handleSkip = () => {
-    advance();
-  };
 
   const handlePhoneSubmit = () => {
     const trimmed = phone.trim();
@@ -285,9 +313,31 @@ export default function QuizChat() {
   };
 
   const isOptionSelected = (option) => {
-    if (!question?.multi) return false;
-    return pendingSelection?.values?.includes(option.value) || false;
+    if (!question) return false;
+    if (question.multi) {
+      return pendingSelection?.values?.includes(option.value) || false;
+    }
+    return answers[question.key]?.value === option.value;
   };
+
+  const hasAnswerForCurrent = () => {
+    if (!question) return false;
+    if (question.multi) return Boolean(pendingSelection);
+    return Boolean(answers[question.key]);
+  };
+
+  const handleNext = () => {
+    if (question?.multi) {
+      if (pendingSelection) handleMultiSubmit();
+      else if (!question.required) advance();
+      return;
+    }
+    if (answers[question.key] || !question.required) {
+      advance();
+    }
+  };
+
+  const isFirstStep = phase === "quiz" && currentQuestion === 0;
 
   return (
     <div className={`${styles.page} ${anekTamil.className}`}>
@@ -383,30 +433,25 @@ export default function QuizChat() {
                 })}
               </div>
 
-              {(question.multi || !question.required) && (
-                <div className={styles.stepActions}>
-                  {!question.required && (
-                    <button
-                      type="button"
-                      className={styles.linkBtn}
-                      onClick={handleSkip}
-                    >
-                      Skip
-                    </button>
-                  )}
-                  {question.multi && (
-                    <button
-                      type="button"
-                      className={styles.sendBtn}
-                      onClick={handleMultiSubmit}
-                      disabled={!pendingSelection}
-                    >
-                      Send
-                      <SendIcon />
-                    </button>
-                  )}
-                </div>
-              )}
+              <div className={styles.stepActions}>
+                <button
+                  type="button"
+                  className={styles.prevBtn}
+                  onClick={handlePrev}
+                  disabled={isFirstStep}
+                >
+                  ← Prev
+                </button>
+                <button
+                  type="button"
+                  className={styles.sendBtn}
+                  onClick={handleNext}
+                  disabled={question.required && !hasAnswerForCurrent()}
+                >
+                  Next
+                  <SendIcon />
+                </button>
+              </div>
             </div>
           )}
 
@@ -421,8 +466,29 @@ export default function QuizChat() {
               <div className={styles.stepBody}>
                 <OtpField
                   label="Your email"
+                  defaultEmail={chatEmail}
+                  defaultVerified={Boolean(chatEmail)}
                   onVerified={handleEmailVerified}
                 />
+              </div>
+              <div className={styles.stepActions}>
+                <button
+                  type="button"
+                  className={styles.prevBtn}
+                  onClick={handlePrev}
+                >
+                  ← Prev
+                </button>
+                {chatEmail && (
+                  <button
+                    type="button"
+                    className={styles.sendBtn}
+                    onClick={() => setPhase("phone")}
+                  >
+                    Next
+                    <SendIcon />
+                  </button>
+                )}
               </div>
             </div>
           )}
@@ -468,6 +534,15 @@ export default function QuizChat() {
                   <span className={styles.phoneError}>{phoneError}</span>
                 )}
               </form>
+              <div className={styles.stepActions}>
+                <button
+                  type="button"
+                  className={styles.prevBtn}
+                  onClick={handlePrev}
+                >
+                  ← Prev
+                </button>
+              </div>
             </div>
           )}
 

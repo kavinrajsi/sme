@@ -311,6 +311,32 @@
   margin-top: 18px;
 }
 
+.prevBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: var(--bg);
+  color: var(--text);
+  border: 1.5px solid var(--border-strong);
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.prevBtn:hover:not(:disabled) {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+.prevBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 .linkBtn {
   background: none;
   border: none;

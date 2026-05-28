@@ -6,7 +6,7 @@ const anekTamil = Anek_Tamil({
   weight: ["400", "500", "700"],
 });
 
-const testimonials = [
+export const testimonials = [
   {
     variant: "dark",
     paragraphs: [

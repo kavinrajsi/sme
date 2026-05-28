@@ -5,10 +5,11 @@ import OurServices from "./components/OurServices";
 import OurProcess from "./components/OurProcess";
 import RevenueImpact from "./components/RevenueImpact";
 import CaseStudy from "./components/CaseStudy";
-import ClientStories from "./components/ClientStories";
+import ClientStories, { testimonials } from "./components/ClientStories";
 import Footer from "./components/Footer";
 import DemoModal from "./components/DemoModal";
 import FAQ, { faqs } from "./components/FAQ";
+import { caseStudies } from "./components/caseStudiesData";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
@@ -123,6 +124,65 @@ const howToSchema = {
   })),
 };
 
+const caseStudyItemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "SearchMadarth® client case studies",
+  description:
+    "Documented engagements showing how SearchMadarth® helped Indian SMEs scale through digital transformation.",
+  numberOfItems: caseStudies.length,
+  itemListOrder: "https://schema.org/ItemListOrderAscending",
+  itemListElement: caseStudies.map((study, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    url: siteUrl ? `${siteUrl}/case-studies/${study.slug}` : undefined,
+    name: study.title,
+    item: {
+      "@type": "CreativeWork",
+      name: study.title,
+      headline: study.title,
+      description: study.description,
+      url: siteUrl ? `${siteUrl}/case-studies/${study.slug}` : undefined,
+      image: siteUrl ? `${siteUrl}${study.image}` : study.image,
+      about: study.industry,
+      keywords: study.services.join(", "),
+    },
+  })),
+};
+
+const reviewSchemas = testimonials.map((t) => ({
+  "@context": "https://schema.org",
+  "@type": "Review",
+  reviewBody: t.paragraphs.join("\n\n"),
+  reviewRating: {
+    "@type": "Rating",
+    ratingValue: 5,
+    bestRating: 5,
+    worstRating: 1,
+  },
+  author: { "@type": "Person", name: t.name, jobTitle: t.role },
+  itemReviewed: {
+    "@type": "Organization",
+    name: "SearchMadarth®",
+    url: siteUrl,
+  },
+  publisher: { "@type": "Organization", name: "SearchMadarth®", url: siteUrl },
+}));
+
+const aggregateRatingSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "SearchMadarth®",
+  url: siteUrl,
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: 5,
+    bestRating: 5,
+    worstRating: 1,
+    reviewCount: testimonials.length,
+  },
+};
+
 export default function Home() {
   return (
     <>
@@ -153,6 +213,25 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(caseStudyItemListSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(aggregateRatingSchema),
+        }}
+      />
+      {reviewSchemas.map((schema, i) => (
+        <script
+          key={`review-${i}`}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
     </>
   );
 }

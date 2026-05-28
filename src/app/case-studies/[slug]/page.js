@@ -47,6 +47,8 @@ export default async function CaseStudyDetailPage({ params }) {
   const study = getCaseStudy(slug);
   if (!study) notFound();
 
+  const detailUrl = siteUrl ? `${siteUrl}/case-studies/${study.slug}` : undefined;
+
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -62,9 +64,34 @@ export default async function CaseStudyDetailPage({ params }) {
         "@type": "ListItem",
         position: 3,
         name: study.title,
-        item: siteUrl ? `${siteUrl}/case-studies/${study.slug}` : undefined,
+        item: detailUrl,
       },
     ],
+  };
+
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: `${study.title} Case Study`,
+    description: study.description,
+    image: siteUrl ? `${siteUrl}${study.image}` : study.image,
+    url: detailUrl,
+    mainEntityOfPage: detailUrl,
+    about: study.industry,
+    keywords: study.services.join(", "),
+    isPartOf: { "@type": "WebSite", name: "SearchMadarth®", url: siteUrl },
+    author: { "@type": "Organization", name: "SearchMadarth®", url: siteUrl },
+    publisher: {
+      "@type": "Organization",
+      name: "SearchMadarth®",
+      url: siteUrl,
+      logo: siteUrl
+        ? {
+            "@type": "ImageObject",
+            url: `${siteUrl}/meta-og-image.png`,
+          }
+        : undefined,
+    },
   };
 
   return (
@@ -202,6 +229,12 @@ export default async function CaseStudyDetailPage({ params }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(breadcrumbSchema),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(articleSchema),
           }}
         />
       </main>

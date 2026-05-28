@@ -1,7 +1,9 @@
 import QuizChat from "../components/QuizChat";
+import { quizData } from "../components/quizConfig";
 import styles from "./page.module.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+const pageUrl = siteUrl ? `${siteUrl}/digital-score` : undefined;
 
 export const metadata = {
   title: "Digital Score Quiz",
@@ -32,9 +34,51 @@ const breadcrumbSchema = {
       "@type": "ListItem",
       position: 2,
       name: "Digital Score",
-      item: siteUrl ? `${siteUrl}/digital-score` : undefined,
+      item: pageUrl,
     },
   ],
+};
+
+const webPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Digital Score Quiz",
+  description:
+    "Free 10-question quiz that benchmarks an Indian SME's online presence across five growth pillars and emails a personalised report.",
+  url: pageUrl,
+  inLanguage: "en-IN",
+  isPartOf: { "@type": "WebSite", name: "SearchMadarth®", url: siteUrl },
+  primaryImageOfPage: siteUrl
+    ? { "@type": "ImageObject", url: `${siteUrl}/meta-og-image.png` }
+    : undefined,
+  potentialAction: {
+    "@type": "AssessAction",
+    name: "Take the Digital Score quiz",
+    target: pageUrl,
+  },
+};
+
+const quizSchema = {
+  "@context": "https://schema.org",
+  "@type": "Quiz",
+  name: "SearchMadarth® Digital Score",
+  about:
+    "Benchmark of an SME's digital readiness across five growth pillars: presence, search, marketing, automation, and analytics.",
+  educationalAlignment: {
+    "@type": "AlignmentObject",
+    alignmentType: "assesses",
+    targetName: "Digital readiness of small and medium enterprises in India",
+  },
+  numberOfQuestions: quizData.length,
+  hasPart: quizData.map((q) => ({
+    "@type": "Question",
+    name: q.title,
+    text: q.title,
+    answerCount: q.options.length,
+  })),
+  url: pageUrl,
+  isPartOf: { "@type": "WebSite", name: "SearchMadarth®", url: siteUrl },
+  provider: { "@type": "Organization", name: "SearchMadarth®", url: siteUrl },
 };
 
 export default function DigitalScorePage() {
@@ -44,6 +88,14 @@ export default function DigitalScorePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(quizSchema) }}
       />
     </main>
   );

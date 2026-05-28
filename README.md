@@ -107,6 +107,9 @@ Behavior:
 | `OTP_PEPPER` | yes | Random ≥32-char string mixed into OTP hashes before they're stored. Rotating it invalidates every outstanding code. |
 | `ADMIN_PASSWORD` | yes (for `/submissions`) | Shared password for the `/submissions` data-view page. Anyone with it sees every form submission, so treat it like a production secret. |
 | `ADMIN_SESSION_SECRET` | yes (for `/submissions`) | Random ≥32-char string used to HMAC-sign the submissions session cookie. Rotating it logs everyone out. |
+| `PAYLOAD_SECRET` | yes (for `/admin`) | Random ≥32-char string used by Payload CMS to sign its own session tokens. Generate with `openssl rand -hex 32`. Rotating it logs every CMS user out. |
+| `DATABASE_URI` | yes (for `/admin`) | Postgres connection string Payload uses for content. Use the Supabase **pooler** URI from Settings → Database → Connection string (port 6543). Keep the `?pgbouncer=true` flag if present. |
+| `BLOB_READ_WRITE_TOKEN` | yes (for `/admin` uploads) | Vercel Blob token used by the Media collection. Create one in Vercel → Storage → Blob and add it to the Vercel project env. |
 
 ### CI-only (used by the weekly smoke test in GitHub Actions)
 

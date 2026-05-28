@@ -7,7 +7,7 @@ This version has breaking changes - APIs, conventions, and file structure may al
 ## Stack quick-reference (so you don't reach for the wrong tool)
 
 - **Framework**: Next.js 16 App Router, React 19. Plain JavaScript - **no TypeScript**. React Compiler is **disabled** (`reactCompiler: false` in `next.config.mjs`) because it crashes Payload's admin UI; do not flip it back on without a scoped workaround.
-- **CMS**: [Payload CMS 3](https://payloadcms.com/) embedded under the `(payload)` route group at `/admin`. Collections live in `src/collections/`; reusable blocks in `src/collections/blocks.js`; the entry config is `src/payload.config.js`. Use the `payload` CLI (`npm run payload -- migrate:create`, `migrate:status`, `generate:types`).
+- **CMS**: [Payload CMS 3](https://payloadcms.com/) embedded under the `(payload)` route group at `/admin`. Collections live in `src/collections/`; reusable blocks in `src/collections/blocks.js`; the entry config is `src/payload.config.js`. Use the `payload` CLI via `npm run payload -- <command>` (e.g. `generate:types`).
 - **Databases**: One Supabase project (`sme-searchmadarth`) hosts everything. Payload connects to it as Postgres via `DATABASE_URI` (pooler, port 6543). The same project's REST API is used (service-role only) by `supabase-js` for form submission tables and the OTP flow. Other Supabase projects on the same account are off-limits.
 - **Storage**: Vercel Blob for Payload Media uploads, configured via the `@payloadcms/storage-vercel-blob` plugin and `BLOB_READ_WRITE_TOKEN`.
 - **Styling**: CSS Modules co-located with components (`Foo.js` + `Foo.module.css`) plus `globals.css`. No Tailwind, no styled-components.
@@ -36,12 +36,10 @@ Server-side code:
 
 - `src/collections/` — Payload collection configs (`Users.js`, `Media.js`, `CaseStudies.js`, `blocks.js` exports the 7 block types used by `CaseStudies.body`)
 - `src/lib/` — server-only helpers (`caseStudies.js`, `otp.js`, `supabase.js`, `adminAuth.js`)
-- `src/migrations/` — where Payload Postgres migrations live as `<timestamp>.js` + `.json` snapshots, registered in `index.js`. **Currently empty.** Run `npm run payload -- migrate:create --name <name>` after any schema change to repopulate it.
 - `src/app/components/` — React components (flat folder)
 - `src/app/actions/`
   - `sendDemoEmail.js` — exports `sendDemoEmail`, `sendQuizEmail`, `sendBookingEmail`. Writes to `form_*_submissions` tables via `supabase-js`, then sends via ZeptoMail.
   - `otp.js` — exports `requestOtp`, `verifyOtp`. Writes to `form_otp_codes`.
-- `supabase/migrations/` — where SQL for tables consumed via `supabase-js` (form-submission + OTP tables, RLS policies) lives. **Currently empty / directory absent.** Create the folder and add `<timestamp>_<name>.sql` files when you change that schema. Payload-owned tables do **not** belong here — they live under `src/migrations/`.
 
 ## Domains
 
@@ -68,9 +66,9 @@ For a public marketing page:
 3. If it's a meaningful public page, add it to the `Pages` section in `src/app/llms.txt/route.js`.
 4. Use the shared `legal.module.css` for legal-style content; otherwise add a co-located `*.module.css`.
 
-For new Payload content types: add a collection under `src/collections/`, register it in `src/payload.config.js`, then either `npm run payload -- migrate:create` (to capture the schema diff) or rely on dev push to auto-sync locally. Always commit the generated migration before deploying — production runs migrations from `src/migrations/` (currently empty after a deliberate reset; recreate it before your first prod deploy).
+For new Payload content types: add a collection under `src/collections/`, register it in `src/payload.config.js`. Schema is kept in sync against the live Postgres directly — there is no committed schema history in the repo.
 
 ## Database changes
 
-- **Payload-owned tables** (everything under `users`, `media`, `case_studies*`, `payload_*`) → modify via Payload collection configs, then `npm run payload -- migrate:create --name <name>`. The repo's `src/migrations/index.js` registers each migration; commit both the `.js` and the `.json` snapshot.
-- **Form-submission and OTP tables** (`form_demo_submissions`, `form_quiz_submissions`, `form_booking_submissions`, `form_otp_codes`) → write SQL to `supabase/migrations/<timestamp>_<name>.sql`. Apply via the Supabase MCP or the Supabase CLI. Keep RLS enabled on every public table.
+- **Payload-owned tables** (`users`, `media`, `case_studies*`, `payload_*`) — modify via Payload collection configs; the schema is reconciled against the live Postgres directly.
+- **Form-submission and OTP tables** (`form_demo_submissions`, `form_quiz_submissions`, `form_booking_submissions`, `form_otp_codes`) — change via Supabase MCP / Supabase CLI / dashboard SQL editor. Keep RLS enabled on every public table.

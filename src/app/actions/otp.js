@@ -16,12 +16,13 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function buildOtpEmailHtml(code) {
   const spacedCode = String(code).split("").join("&nbsp;&nbsp;");
+  const year = new Date().getFullYear();
   return `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Your SearchMadarth verification code</title>
+    <title>Your SearchMadarth&reg; verification code</title>
   </head>
   <body style="margin:0;padding:0;background:#f1f5f8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;color:#0f1a12;">
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#f1f5f8;padding:32px 16px;">
@@ -36,15 +37,8 @@ function buildOtpEmailHtml(code) {
               </td>
             </tr>
             <tr>
-              <td style="background:#ffffff;border-radius:14px;border-top:6px solid #cadb3f;box-shadow:0 4px 18px rgba(15,26,18,0.06);padding:28px 28px 24px;">
+              <td style="background:#ffffff;border-radius:14px;border-top:60px solid #004c43;box-shadow:0ß;padding:28px 28px 24px;">
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
-                  <tr>
-                    <td style="padding-bottom:18px;">
-                      <div style="width:44px;height:44px;background:#e6f4f2;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:44px;">
-                        <span style="font-size:20px;color:#004c43;">&#128274;</span>
-                      </div>
-                    </td>
-                  </tr>
                   <tr>
                     <td style="padding-bottom:14px;">
                       <h1 style="margin:0;font-size:22px;line-height:1.3;font-weight:700;color:#0f1a12;">
@@ -62,7 +56,7 @@ function buildOtpEmailHtml(code) {
                   <tr>
                     <td style="padding-bottom:20px;">
                       <p style="margin:0;font-size:15px;line-height:1.55;color:#3f4a45;">
-                        Please use the verification code below to confirm your email on SearchMadarth.
+                        Please use the verification code below to confirm your email on SearchMadarth&reg;.
                         The code will expire in <strong style="color:#0f1a12;">10 minutes</strong>.
                       </p>
                     </td>
@@ -87,7 +81,7 @@ function buildOtpEmailHtml(code) {
             <tr>
               <td align="center" style="padding:18px 0 0 0;">
                 <p style="margin:0;font-size:12px;color:#7c8a83;">
-                  &copy; 2026 SearchMadarth&reg; &middot; sme.searchmadarth.com
+                  &copy; ${year} SearchMadarth&reg; &middot; <a href="https://sme.searchmadarth.com/?utm_source=otp_email&utm_medium=email&utm_campaign=verification" style="color:#7c8a83;text-decoration:underline;">sme.searchmadarth.com</a>
                 </p>
               </td>
             </tr>

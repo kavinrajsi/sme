@@ -101,7 +101,10 @@ Behavior:
 | `ZEPTO_TO_BUSINESS` | yes | Primary `To:` recipient for form submissions |
 | `ZEPTO_CC` | no | Optional `Cc:` recipient |
 | `ZEPTO_BCC` | no | Optional `Bcc:` recipient |
-| `EMAIL_DISABLED` | no | `"true"` to skip all sends and log subjects only |
+| `EMAIL_DISABLED` | no | `"true"` to skip all sends and log subjects only. In OTP flows the code is logged instead of emailed. |
+| `SUPABASE_URL` | yes | Supabase project URL (e.g. `https://<ref>.supabase.co`). Backs the `otp_codes` table used by email-OTP gates on every contact form. |
+| `SUPABASE_SERVICE_ROLE_KEY` | yes | Service-role key for the same project. Server-only — never expose to the browser. |
+| `OTP_PEPPER` | yes | Random ≥32-char string mixed into OTP hashes before they're stored. Rotating it invalidates every outstanding code. |
 
 ### CI-only (used by the weekly smoke test in GitHub Actions)
 

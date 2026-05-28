@@ -1,11 +1,32 @@
 "use server";
 
 import { SendMailClient } from "zeptomail";
+import { assertVerified, normalizeEmail } from "@/lib/otp";
 
 const url = "https://api.zeptomail.com/v1.1/email";
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "").replace(/\/$/, "");
 const subjectPagePrefix = `New Form Submission in SME${siteUrl ? ` [${siteUrl}/]` : ""} Page`;
+
+async function guardVerifiedEmail(email) {
+  const normalized = normalizeEmail(email);
+  if (!normalized) {
+    return { ok: false, error: "Email is required." };
+  }
+  try {
+    const result = await assertVerified(normalized);
+    if (!result.ok) {
+      return {
+        ok: false,
+        error: "Please verify your email before submitting.",
+      };
+    }
+    return { ok: true, email: normalized };
+  } catch (error) {
+    console.error("[mail] assertVerified failed:", error);
+    return { ok: false, error: "Could not verify email. Please try again." };
+  }
+}
 
 function getMailConfig() {
   const apiKey = process.env.ZEPTO_API_KEY;
@@ -64,7 +85,10 @@ async function sendViaZepto({ subject, htmlbody }) {
   }
 }
 
-export async function sendQuizEmail({ phone, score, pillars, questions }) {
+export async function sendQuizEmail({ email, phone, score, pillars, questions }) {
+  const guard = await guardVerifiedEmail(email);
+  if (!guard.ok) return { success: false, error: guard.error };
+
   const pillarRows = Object.values(pillars)
     .map(
       (p, i) =>
@@ -91,10 +115,14 @@ export async function sendQuizEmail({ phone, score, pillars, questions }) {
       <h2 style="color: #004c43;">New Quiz Submission</h2>
       <table style="width: 100%; border-collapse: collapse;">
         <tr>
+          <td style="padding: 8px; font-weight: bold; color: #004c43;">Email</td>
+          <td style="padding: 8px;">${guard.email}</td>
+        </tr>
+        <tr style="background: #f6f5f3;">
           <td style="padding: 8px; font-weight: bold; color: #004c43;">Phone</td>
           <td style="padding: 8px;">${phone}</td>
         </tr>
-        <tr style="background: #f6f5f3;">
+        <tr>
           <td style="padding: 8px; font-weight: bold; color: #004c43;">Total Score</td>
           <td style="padding: 8px;">${score} / 100</td>
         </tr>
@@ -116,12 +144,13 @@ export async function sendQuizEmail({ phone, score, pillars, questions }) {
   `;
 
   return sendViaZepto({
-    subject: `${subjectPagePrefix} - Quiz Score: ${score}/100 -- ${phone}`,
+    subject: `${subjectPagePrefix} - Quiz Score: ${score}/100 -- ${guard.email}`,
     htmlbody,
   });
 }
 
 export async function sendBookingEmail({
+  email,
   name,
   business,
   phone,
@@ -129,31 +158,38 @@ export async function sendBookingEmail({
   slot,
   score,
 }) {
+  const guard = await guardVerifiedEmail(email);
+  if (!guard.ok) return { success: false, error: guard.error };
+
   const htmlbody = `
     <div style="font-family: Arial, sans-serif; max-width: 600px;">
       <h2 style="color: #004c43;">New Strategy Call Booking</h2>
       <table style="width: 100%; border-collapse: collapse;">
         <tr>
+          <td style="padding: 8px; font-weight: bold; color: #004c43;">Email</td>
+          <td style="padding: 8px;">${guard.email}</td>
+        </tr>
+        <tr style="background: #f6f5f3;">
           <td style="padding: 8px; font-weight: bold; color: #004c43;">Name</td>
           <td style="padding: 8px;">${name}</td>
         </tr>
-        <tr style="background: #f6f5f3;">
+        <tr>
           <td style="padding: 8px; font-weight: bold; color: #004c43;">Business</td>
           <td style="padding: 8px;">${business || "-"}</td>
         </tr>
-        <tr>
+        <tr style="background: #f6f5f3;">
           <td style="padding: 8px; font-weight: bold; color: #004c43;">WhatsApp</td>
           <td style="padding: 8px;">${phone}</td>
         </tr>
-        <tr style="background: #f6f5f3;">
+        <tr>
           <td style="padding: 8px; font-weight: bold; color: #004c43;">Preferred Date</td>
           <td style="padding: 8px;">${date}</td>
         </tr>
-        <tr>
+        <tr style="background: #f6f5f3;">
           <td style="padding: 8px; font-weight: bold; color: #004c43;">Preferred Time</td>
           <td style="padding: 8px;">${slot}</td>
         </tr>
-        <tr style="background: #f6f5f3;">
+        <tr>
           <td style="padding: 8px; font-weight: bold; color: #004c43;">Digital Score</td>
           <td style="padding: 8px;">${score} / 100</td>
         </tr>
@@ -162,13 +198,16 @@ export async function sendBookingEmail({
   `;
 
   return sendViaZepto({
-    subject: `${subjectPagePrefix} - Strategy Call Booking - ${name} (${phone})`,
+    subject: `${subjectPagePrefix} - Strategy Call Booking - ${name} (${guard.email})`,
     htmlbody,
   });
 }
 
 export async function sendDemoEmail(formData) {
   const { company, name, email, phone, message } = formData;
+
+  const guard = await guardVerifiedEmail(email);
+  if (!guard.ok) return { success: false, error: guard.error };
 
   const htmlbody = `
     <div style="font-family: Arial, sans-serif; max-width: 600px;">
@@ -184,7 +223,7 @@ export async function sendDemoEmail(formData) {
         </tr>
         <tr>
           <td style="padding: 8px; font-weight: bold; color: #004c43;">Email</td>
-          <td style="padding: 8px;">${email}</td>
+          <td style="padding: 8px;">${guard.email}</td>
         </tr>
         <tr style="background: #f6f5f3;">
           <td style="padding: 8px; font-weight: bold; color: #004c43;">Phone</td>

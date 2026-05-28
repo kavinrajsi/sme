@@ -10,6 +10,7 @@ import {
   getGrade,
   buildEmailQuestions,
 } from "./quizConfig";
+import OtpField from "./OtpField";
 import styles from "./QuizChat.module.css";
 
 const anekTamil = Anek_Tamil({
@@ -67,12 +68,15 @@ export default function QuizChat() {
   const [answers, setAnswers] = useState({});
   const [history, setHistory] = useState([]);
   const [pendingSelection, setPendingSelection] = useState(null);
+  const [chatEmail, setChatEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
   const [animatedScore, setAnimatedScore] = useState(0);
   const [showBooking, setShowBooking] = useState(false);
   const [bookingDone, setBookingDone] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
+  const [bookingEmail, setBookingEmail] = useState("");
+  const [bookingEmailVerified, setBookingEmailVerified] = useState(false);
 
   const scrollRef = useRef(null);
   const endRef = useRef(null);
@@ -84,7 +88,7 @@ export default function QuizChat() {
   const progressPct =
     phase === "result"
       ? 100
-      : phase === "phone"
+      : phase === "phone" || phase === "email"
         ? (totalQuestions / totalQuestions) * 100
         : (currentQuestion / totalQuestions) * 100;
 
@@ -94,11 +98,20 @@ export default function QuizChat() {
 
   const advance = () => {
     if (currentQuestion === totalQuestions - 1) {
-      setPhase("phone");
+      setPhase("email");
     } else {
       setCurrentQuestion((prev) => prev + 1);
     }
     setPendingSelection(null);
+  };
+
+  const handleEmailVerified = (verifiedEmail) => {
+    setChatEmail(verifiedEmail);
+    setHistory((prev) => [
+      ...prev,
+      { kind: "email", email: verifiedEmail },
+    ]);
+    setPhase("phone");
   };
 
   const handleSingleSelect = (option) => {
@@ -193,6 +206,7 @@ export default function QuizChat() {
 
     const { total, pillars: p } = computeScore(answers);
     sendQuizEmail({
+      email: chatEmail,
       phone: trimmed,
       score: total,
       pillars: p,
@@ -222,12 +236,15 @@ export default function QuizChat() {
     setAnswers({});
     setHistory([]);
     setPendingSelection(null);
+    setChatEmail("");
     setPhone("");
     setPhoneError("");
     setAnimatedScore(0);
     setShowBooking(false);
     setBookingDone(false);
     setSelectedSlot(null);
+    setBookingEmail("");
+    setBookingEmailVerified(false);
   };
 
   const tomorrow = new Date();
@@ -235,6 +252,10 @@ export default function QuizChat() {
   const minDate = tomorrow.toISOString().split("T")[0];
 
   const handleBookingSubmit = () => {
+    if (!bookingEmailVerified || !bookingEmail) {
+      alert("Please verify your email first.");
+      return;
+    }
     const name = document.getElementById("booking-name")?.value.trim();
     const business = document.getElementById("booking-biz")?.value.trim();
     const phn = document.getElementById("booking-phone")?.value.trim();
@@ -244,6 +265,7 @@ export default function QuizChat() {
       return;
     }
     sendBookingEmail({
+      email: bookingEmail,
       name,
       business,
       phone: phn,
@@ -252,6 +274,22 @@ export default function QuizChat() {
       score: finalScore,
     });
     setBookingDone(true);
+  };
+
+  const openBookingModal = () => {
+    if (chatEmail) {
+      setBookingEmail(chatEmail);
+      setBookingEmailVerified(true);
+    } else {
+      setBookingEmail("");
+      setBookingEmailVerified(false);
+    }
+    setShowBooking(true);
+  };
+
+  const handleBookingEmailVerified = (verifiedEmail) => {
+    setBookingEmail(verifiedEmail);
+    setBookingEmailVerified(true);
   };
 
   const isOptionSelected = (option) => {
@@ -297,6 +335,14 @@ export default function QuizChat() {
               return (
                 <div key={`h-${i}`} className={styles.userRow}>
                   <div className={styles.userBubble}>+91 {item.phone}</div>
+                  <UserAvatar />
+                </div>
+              );
+            }
+            if (item.kind === "email") {
+              return (
+                <div key={`h-${i}`} className={styles.userRow}>
+                  <div className={styles.userBubble}>{item.email}</div>
                   <UserAvatar />
                 </div>
               );
@@ -385,6 +431,26 @@ export default function QuizChat() {
                     )}
                   </div>
                 )}
+              </div>
+            </div>
+          )}
+
+          {phase === "email" && (
+            <div className={styles.botRow}>
+              <BotAvatar />
+              <div className={styles.botBubble}>
+                <p className={styles.questionTitle}>
+                  Where should we send your Digital Score?
+                </p>
+                <p className={styles.questionSubtitle}>
+                  We&apos;ll email you a verification code to confirm.
+                </p>
+                <div className={styles.otpInBubble}>
+                  <OtpField
+                    label="Your email"
+                    onVerified={handleEmailVerified}
+                  />
+                </div>
               </div>
             </div>
           )}
@@ -497,7 +563,7 @@ export default function QuizChat() {
                     <button
                       type="button"
                       className={styles.primaryBtn}
-                      onClick={() => setShowBooking(true)}
+                      onClick={openBookingModal}
                     >
                       Book Free Call
                     </button>
@@ -523,9 +589,11 @@ export default function QuizChat() {
           <span className={styles.composerHint}>
             {phase === "quiz"
               ? "Tap an answer above to continue"
-              : phase === "phone"
-                ? "Enter your phone number above"
-                : "Your Digital Score is ready"}
+              : phase === "email"
+                ? "Verify your email above to continue"
+                : phase === "phone"
+                  ? "Enter your phone number above"
+                  : "Your Digital Score is ready"}
           </span>
         </div>
       </div>
@@ -563,6 +631,22 @@ export default function QuizChat() {
                     <span className={styles.scorePillDot} />
                     Your Score: {finalScore} / 100
                   </div>
+                  <OtpField
+                    label="Email"
+                    defaultEmail={bookingEmail}
+                    defaultVerified={bookingEmailVerified}
+                    onVerified={handleBookingEmailVerified}
+                  />
+                  <div className={styles.formGroup}>
+                    <label className={styles.formLabel}>WhatsApp Number</label>
+                    <input
+                      className={styles.formInput}
+                      id="booking-phone"
+                      type="tel"
+                      placeholder="+91 98765 43210"
+                      disabled={!bookingEmailVerified}
+                    />
+                  </div>
                   <div className={styles.formGroup}>
                     <label className={styles.formLabel}>Your Name</label>
                     <input
@@ -570,6 +654,7 @@ export default function QuizChat() {
                       id="booking-name"
                       type="text"
                       placeholder="Eg: Rajesh Kumar"
+                      disabled={!bookingEmailVerified}
                     />
                   </div>
                   <div className={styles.formGroup}>
@@ -579,15 +664,7 @@ export default function QuizChat() {
                       id="booking-biz"
                       type="text"
                       placeholder="Eg: Sharma Electronics"
-                    />
-                  </div>
-                  <div className={styles.formGroup}>
-                    <label className={styles.formLabel}>WhatsApp Number</label>
-                    <input
-                      className={styles.formInput}
-                      id="booking-phone"
-                      type="tel"
-                      placeholder="+91 98765 43210"
+                      disabled={!bookingEmailVerified}
                     />
                   </div>
                   <div className={styles.formGroup}>
@@ -598,6 +675,7 @@ export default function QuizChat() {
                       type="date"
                       defaultValue={minDate}
                       min={minDate}
+                      disabled={!bookingEmailVerified}
                     />
                   </div>
                   <div className={styles.formGroup}>
@@ -611,6 +689,7 @@ export default function QuizChat() {
                           type="button"
                           className={`${styles.timeSlot} ${selectedSlot === slot ? styles.timeSlotSelected : ""}`}
                           onClick={() => setSelectedSlot(slot)}
+                          disabled={!bookingEmailVerified}
                         >
                           {slot}
                         </button>
@@ -622,8 +701,11 @@ export default function QuizChat() {
                     className={styles.primaryBtn}
                     style={{ width: "100%" }}
                     onClick={handleBookingSubmit}
+                    disabled={!bookingEmailVerified}
                   >
-                    Confirm my free call
+                    {bookingEmailVerified
+                      ? "Confirm my free call"
+                      : "Verify email to continue"}
                   </button>
                 </>
               ) : (

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Anek_Tamil } from "next/font/google";
 import { sendDemoEmail } from "../actions/sendDemoEmail";
+import OtpField from "./OtpField";
 import styles from "./DemoModal.module.css";
 
 const anekTamil = Anek_Tamil({
@@ -12,10 +13,19 @@ const anekTamil = Anek_Tamil({
 
 const INITIAL = { name: "", email: "", phone: "", company: "", message: "" };
 
-function validate(form) {
+function validate(form, emailVerified) {
   const errors = {};
 
-  // Name: min 3 chars, only letters, spaces, dots
+  if (!emailVerified || !form.email.trim()) {
+    errors.email = "Verify your email first";
+  }
+
+  if (!form.phone.trim()) {
+    errors.phone = "Phone number is required";
+  } else if (!/^[6-9]\d{9}$/.test(form.phone.trim())) {
+    errors.phone = "Enter a valid 10-digit Indian mobile number";
+  }
+
   if (!form.name.trim()) {
     errors.name = "Name is required";
   } else if (form.name.trim().length < 3) {
@@ -23,23 +33,6 @@ function validate(form) {
   } else if (!/^[A-Za-z\s.]+$/.test(form.name.trim())) {
     errors.name = "Only letters, spaces, and dots are allowed";
   }
-
-  // Email: basic format
-  if (!form.email.trim()) {
-    errors.email = "Email is required";
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
-    errors.email = "Enter a valid email address";
-  }
-
-  // Phone: exactly 10 digits, Indian mobile (starts with 6-9)
-  if (!form.phone.trim()) {
-    errors.phone = "Phone number is required";
-  } else if (!/^[6-9]\d{9}$/.test(form.phone.trim())) {
-    errors.phone = "Enter a valid 10-digit Indian mobile number";
-  }
-
-  // Company: not required, no validation
-  // Message: not required, no validation
 
   return errors;
 }
@@ -50,6 +43,7 @@ export default function DemoModal() {
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
+  const [emailVerified, setEmailVerified] = useState(false);
 
   const handleOpen = useCallback(() => {
     setOpen(true);
@@ -57,6 +51,13 @@ export default function DemoModal() {
     setErrors({});
     setSubmitted(false);
     setSending(false);
+    setEmailVerified(false);
+  }, []);
+
+  const handleEmailVerified = useCallback((verifiedEmail) => {
+    setEmailVerified(true);
+    setForm((f) => ({ ...f, email: verifiedEmail }));
+    setErrors((prev) => ({ ...prev, email: undefined }));
   }, []);
 
   useEffect(() => {
@@ -95,7 +96,7 @@ export default function DemoModal() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const newErrors = validate(form);
+    const newErrors = validate(form, emailVerified);
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
 
@@ -137,51 +138,10 @@ export default function DemoModal() {
         <div className={styles.body}>
           {!submitted ? (
             <form onSubmit={handleSubmit} noValidate>
-              <div className={styles.formGroup}>
-                <label className={styles.label}>Company Name</label>
-                <input
-                  className={styles.input}
-                  name="company"
-                  type="text"
-                  placeholder="Eg: Sharma Electronics"
-                  value={form.company}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label className={styles.label}>
-                  Name <span className={styles.required}>*</span>
-                </label>
-                <input
-                  className={`${styles.input} ${errors.name ? styles.inputError : ""}`}
-                  name="name"
-                  type="text"
-                  placeholder="Eg: Rajesh Kumar"
-                  value={form.name}
-                  onChange={handleChange}
-                />
-                {errors.name && (
-                  <span className={styles.error}>{errors.name}</span>
-                )}
-              </div>
-
-              <div className={styles.formGroup}>
-                <label className={styles.label}>
-                  Email <span className={styles.required}>*</span>
-                </label>
-                <input
-                  className={`${styles.input} ${errors.email ? styles.inputError : ""}`}
-                  name="email"
-                  type="email"
-                  placeholder="Eg: rajesh@company.com"
-                  value={form.email}
-                  onChange={handleChange}
-                />
-                {errors.email && (
-                  <span className={styles.error}>{errors.email}</span>
-                )}
-              </div>
+              <OtpField onVerified={handleEmailVerified} />
+              {errors.email && (
+                <span className={styles.error}>{errors.email}</span>
+              )}
 
               <div className={styles.formGroup}>
                 <label className={styles.label}>
@@ -195,10 +155,42 @@ export default function DemoModal() {
                   placeholder="Eg: 9876543210"
                   value={form.phone}
                   onChange={handleChange}
+                  disabled={!emailVerified}
                 />
                 {errors.phone && (
                   <span className={styles.error}>{errors.phone}</span>
                 )}
+              </div>
+
+              <div className={styles.formGroup}>
+                <label className={styles.label}>
+                  Name <span className={styles.required}>*</span>
+                </label>
+                <input
+                  className={`${styles.input} ${errors.name ? styles.inputError : ""}`}
+                  name="name"
+                  type="text"
+                  placeholder="Eg: Rajesh Kumar"
+                  value={form.name}
+                  onChange={handleChange}
+                  disabled={!emailVerified}
+                />
+                {errors.name && (
+                  <span className={styles.error}>{errors.name}</span>
+                )}
+              </div>
+
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Company Name</label>
+                <input
+                  className={styles.input}
+                  name="company"
+                  type="text"
+                  placeholder="Eg: Sharma Electronics"
+                  value={form.company}
+                  onChange={handleChange}
+                  disabled={!emailVerified}
+                />
               </div>
 
               <div className={styles.formGroup}>
@@ -210,14 +202,23 @@ export default function DemoModal() {
                   placeholder="Tell us about your goals (optional)"
                   value={form.message}
                   onChange={handleChange}
+                  disabled={!emailVerified}
                 />
               </div>
 
               {errors.form && (
                 <span className={styles.error}>{errors.form}</span>
               )}
-              <button type="submit" className="btn-submit" disabled={sending}>
-                {sending ? "Sending..." : "Request Demo Call"}
+              <button
+                type="submit"
+                className="btn-submit"
+                disabled={sending || !emailVerified}
+              >
+                {sending
+                  ? "Sending..."
+                  : emailVerified
+                    ? "Request Demo Call"
+                    : "Verify email to continue"}
               </button>
             </form>
           ) : (

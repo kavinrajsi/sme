@@ -169,6 +169,10 @@
   margin-top: 8px;
 }
 
+.otpInBubble {
+  margin-top: 12px;
+}
+
 .userBubble {
   background: var(--user-bubble-bg);
   color: var(--user-bubble-text);

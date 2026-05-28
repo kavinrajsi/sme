@@ -69,7 +69,7 @@ const navLinks = [
   { label: "Testimonials", href: "#testimonials" },
 ];
 
-export default function Header() {
+export default function Header({ solid = false }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -82,7 +82,7 @@ export default function Header() {
   return (
     <header
       className={`${styles.header} ${anekTamil.className} ${
-        scrolled ? styles.headerScrolled : ""
+        solid || scrolled ? styles.headerScrolled : ""
       }`}
     >
       <div className={`container ${styles.headerWrapper} `}>

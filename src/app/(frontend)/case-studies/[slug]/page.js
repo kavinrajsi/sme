@@ -101,7 +101,7 @@ export default async function CaseStudyDetailPage({ params }) {
 
   return (
     <>
-      <Header />
+      <Header solid />
       <main className={`${styles.main} ${anekTamil.className}`}>
         <div className={styles.container}>
           <nav aria-label="Breadcrumb" className={styles.crumbs}>

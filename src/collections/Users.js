@@ -1,6 +1,8 @@
 const Users = {
   slug: "users",
-  auth: true,
+  auth: {
+    useSessions: false,
+  },
   admin: {
     useAsTitle: "email",
   },
@@ -12,13 +14,7 @@ const Users = {
   ],
   access: {
     read: ({ req }) => Boolean(req.user),
-    create: ({ req }) => {
-      const hasUser = Boolean(req?.user);
-      req?.payload?.logger?.info({
-        msg: `[users.create access] hasUser=${hasUser} email=${req?.user?.email || "(none)"} collection=${req?.user?.collection || "(none)"}`,
-      });
-      return hasUser;
-    },
+    create: ({ req }) => Boolean(req.user),
     update: ({ req }) => Boolean(req.user),
     delete: ({ req }) => Boolean(req.user),
   },

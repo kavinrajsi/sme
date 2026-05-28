@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 import Users from "./collections/Users.js";
 import Media from "./collections/Media.js";
 import CaseStudies from "./collections/CaseStudies.js";
+import { zeptoEmailAdapter } from "./lib/payloadEmail.js";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -22,6 +23,10 @@ export default buildConfig({
   },
   collections: [Users, Media, CaseStudies],
   editor: lexicalEditor(),
+  email: zeptoEmailAdapter({
+    defaultFromAddress: process.env.ZEPTO_FROM_NO_REPLY || "no-reply@madarth.com",
+    defaultFromName: "SearchMadarth",
+  }),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),

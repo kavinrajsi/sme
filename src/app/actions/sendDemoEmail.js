@@ -9,6 +9,17 @@ const url = "https://api.zeptomail.com/v1.1/email";
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "").replace(/\/$/, "");
 const subjectPagePrefix = `New Form Submission in SME${siteUrl ? ` [${siteUrl}/]` : ""} Page`;
 
+function siteFooter(campaign) {
+  const year = new Date().getFullYear();
+  const href = `https://sme.searchmadarth.com/?utm_source=admin_email&utm_medium=email&utm_campaign=${campaign}`;
+  return `
+    <p style="margin: 24px 0 0; font-size: 12px; color: #7c8a83; font-family: Arial, sans-serif;">
+      &copy; ${year} SearchMadarth&reg; &middot;
+      <a href="${href}" style="color:#7c8a83;text-decoration:underline;">sme.searchmadarth.com</a>
+    </p>
+  `;
+}
+
 async function recordSubmission(table, row) {
   try {
     const supabase = getSupabaseAdmin();
@@ -175,6 +186,7 @@ export async function sendQuizEmail({ email, phone, score, pillars, questions })
         </tr>
         ${questionRows}
       </table>
+      ${siteFooter("quiz_submission")}
     </div>
   `;
 
@@ -241,6 +253,7 @@ export async function sendBookingEmail({
           <td style="padding: 8px;">${score} / 100</td>
         </tr>
       </table>
+      ${siteFooter("booking")}
     </div>
   `;
 
@@ -291,6 +304,7 @@ export async function sendDemoEmail(formData) {
           <td style="padding: 8px;">${message || "-"}</td>
         </tr>
       </table>
+      ${siteFooter("demo_submission")}
     </div>
   `;
 

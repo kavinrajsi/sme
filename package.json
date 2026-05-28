@@ -9,8 +9,8 @@
     "start": "next start",
     "lint": "eslint",
     "smoke:forms": "node scripts/weekly-form-smoke-test.mjs",
-    "payload": "PAYLOAD_CONFIG_PATH=src/payload.config.js payload",
-    "payload:seed": "node scripts/seed-case-studies.mjs"
+    "payload": "PAYLOAD_CONFIG_PATH=src/payload.config.js node --env-file-if-exists=.env.local node_modules/payload/bin.js",
+    "payload:seed": "node --env-file-if-exists=.env.local scripts/seed-case-studies.mjs"
   },
   "dependencies": {
     "@next/third-parties": "^16.2.4",
@@ -21,7 +21,7 @@
     "@supabase/supabase-js": "^2.106.2",
     "aos": "^2.3.4",
     "graphql": "^16.14.0",
-    "next": "^16.2.6",
+    "next": "^9.3.3",
     "payload": "^3.85.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",

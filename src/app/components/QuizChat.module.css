@@ -70,10 +70,17 @@
   }
 }
 
-.progressTrack {
+.progressRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   width: 100%;
   max-width: 480px;
-  height: 4px;
+}
+
+.progressTrack {
+  flex: 1;
+  height: 10px;
   background: var(--bg-elevated);
   border-radius: 999px;
   overflow: hidden;
@@ -84,6 +91,16 @@
   background: var(--brand);
   border-radius: 999px;
   transition: width 0.35s ease;
+}
+
+.progressCount {
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 42px;
+  text-align: right;
 }
 
 /* ===========================
@@ -192,6 +209,9 @@
 }
 
 .optionChip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   width: 100%;
   padding: 12px 14px;
   border: 1.5px solid var(--border-strong);
@@ -204,6 +224,61 @@
   text-align: left;
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s, transform 0.05s;
+}
+
+.optionLabel {
+  flex: 1;
+}
+
+.optionRadio,
+.optionCheckbox {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-strong);
+  background: var(--bg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.optionRadio {
+  border-radius: 50%;
+}
+
+.optionCheckbox {
+  border-radius: 6px;
+  color: var(--brand-text);
+}
+
+.optionCheckbox svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.optionChip:hover .optionRadio,
+.optionChip:hover .optionCheckbox {
+  border-color: var(--brand);
+}
+
+.optionChipSelected .optionRadio {
+  border-color: var(--brand);
+}
+
+.optionChipSelected .optionRadio::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--brand);
+}
+
+.optionChipSelected .optionCheckbox {
+  border-color: var(--brand);
+  background: var(--brand);
 }
 
 .optionChip:hover {

@@ -293,17 +293,24 @@ export default function QuizChat() {
     <div className={`${styles.page} ${anekTamil.className}`}>
       <header className={styles.pageHeader}>
         <BrandLogo />
-        <div
-          className={styles.progressTrack}
-          role="progressbar"
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-valuenow={Math.round(progressPct)}
-        >
+        <div className={styles.progressRow}>
           <div
-            className={styles.progressFill}
-            style={{ width: `${progressPct}%` }}
-          />
+            className={styles.progressTrack}
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={Math.round(progressPct)}
+          >
+            <div
+              className={styles.progressFill}
+              style={{ width: `${progressPct}%` }}
+            />
+          </div>
+          <span className={styles.progressCount} aria-live="polite">
+            {phase === "quiz"
+              ? `${currentQuestion + 1}/${totalQuestions}`
+              : `${totalQuestions}/${totalQuestions}`}
+          </span>
         </div>
       </header>
 
@@ -332,6 +339,8 @@ export default function QuizChat() {
               )}
 
               <div
+                role={question.multi ? "group" : "radiogroup"}
+                aria-label={question.title}
                 className={`${styles.options} ${question.grid ? styles.optionsGrid : ""}`}
               >
                 {question.options.map((opt) => {
@@ -340,6 +349,8 @@ export default function QuizChat() {
                     <button
                       key={opt.value}
                       type="button"
+                      role={question.multi ? "checkbox" : "radio"}
+                      aria-checked={selected}
                       className={`${styles.optionChip} ${selected ? styles.optionChipSelected : ""}`}
                       onClick={() =>
                         question.multi
@@ -347,7 +358,26 @@ export default function QuizChat() {
                           : handleSingleSelect(opt)
                       }
                     >
-                      {opt.label}
+                      <span
+                        className={
+                          question.multi
+                            ? styles.optionCheckbox
+                            : styles.optionRadio
+                        }
+                        aria-hidden="true"
+                      >
+                        {question.multi && selected && (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 -960 960 960"
+                            fill="currentColor"
+                            aria-hidden="true"
+                          >
+                            <path d="M400-304 240-464l56-56 104 104 264-264 56 56-320 320Z" />
+                          </svg>
+                        )}
+                      </span>
+                      <span className={styles.optionLabel}>{opt.label}</span>
                     </button>
                   );
                 })}

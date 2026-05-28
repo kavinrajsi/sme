@@ -1,3 +1,5 @@
+import { caseStudies } from "./components/caseStudiesData";
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
 // Bump the relevant constant when a page's content meaningfully changes.
@@ -7,6 +9,7 @@ const LASTMOD_HOME = "2026-04-27";
 const LASTMOD_PRIVACY = "2026-04-09";
 const LASTMOD_TERMS = "2026-04-09";
 const LASTMOD_DIGITAL_SCORE = "2026-05-27";
+const LASTMOD_CASE_STUDIES = "2026-05-28";
 
 export default function sitemap() {
   if (!siteUrl) {
@@ -16,6 +19,13 @@ export default function sitemap() {
   }
 
   const base = siteUrl.replace(/\/$/, "");
+
+  const caseStudyEntries = caseStudies.map((study) => ({
+    url: `${base}/case-studies/${study.slug}`,
+    lastModified: new Date(LASTMOD_CASE_STUDIES),
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
 
   return [
     {
@@ -30,6 +40,7 @@ export default function sitemap() {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    ...caseStudyEntries,
     {
       url: `${base}/privacy-policy`,
       lastModified: new Date(LASTMOD_PRIVACY),

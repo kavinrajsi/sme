@@ -1,4 +1,5 @@
 import { faqs } from "../components/FAQ";
+import { caseStudies } from "../components/caseStudiesData";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
@@ -8,6 +9,13 @@ export async function GET() {
   const faqBlock = faqs
     .map(({ question, answer }) => `### ${question}\n\n${answer}`)
     .join("\n\n");
+
+  const caseStudyBlock = caseStudies
+    .map(
+      (c) =>
+        `- [${c.title}](${base}/case-studies/${c.slug}) - ${c.description}`,
+    )
+    .join("\n");
 
   const body = `# SearchMadarth®
 
@@ -63,6 +71,10 @@ ${faqBlock}
 - [Digital Score](${base}/digital-score) - free quiz that benchmarks an SME's online presence and delivers a personalised growth report
 - [Privacy Policy](${base}/privacy-policy) - data collection and usage
 - [Terms and Conditions](${base}/terms-and-conditions) - terms of use
+
+## Case studies
+
+${caseStudyBlock}
 
 ## Get in touch
 

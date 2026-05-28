@@ -46,7 +46,12 @@ export function isSessionValid(cookieValue) {
   if (!cookieValue || typeof cookieValue !== "string") return false;
   const [payload, signature] = cookieValue.split(".");
   if (!payload || !signature) return false;
-  const expected = sign(payload);
+  let expected;
+  try {
+    expected = sign(payload);
+  } catch {
+    return false;
+  }
   const a = Buffer.from(signature, "hex");
   const b = Buffer.from(expected, "hex");
   if (a.length !== b.length) return false;

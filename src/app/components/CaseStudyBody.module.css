@@ -24,6 +24,10 @@
   margin: 0 0 0.75rem;
 }
 
+.body :global(ul.list-bullet) {
+  padding-left: 14px;
+}
+
 .richText :global(ul),
 .richText :global(ol) {
   font-size: 1.05rem;

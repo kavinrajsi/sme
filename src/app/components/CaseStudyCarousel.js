@@ -43,7 +43,7 @@ export default function CaseStudyCarousel({ studies }) {
               <div className={styles.cardContent}>
                 <h3 className={styles.cardTitle}>{study.title}</h3>
                 <p className={styles.cardDescription}>{study.description}</p>
-                <span className={styles.cardCta}>Read case study →</span>
+                {/* <span className={styles.cardCta}>Read case study →</span> */}
               </div>
             </Link>
           </SwiperSlide>

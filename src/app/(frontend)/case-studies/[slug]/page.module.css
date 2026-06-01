@@ -1,8 +1,14 @@
 .main {
-  padding: 32px 16px 64px;
+  padding: 58px 16px 64px;
   background: #fffdf8;
   min-height: 60vh;
   color: #0f1a12;
+}
+
+@media (min-width: 768px) {
+  .main {
+    padding-top: 78px;
+  }
 }
 
 .container {

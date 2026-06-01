@@ -4,7 +4,7 @@ const CaseStudies = {
   slug: "case-studies",
   admin: {
     useAsTitle: "title",
-    defaultColumns: ["title", "slug", "industry", "duration", "updatedAt"],
+    defaultColumns: ["title", "slug", "updatedAt"],
     description:
       "Client engagements shown on /case-studies/[slug] and surfaced in the SMEs Scaling section on the homepage.",
   },
@@ -46,58 +46,6 @@ const CaseStudies = {
       admin: {
         description: "Hero image. 1280×720 or wider works best.",
       },
-    },
-    {
-      name: "industry",
-      type: "text",
-      required: true,
-    },
-    {
-      name: "duration",
-      type: "text",
-      required: true,
-      admin: {
-        description: "Engagement length — e.g. '12 months' or 'Seasonal campaign'.",
-      },
-    },
-    {
-      name: "services",
-      type: "array",
-      required: true,
-      minRows: 1,
-      labels: {
-        singular: "Service",
-        plural: "Services",
-      },
-      fields: [
-        {
-          name: "name",
-          type: "text",
-          required: true,
-        },
-      ],
-    },
-    {
-      name: "metrics",
-      type: "array",
-      required: true,
-      minRows: 1,
-      labels: {
-        singular: "Metric",
-        plural: "Metrics",
-      },
-      fields: [
-        {
-          name: "label",
-          type: "text",
-          required: true,
-        },
-        {
-          name: "value",
-          type: "text",
-          required: true,
-        },
-      ],
     },
     {
       name: "body",

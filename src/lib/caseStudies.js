@@ -24,14 +24,6 @@ function toCaseStudyShape(doc) {
     title: doc.title,
     description: doc.description,
     image: doc.image?.url || doc.image || "",
-    industry: doc.industry || "",
-    duration: doc.duration || "",
-    services: Array.isArray(doc.services)
-      ? doc.services.map((s) => s.name).filter(Boolean)
-      : [],
-    metrics: Array.isArray(doc.metrics)
-      ? doc.metrics.map((m) => ({ label: m.label, value: m.value }))
-      : [],
     body: Array.isArray(doc.body) ? doc.body.map(normalizeBlock) : [],
   };
 }

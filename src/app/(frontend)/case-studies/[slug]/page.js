@@ -82,8 +82,6 @@ export default async function CaseStudyDetailPage({ params }) {
     image: siteUrl ? `${siteUrl}${study.image}` : study.image,
     url: detailUrl,
     mainEntityOfPage: detailUrl,
-    about: study.industry,
-    keywords: study.services.join(", "),
     isPartOf: { "@type": "WebSite", name: "SearchMadarth®", url: siteUrl },
     author: { "@type": "Organization", name: "SearchMadarth®", url: siteUrl },
     publisher: {
@@ -115,20 +113,8 @@ export default async function CaseStudyDetailPage({ params }) {
           </nav>
 
           <header className={styles.hero}>
-            <div className={styles.heroMeta}>
-              <span className={styles.industry}>{study.industry}</span>
-              <span className={styles.dot} aria-hidden="true">·</span>
-              <span className={styles.duration}>{study.duration}</span>
-            </div>
             <h1 className={styles.title}>{study.title}</h1>
             <p className={styles.lede}>{study.description}</p>
-            <div className={styles.serviceTags}>
-              {study.services.map((service) => (
-                <span key={service} className={styles.serviceTag}>
-                  {service}
-                </span>
-              ))}
-            </div>
           </header>
 
           <div className={styles.heroImage}>
@@ -141,18 +127,6 @@ export default async function CaseStudyDetailPage({ params }) {
               style={{ width: "100%", height: "auto" }}
             />
           </div>
-
-          <section
-            className={styles.metricsSection}
-            aria-label="Impact at a glance"
-          >
-            {study.metrics.map((m) => (
-              <div key={m.label} className={styles.metricCard}>
-                <span className={styles.metricValue}>{m.value}</span>
-                <span className={styles.metricLabel}>{m.label}</span>
-              </div>
-            ))}
-          </section>
 
           <section className={styles.bodySection}>
             <CaseStudyBody blocks={study.body} />

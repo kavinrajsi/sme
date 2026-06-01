@@ -31,6 +31,13 @@ export async function generateMetadata({ params }) {
   const title = study.metaTitle || `${study.title} Case Study | SearchMadarth®`;
   const description = study.metaDescription || study.description;
   const url = `/case-studies/${study.slug}`;
+  const absoluteUrl = siteUrl ? `${siteUrl}${url}` : url;
+  const ogImageSrc = study.ogImage || study.image || "";
+  const ogImageUrl = ogImageSrc.startsWith("http")
+    ? ogImageSrc
+    : siteUrl
+      ? `${siteUrl}${ogImageSrc}`
+      : ogImageSrc;
 
   return {
     title,
@@ -38,10 +45,18 @@ export async function generateMetadata({ params }) {
     alternates: { canonical: url },
     openGraph: {
       type: "article",
-      url,
+      url: absoluteUrl,
       title,
       description,
-      images: study.image ? [study.image] : undefined,
+      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: title }] : undefined,
+      siteName: "SearchMadarth®",
+    },
+    twitter: {
+      card: study.twitterCard || "summary_large_image",
+      title,
+      description,
+      images: ogImageUrl ? [ogImageUrl] : undefined,
+      site: "@searchmadarth",
     },
     robots: { index: true, follow: true },
   };

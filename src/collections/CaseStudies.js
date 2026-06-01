@@ -52,21 +52,41 @@ const CaseStudies = {
       type: "group",
       label: "SEO",
       admin: {
-        description: "Override the auto-generated meta title and description for search engines.",
+        description: "Controls how this page appears in Google, Open Graph (Facebook/LinkedIn), and X (Twitter).",
       },
       fields: [
         {
           name: "metaTitle",
           type: "text",
           admin: {
-            description: "Defaults to "Title Case Study | SearchMadarth®" if left blank. Max 60 chars recommended.",
+            description: "Page <title> and og:title. Defaults to 'Title Case Study | SearchMadarth®'. Max 60 chars.",
           },
         },
         {
           name: "metaDescription",
           type: "textarea",
           admin: {
-            description: "Defaults to the card description if left blank. Max 155 chars recommended.",
+            description: "Meta description, og:description, and twitter:description. Defaults to the card description. Max 155 chars.",
+          },
+        },
+        {
+          name: "ogImage",
+          type: "upload",
+          relationTo: "media",
+          admin: {
+            description: "og:image and twitter:image. Defaults to the hero image. 1200×630 recommended.",
+          },
+        },
+        {
+          name: "twitterCard",
+          type: "select",
+          defaultValue: "summary_large_image",
+          options: [
+            { label: "Large image (summary_large_image)", value: "summary_large_image" },
+            { label: "Small image (summary)", value: "summary" },
+          ],
+          admin: {
+            description: "Twitter card format. Large image is recommended.",
           },
         },
       ],

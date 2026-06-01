@@ -22,7 +22,7 @@ export default function CaseStudyCarousel({ studies }) {
         }}
         breakpoints={{
           768: { slidesPerView: 1.3 },
-          1024: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
         }}
       >
         {studies.map((study) => (

@@ -35,6 +35,8 @@ function toCaseStudyShape(doc) {
     title: doc.title,
     description: doc.description,
     image: toRelativeUrl(doc.image?.url || doc.image || ""),
+    metaTitle: doc.seo?.metaTitle || "",
+    metaDescription: doc.seo?.metaDescription || "",
     body: Array.isArray(doc.body) ? doc.body.map(normalizeBlock) : [],
   };
 }

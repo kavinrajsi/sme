@@ -28,8 +28,8 @@ export async function generateMetadata({ params }) {
   const study = await loadCaseStudy(slug);
   if (!study) return {};
 
-  const title = `${study.title} Case Study | SearchMadarth®`;
-  const description = study.description;
+  const title = study.metaTitle || `${study.title} Case Study | SearchMadarth®`;
+  const description = study.metaDescription || study.description;
   const url = `/case-studies/${study.slug}`;
 
   return {

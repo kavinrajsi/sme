@@ -48,6 +48,30 @@ const CaseStudies = {
       },
     },
     {
+      name: "seo",
+      type: "group",
+      label: "SEO",
+      admin: {
+        description: "Override the auto-generated meta title and description for search engines.",
+      },
+      fields: [
+        {
+          name: "metaTitle",
+          type: "text",
+          admin: {
+            description: "Defaults to "Title Case Study | SearchMadarth®" if left blank. Max 60 chars recommended.",
+          },
+        },
+        {
+          name: "metaDescription",
+          type: "textarea",
+          admin: {
+            description: "Defaults to the card description if left blank. Max 155 chars recommended.",
+          },
+        },
+      ],
+    },
+    {
       name: "body",
       type: "blocks",
       required: true,

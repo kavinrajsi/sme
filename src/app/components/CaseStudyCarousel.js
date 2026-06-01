@@ -21,8 +21,8 @@ export default function CaseStudyCarousel({ studies }) {
           nextEl: `.${styles.navNext}`,
         }}
         breakpoints={{
-          768: { slidesPerView: 2.3 },
-          1024: { slidesPerView: 3 },
+          768: { slidesPerView: 1.3 },
+          1024: { slidesPerView: 2 },
         }}
       >
         {studies.map((study) => (
@@ -37,7 +37,7 @@ export default function CaseStudyCarousel({ studies }) {
                   alt={study.title}
                   width={387}
                   height={226}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  style={{ width: "100%", height: "100%", objectFit: "contain" }}
                 />
               </div>
               <div className={styles.cardContent}>

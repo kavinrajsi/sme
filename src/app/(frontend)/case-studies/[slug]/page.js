@@ -9,6 +9,8 @@ import { loadAllCaseStudies, loadCaseStudy } from "@/lib/caseStudies";
 import Header from "../../../components/Header";
 import Footer from "../../../components/Footer";
 import CaseStudyBody from "../../../components/CaseStudyBody";
+import DemoModal from "../../../components/DemoModal";
+import OpenDemoButton from "../../../components/OpenDemoButton";
 import styles from "./page.module.css";
 
 const anekTamil = Anek_Tamil({
@@ -162,9 +164,9 @@ export default async function CaseStudyDetailPage({ params }) {
               <Link href="/digital-score" className={styles.ctaPrimary}>
                 Take the Digital Score quiz
               </Link>
-              <Link href="/#quiz" className={styles.ctaSecondary}>
+              <OpenDemoButton className={styles.ctaSecondary}>
                 Book a demo call
-              </Link>
+              </OpenDemoButton>
             </div>
           </section>
 
@@ -215,6 +217,7 @@ export default async function CaseStudyDetailPage({ params }) {
           }}
         />
       </main>
+      <DemoModal />
       <Footer />
     </>
   );

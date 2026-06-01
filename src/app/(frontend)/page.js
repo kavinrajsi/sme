@@ -152,8 +152,6 @@ function buildCaseStudyItemListSchema(studies) {
             : siteUrl
               ? `${siteUrl}${study.image}`
               : study.image,
-        about: study.industry,
-        keywords: study.services.join(", "),
       },
     })),
   };

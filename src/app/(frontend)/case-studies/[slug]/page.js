@@ -153,7 +153,7 @@ export default async function CaseStudyDetailPage({ params }) {
             </div>
           </section>
 
-          <section
+          {/* <section
             className={styles.relatedSection}
             aria-label="More case studies"
           >
@@ -185,7 +185,7 @@ export default async function CaseStudyDetailPage({ params }) {
             <Link href="/#case-studies" className={styles.backLink}>
               ← Back to all case studies
             </Link>
-          </section>
+          </section> */}
         </div>
         <script
           type="application/ld+json"

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Anek_Tamil } from "next/font/google";
 import styles from "./Header.module.css";
 
@@ -86,7 +87,7 @@ export default function Header({ solid = false }) {
       }`}
     >
       <div className={`container ${styles.headerWrapper} `}>
-      <Logo />
+      <Link href="/"><Logo /></Link>
       <nav className={styles.nav}>
         {navLinks.map((link) => (
           <a key={link.label} href={link.href} className={styles.navLink}>
@@ -115,7 +116,7 @@ export default function Header({ solid = false }) {
       {menuOpen && (
         <div className={styles.mobileMenu}>
           <div className={styles.mobileMenuHeader}>
-            <Logo />
+            <Link href="/"><Logo /></Link>
           </div>
           <nav className={styles.mobileNav}>
             {navLinks.map((link) => (

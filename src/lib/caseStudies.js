@@ -18,12 +18,23 @@ function normalizeBlock(block) {
   return block;
 }
 
+function toRelativeUrl(url) {
+  if (!url) return "";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  if (siteUrl && url.startsWith(siteUrl)) return url.slice(siteUrl.length) || "/";
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname === "localhost") return parsed.pathname;
+  } catch {}
+  return url;
+}
+
 function toCaseStudyShape(doc) {
   return {
     slug: doc.slug,
     title: doc.title,
     description: doc.description,
-    image: doc.image?.url || doc.image || "",
+    image: toRelativeUrl(doc.image?.url || doc.image || ""),
     body: Array.isArray(doc.body) ? doc.body.map(normalizeBlock) : [],
   };
 }

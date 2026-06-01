@@ -11,6 +11,8 @@ import DemoModal from "../components/DemoModal";
 import FAQ, { faqs } from "../components/FAQ";
 import { loadAllCaseStudies } from "@/lib/caseStudies";
 
+export const revalidate = 60;
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
 const services = [

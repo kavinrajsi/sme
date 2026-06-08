@@ -10,20 +10,19 @@ export const testimonials = [
   {
     variant: "dark",
     paragraphs: [
-      "We've been working with Madarth for our brand Indicus Paints across website development, SEO, and digital advertising. What sets them apart is their genuine integrity. They tell you exactly what's achievable and then deliver on it.",
-      "Their team is result-oriented, transparent, and genuinely invested in your growth. What I appreciate most is that their involvement doesn't stop at the brief. They proactively share ideas and insights even outside the scope of work, which shows how much they care about the brands they partner with. It's a relationship built on trust.",
+      "We've partnered with Madarth for our website, SEO, and digital advertising at Indicus Paints. What stands out is their integrity, transparency, and commitment to results. They deliver on what they promise and consistently go beyond the brief with valuable ideas and insights. It's a partnership built on trust and a genuine focus on growth.",
     ],
     name: "B. Gokul",
-    role: "Parnter, VNC Group",
+    role: "Partner, VNC Group",
   },
   {
     variant: "dark",
     paragraphs: [
-      "As the Business Head of Veranda IAS, I have had the opportunity to closely work with Madarth as our digital marketing partner, and I must acknowledge their outstanding contribution to our growth journey. Their team has consistently demonstrated strategic clarity, strong execution capabilities, and a sharp data-driven approach in managing our campaigns across multiple platforms.",
-      "Madarth has been more than just an agency, they have been a dependable pillar in scaling our outreach, strengthening our brand visibility, and driving high-quality lead funnels aligned with our academic objectives. Their proactive communication, quick turnaround time, and deep understanding of the competitive exam ecosystem have significantly enhanced the effectiveness of our marketing initiatives.",
+      "As Veranda IAS's digital marketing partner, Madarth has played a key role in expanding our reach, strengthening brand visibility, and generating quality leads. Their strategic approach, data-driven execution, proactive communication, and deep understanding of the education sector have consistently delivered strong results and made them a trusted growth partner.",
     ],
-    name: "Vignesh",
-    role: "Business Head, Veranda IAS",
+    name: "Business Head",
+    role: "Veranda IAS",
+    logo: "/testimonials/veranda-ias-logo.png",
   },
 ];
 
@@ -37,7 +36,7 @@ function Stars() {
   );
 }
 
-function TestimonialCard({ variant, paragraphs, name, role }) {
+function TestimonialCard({ variant, paragraphs, name, role, logo }) {
   const isDark = variant === "dark";
 
   return (
@@ -46,7 +45,6 @@ function TestimonialCard({ variant, paragraphs, name, role }) {
     >
       <Stars />
       <div className={styles.quoteBlock}>
-        <p className={styles.quoteMark}>&ldquo;</p>
         <div
           className={`${styles.quoteText} ${isDark ? styles.quoteTextDark : styles.quoteTextLight}`}
         >
@@ -65,6 +63,11 @@ function TestimonialCard({ variant, paragraphs, name, role }) {
       <div
         className={`${styles.divider} ${isDark ? styles.dividerDark : styles.dividerLight}`}
       >
+        {logo && (
+          <div className={styles.logo}>
+            <img src={logo} alt={role} />
+          </div>
+        )}
         <div className={styles.author}>
           <span
             className={`${styles.authorName} ${isDark ? styles.authorNameDark : styles.authorNameLight}`}
@@ -84,7 +87,11 @@ function TestimonialCard({ variant, paragraphs, name, role }) {
 
 export default function ClientStories() {
   return (
-    <section id="testimonials" className={`${styles.sectionWrapper}`} data-aos="fade-up">
+    <section
+      id="testimonials"
+      className={`${styles.sectionWrapper}`}
+      data-aos="fade-up"
+    >
       <div className="container">
         <div className={`${styles.section} ${anekTamil.className}`}>
           <div className={styles.header}>

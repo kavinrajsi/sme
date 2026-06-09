@@ -136,10 +136,11 @@ a {
   box-shadow: 0 6px 20px rgba(0, 76, 67, 0.3);
 }
 
-/* Ghost lime border */
+/* Ghost lime gradient border */
 .btn-ghost-lime {
+  position: relative;
   background: transparent;
-  border: 1px solid #cadb3f;
+  border: none;
   color: #ffffff;
   font-weight: 400;
   font-size: 14px;
@@ -149,9 +150,23 @@ a {
   border-radius: 4px;
 }
 
+/* 1px gradient border ring (CADB3F -> DCF394, left to right) */
+.btn-ghost-lime::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: 4px;
+  background: linear-gradient(to right, #cadb3f 0%, #dcf394 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
 .btn-ghost-lime:hover {
-  background-color: #cadb3f;
   color: #004c43;
+  background: linear-gradient(to right, #cadb3f 0%, #dcf394 100%);
 }
 
 /* Ghost white border */

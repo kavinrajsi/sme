@@ -6,7 +6,7 @@ import styles from "./Hero.module.css";
 
 const anekTamil = Anek_Tamil({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export default function Hero() {
@@ -23,26 +23,20 @@ export default function Hero() {
       />
       <div className={`container ${styles.inner}`}>
         <div className={styles.content} data-aos="fade-right">
-          <span className={styles.tagline}>India&apos;s SME Growth Engine</span>
           <div className={styles.titleGroup}>
             <h1 className={styles.title}>
               Turn Your Business{" "}
               <span className={styles.titleHighlight}>Digitally</span>{" "}
               Unstoppable.
             </h1>
-            <p className={styles.subtitle}>
-              We help Indian SMEs build a powerful digital presence that generates
-              leads, builds trust, and grows revenue - without the complexity or
-              corporate price tag.
-            </p>
           </div>
           <div className={styles.actions}>
-            <a href="#quiz" className="btn-base btn-solid">
+            <a href="#quiz" className={`btn-base btn-solid ${styles.scoreBtn}`}>
               Check Your Digital Score
             </a>
             <button
               type="button"
-              className="btn-base btn-ghost-white"
+              className={`btn-base btn-ghost-white ${styles.demoBtn}`}
               onClick={() => window.dispatchEvent(new Event("open-demo-modal"))}
             >
               Get Free Demo Call

@@ -125,6 +125,44 @@
   flex-wrap: wrap;
 }
 
+.actions .scoreBtn {
+  padding: 8px 24px;
+  background: linear-gradient(266.48deg, #cadb3f 7.66%, #dcf394 100%);
+  border-radius: 4px;
+  font-family: "Anek Tamil";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: #004c43;
+}
+
+.actions .scoreBtn:hover {
+  background: linear-gradient(266.48deg, #cadb3f 7.66%, #dcf394 100%);
+  color: #004c43;
+  filter: brightness(0.96);
+}
+
+.actions .demoBtn {
+  padding: 8px 24px;
+  border-radius: 4px;
+  font-family: "Anek Tamil";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  text-transform: none;
+  color: #ffffff;
+}
+
+.actions .demoBtn:hover {
+  color: #004c43;
+}
+
 /* Quiz card column */
 .quizSlot {
   display: flex;

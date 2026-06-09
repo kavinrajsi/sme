@@ -1,5 +1,5 @@
 .sectionWrapper {
-  background-color: #f6f5f3;
+  /* background-color: #f6f5f3; */
   width: 100%;
 }
 .section {
@@ -111,10 +111,16 @@
   border-top: 1px solid rgba(0, 76, 67, 0.12);
 }
 
+.authorRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 17px;
+}
+
 .logo {
   display: flex;
   align-items: center;
-  padding-top: 17px;
 }
 
 .logo img {
@@ -127,7 +133,6 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-top: 17px;
 }
 
 .authorName {

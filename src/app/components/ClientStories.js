@@ -14,6 +14,7 @@ export const testimonials = [
     ],
     name: "B. Gokul",
     role: "Partner, VNC Group",
+    logo: "/testimonials/indicus-logo.png",
   },
   {
     variant: "dark",
@@ -63,22 +64,24 @@ function TestimonialCard({ variant, paragraphs, name, role, logo }) {
       <div
         className={`${styles.divider} ${isDark ? styles.dividerDark : styles.dividerLight}`}
       >
-        {logo && (
-          <div className={styles.logo}>
-            <img src={logo} alt={role} />
+        <div className={styles.authorRow}>
+          {logo && (
+            <div className={styles.logo}>
+              <img src={logo} alt={role} />
+            </div>
+          )}
+          <div className={styles.author}>
+            <span
+              className={`${styles.authorName} ${isDark ? styles.authorNameDark : styles.authorNameLight}`}
+            >
+              {name}
+            </span>
+            <span
+              className={`${styles.authorRole} ${isDark ? styles.authorRoleDark : styles.authorRoleLight}`}
+            >
+              {role}
+            </span>
           </div>
-        )}
-        <div className={styles.author}>
-          <span
-            className={`${styles.authorName} ${isDark ? styles.authorNameDark : styles.authorNameLight}`}
-          >
-            {name}
-          </span>
-          <span
-            className={`${styles.authorRole} ${isDark ? styles.authorRoleDark : styles.authorRoleLight}`}
-          >
-            {role}
-          </span>
         </div>
       </div>
     </div>

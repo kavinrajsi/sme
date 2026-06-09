@@ -56,56 +56,84 @@
   text-align: center;
 }
 
-/* Cards grid */
-.grid {
+/* Interactive tabbed layout (mobile-first: stacked) */
+.layout {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
   width: 100%;
   max-width: 1201px;
 }
 
-.row {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.card {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  padding: 20px 24px;
-  background: #ffffff;
-  border: 1px solid rgba(0, 76, 67, 0.12);
-  border-radius: 20px;
-  flex: 1;
-}
-
-.cardBody {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.cardTextGroup {
+/* Left side: service tabs */
+.tabs {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: 100%;
 }
 
-.cardTitle {
+.tab {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 14px 20px;
+  border: none;
+  border-bottom: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: transparent;
+  font-family: inherit;
   font-weight: 600;
-  font-size: 18px;
-  line-height: 22px;
-  color: #004c43;
-}
-
-.cardDescription {
-  font-weight: 500;
   font-size: 16px;
   line-height: 22px;
-  color: #4a5568;
+  text-align: left;
+  color: #202224;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.tab:hover {
+  background-color: rgba(0, 76, 67, 0.05);
+}
+
+.tabActive,
+.tabActive:hover {
+  background-color: #004c43;
+  border-bottom-color: transparent;
+  color: #cadb3f;
+}
+
+/* Right side: active service content */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.panelImage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 652 / 280;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.panelBody {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.panelDescription {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  color: #636363;
 }
 
 .tags {
@@ -128,7 +156,7 @@
 @media (min-width: 769px) {
   .section {
     padding-top: 80px;
-padding-bottom: 80px;
+    padding-bottom: 80px;
     gap: 56px;
   }
 
@@ -142,17 +170,30 @@ padding-bottom: 80px;
     line-height: 26px;
   }
 
-  .row {
+  .layout {
     flex-direction: row;
+    align-items: flex-start;
+    gap: 121px;
   }
 
-  .card {
-    padding: 24px 40px;
-    gap: 40px;
+  .tabs {
+    flex: 0 0 387px;
+    max-width: 387px;
   }
 
-  .cardDescription {
-    font-size: 18px;
+  .tab {
+    padding: 16px 32px;
+    font-size: 20px;
     line-height: 24px;
+  }
+
+  .panel {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .panelDescription {
+    font-size: 18px;
+    line-height: 22px;
   }
 }

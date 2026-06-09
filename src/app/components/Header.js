@@ -7,7 +7,7 @@ import styles from "./Header.module.css";
 
 const anekTamil = Anek_Tamil({
   subsets: ["latin"],
-  weight: ["500", "600"],
+  weight: ["400", "500", "600"],
 });
 
 function Logo() {

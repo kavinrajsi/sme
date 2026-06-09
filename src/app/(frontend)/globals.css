@@ -140,7 +140,13 @@ a {
 .btn-ghost-lime {
   background: transparent;
   border: 1px solid #cadb3f;
-  color: white;
+  color: #ffffff;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  text-transform: none;
+  padding: 8px 24px;
+  border-radius: 4px;
 }
 
 .btn-ghost-lime:hover {

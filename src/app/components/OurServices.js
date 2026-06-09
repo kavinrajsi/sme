@@ -16,42 +16,42 @@ const services = [
     description:
       "A fast, mobile-first website built not just to look good but to convert visitors into calls, leads, and walk-ins. Includes CRO, speed optimization, and local SEO.",
     tags: ["Conversion Design", "SEO", "Mobile-First"],
-    image: "/images/services/revenue-ready-website.png",
+    image: "/services/revenue-ready-website.png",
   },
   {
     title: "Local SEO & Google Visibility",
     description:
       "Rank on the first page when your customers search for you locally. Google Business Profile optimization, citation building, and review management included.",
     tags: ["Google Maps", "Local SEO", "Reviews"],
-    image: "/images/services/revenue-ready-website.png",
+    image: "/services/local-seo.png",
   },
   {
     title: "Performance Marketing",
     description:
       "Targeted Google and Meta ads that reach your ideal buyer in your city with budgets designed for SME realities and ROI-first campaign structure.",
     tags: ["Google Ads", "Meta Ads", "ROI-First"],
-    image: "/images/services/revenue-ready-website.png",
+    image: "/services/performance-marketing.png",
   },
   {
     title: "Social Media & Brand Trust",
     description:
       "Build a credible, consistent presence on platforms where your customers are already spending time. Strategy, content, and execution all handled.",
     tags: ["Instagram", "LinkedIn", "Content Strategy"],
-    image: "/images/services/revenue-ready-website.png",
+    image: "/services/social-media-brand-trust.png",
   },
   {
     title: "WhatsApp Lead Automation",
     description:
       "Capture, qualify, and nurture leads on WhatsApp automatically so you never lose a hot inquiry to a slow response time again.",
     tags: ["WhatsApp API", "Automation"],
-    image: "/images/services/revenue-ready-website.png",
+    image: "/services/whatsapp-lead-automation.png",
   },
   {
     title: "Growth Analytics Dashboard",
     description:
       "One simple dashboard showing you exactly how many leads came in, from where, and what’s working updated weekly, explained in plain language.",
     tags: ["Live Reporting", "Attribution", "Insights"],
-    image: "/images/services/revenue-ready-website.png",
+    image: "/services/growth-analytics-dashboard.png",
   },
 ];
 

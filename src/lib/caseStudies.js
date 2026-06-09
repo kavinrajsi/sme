@@ -62,7 +62,7 @@ export async function loadAllCaseStudies() {
       collection: "case-studies",
       limit: 100,
       depth: 2,
-      sort: "title",
+      sort: "_order",
     });
     if (!docs.length) return fallback;
     return docs.map(toCaseStudyShape);

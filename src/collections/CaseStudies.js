@@ -2,11 +2,15 @@ import { caseStudyBodyBlocks } from "./blocks.js";
 
 const CaseStudies = {
   slug: "case-studies",
+  // Enables drag-and-drop ordering in the admin list view (adds a `_order`
+  // field and sets it as the default sort). Surfaced order is honored by
+  // loadAllCaseStudies() via sort: "_order".
+  orderable: true,
   admin: {
     useAsTitle: "title",
     defaultColumns: ["title", "slug", "updatedAt"],
     description:
-      "Client engagements shown on /case-studies/[slug] and surfaced in the SMEs Scaling section on the homepage.",
+      "Client engagements shown on /case-studies/[slug] and surfaced in the SMEs Scaling section on the homepage. Drag rows in the list view to set the display order.",
   },
   access: {
     read: () => true,

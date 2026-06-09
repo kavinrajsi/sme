@@ -123,12 +123,12 @@ Behavior:
 | Variable | Required | Purpose |
 |---|---|---|
 | `ZEPTO_API_KEY` | yes (unless `EMAIL_DISABLED=true`) | ZeptoMail API token, format `Zoho-enczapikey ...` |
-| `ZEPTO_FROM_NO_REPLY` | yes | `From:` address for the business-facing form emails (demo / quiz / booking) |
-| `ZEPTO_FROM_OTP` | no | `From:` address for the email-verification (OTP) code. Defaults to `noreply@searchmadarth.com`. The domain must be a verified sender in ZeptoMail (SPF/DKIM) or sends will bounce. |
-| `ZEPTO_FROM_ADMIN` | no | Reserved for future admin notifications |
-| `ZEPTO_TO_BUSINESS` | yes | Primary `To:` recipient for form submissions |
-| `ZEPTO_CC` | no | Optional `Cc:` recipient |
-| `ZEPTO_BCC` | no | Optional `Bcc:` recipient |
+| `ZEPTO_FROM_NO_REPLY` | yes | `From:` for the business-facing form emails (demo / quiz / booking). Supports a display name: `SearchMadarth <noreply@searchmadarth.com>`. |
+| `ZEPTO_FROM_OTP` | yes (for OTP) | `From:` for the email-verification (OTP) code, e.g. `SearchMadarth <noreply@searchmadarth.com>`. Supports a display name. No fallback — OTP sends fail if unset. The domain must be a verified sender in ZeptoMail (SPF/DKIM) or sends will bounce. |
+| `ZEPTO_FROM_ADMIN` | no | Reserved for future admin notifications. Supports a display name. |
+| `ZEPTO_TO_BUSINESS` | yes | `To:` recipient(s) for form submissions. Comma-separate for multiple; each entry supports a display name (`Manoj <manoj@madarth.com>`). |
+| `ZEPTO_CC` | no | Optional `Cc:` recipient(s). Comma-separated list; each entry supports a display name. |
+| `ZEPTO_BCC` | no | Optional `Bcc:` recipient(s). Comma-separated list; each entry supports a display name. |
 | `EMAIL_DISABLED` | no | `"true"` to skip all sends and log subjects only. In OTP flows the code is logged instead of emailed. |
 | `SUPABASE_URL` | yes | Supabase project URL (e.g. `https://<ref>.supabase.co`). Backs `form_otp_codes` plus the `form_demo_submissions` / `form_quiz_submissions` / `form_booking_submissions` tables. |
 | `SUPABASE_SERVICE_ROLE_KEY` | yes | Service-role key for the same project. Server-only — never expose to the browser. |

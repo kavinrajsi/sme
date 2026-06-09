@@ -3,6 +3,7 @@
 import { SendMailClient } from "zeptomail";
 import { assertVerified, normalizeEmail } from "@/lib/otp";
 import { getSupabaseAdmin } from "@/lib/supabase";
+import { parseEmailAddress, toRecipients } from "@/lib/email";
 
 const url = "https://api.zeptomail.com/v1.1/email";
 
@@ -68,8 +69,8 @@ async function guardVerifiedEmail(email) {
 
 function getMailConfig() {
   const apiKey = process.env.ZEPTO_API_KEY;
-  const from = process.env.ZEPTO_FROM_NO_REPLY;
-  const to = process.env.ZEPTO_TO_BUSINESS;
+  const from = parseEmailAddress(process.env.ZEPTO_FROM_NO_REPLY);
+  const to = toRecipients(process.env.ZEPTO_TO_BUSINESS);
 
   const missing = [];
   if (!apiKey) missing.push("ZEPTO_API_KEY");
@@ -82,14 +83,10 @@ function getMailConfig() {
   return {
     ok: true,
     apiKey,
-    from: { address: from },
-    to: [{ email_address: { address: to } }],
-    cc: process.env.ZEPTO_CC
-      ? [{ email_address: { address: process.env.ZEPTO_CC } }]
-      : undefined,
-    bcc: process.env.ZEPTO_BCC
-      ? [{ email_address: { address: process.env.ZEPTO_BCC } }]
-      : undefined,
+    from,
+    to,
+    cc: toRecipients(process.env.ZEPTO_CC),
+    bcc: toRecipients(process.env.ZEPTO_BCC),
   };
 }
 

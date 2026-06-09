@@ -10,6 +10,9 @@ import Users from "./collections/Users.js";
 import Media from "./collections/Media.js";
 import CaseStudies from "./collections/CaseStudies.js";
 import { zeptoEmailAdapter } from "./lib/payloadEmail.js";
+import { parseEmailAddress } from "./lib/email.js";
+
+const noReplySender = parseEmailAddress(process.env.ZEPTO_FROM_NO_REPLY) || {};
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -24,8 +27,8 @@ export default buildConfig({
   collections: [Users, Media, CaseStudies],
   editor: lexicalEditor(),
   email: zeptoEmailAdapter({
-    defaultFromAddress: process.env.ZEPTO_FROM_NO_REPLY || "no-reply@madarth.com",
-    defaultFromName: "SearchMadarth",
+    defaultFromAddress: noReplySender.address || "",
+    defaultFromName: noReplySender.name || "SearchMadarth",
   }),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {

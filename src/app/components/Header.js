@@ -96,9 +96,9 @@ export default function Header({ solid = false }) {
         ))}
       </nav>
       <div className={styles.actions}>
-        <a href="#quiz" className="btn-base btn-ghost-lime">
+        {/* <a href="#quiz" className="btn-base btn-ghost-lime">
           Check Your Digital Score
-        </a>
+        </a> */}
         <a href="tel:+918667767447" className="btn-base btn-solid">
           Call Us
         </a>

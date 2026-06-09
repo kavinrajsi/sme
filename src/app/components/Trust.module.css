@@ -47,6 +47,7 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  gap: 0;
   width: max-content;
   animation: scroll 15s linear infinite;
 }
@@ -62,7 +63,9 @@
 }
 
 .logoImage {
-  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
   max-width: 244px;
   max-height: 122px;
 }

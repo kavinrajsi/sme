@@ -34,13 +34,13 @@ export default function Hero() {
             <a href="#quiz" className={`btn-base btn-solid ${styles.scoreBtn}`}>
               Check Your Digital Score
             </a>
-            <button
+            {/* <button
               type="button"
               className={`btn-base btn-ghost-white ${styles.demoBtn}`}
               onClick={() => window.dispatchEvent(new Event("open-demo-modal"))}
             >
               Get Free Demo Call
-            </button>
+            </button> */}
           </div>
         </div>
         <div className={styles.quizSlot}>

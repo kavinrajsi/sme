@@ -52,11 +52,11 @@ export default function Trust() {
         <h2 className={styles.title}>
           Trusted by growing businesses across India
         </h2>
-        <div className={styles.marquee}>
-          <div className={styles.marqueeTrack}>
-            <LogoSet />
-            <LogoSet />
-          </div>
+      </div>
+      <div className={styles.marquee}>
+        <div className={styles.marqueeTrack}>
+          <LogoSet />
+          <LogoSet />
         </div>
       </div>
     </section>

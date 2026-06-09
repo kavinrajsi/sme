@@ -72,9 +72,8 @@
 }
 
 .heroImage {
-  border-radius: 18px;
+  border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 12px 36px rgba(15, 26, 18, 0.08);
 }
 
 .bodySection {

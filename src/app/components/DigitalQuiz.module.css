@@ -308,6 +308,24 @@
   flex-shrink: 0;
 }
 
+/* Quiz "Next" / "Back" buttons */
+.nextBtn,
+.prevBtn {
+  padding: 8px 16px;
+  background: #004c43;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  text-transform: none;
+  color: #ffffff;
+}
+
+.nextBtn:hover,
+.prevBtn:hover {
+  background: #003830;
+}
+
 /* ===========================
    PHONE SCREEN
 =========================== */

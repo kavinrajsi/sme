@@ -16,6 +16,7 @@
   flex-shrink: 0;
   width: 162px;
   height: 20px;
+  display: inline-flex;
 }
 
 .copyright {
@@ -55,6 +56,11 @@
   line-height: 18px;
   color: #cadb3f;
   text-align: center;
+  text-decoration: none;
+}
+
+.url:hover {
+  text-decoration: underline;
 }
 
 @media (min-width: 1025px) {

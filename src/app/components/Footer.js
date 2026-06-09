@@ -7,6 +7,9 @@ const anekTamil = Anek_Tamil({
   weight: "300",
 });
 
+const SEARCH_MADARTH_URL =
+  "https://search.madarth.com/?utm_source=sme.searchmadarth.com&utm_medium=referral&utm_campaign=footer";
+
 function SearchMadarthLogo() {
   return (
     <svg
@@ -64,9 +67,14 @@ export default function Footer() {
   return (
     <footer className={`${styles.footerWrapper} ${anekTamil.className}`} >
       <div className={`${styles.footer} container`} >
-      <div className={styles.logo}>
+      <a
+        href={SEARCH_MADARTH_URL}
+        className={styles.logo}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <SearchMadarthLogo />
-      </div>
+      </a>
       <div className={styles.middle}>
         <p className={styles.copyright}>
           &copy; {new Date().getFullYear()} SearchMadarth<sup>&reg;</sup> | All rights reserved.
@@ -80,7 +88,14 @@ export default function Footer() {
           </Link>
         </div>
       </div>
-      <span className={styles.url}>search.madarth.com</span>
+      <a
+        href={SEARCH_MADARTH_URL}
+        className={styles.url}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        search.madarth.com
+      </a>
       </div>
     </footer>
   );

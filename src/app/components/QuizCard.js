@@ -16,12 +16,17 @@ function ArrowLeft() {
     <svg
       className={styles.arrowIcon}
       xmlns="http://www.w3.org/2000/svg"
-      height="24px"
-      viewBox="0 -960 960 960"
-      width="24px"
-      fill="#e3e3e3"
+      width="11"
+      height="10"
+      viewBox="0 0 11 10"
+      fill="none"
     >
-      <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
+      <path
+        d="M10 5H2M6 9L2 5L6 1"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
@@ -31,12 +36,17 @@ function ArrowRight() {
     <svg
       className={styles.arrowIcon}
       xmlns="http://www.w3.org/2000/svg"
-      height="24px"
-      viewBox="0 -960 960 960"
-      width="24px"
-      fill="currentColor"
+      width="11"
+      height="10"
+      viewBox="0 0 11 10"
+      fill="none"
     >
-      <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
+      <path
+        d="M1 5H9M5 9L9 5L5 1"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
@@ -355,7 +365,7 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
               <div className={styles.footerLeft}>
                 <button
                   type="button"
-                  className="btn-base btn-ghost-teal"
+                  className={`btn-base ${styles.prevBtn}`}
                   onClick={handleBack}
                   disabled={currentQuestion === 0}
                   style={{ opacity: currentQuestion === 0 ? 0.4 : 1 }}
@@ -375,7 +385,7 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
               </div>
               <button
                 type="button"
-                className="btn-base btn-solid-teal"
+                className={`btn-base ${styles.nextBtn}`}
                 onClick={handleNext}
                 disabled={!canProceed}
                 style={{ opacity: canProceed ? 1 : 0.4 }}

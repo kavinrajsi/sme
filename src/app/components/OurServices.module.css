@@ -153,6 +153,16 @@
   white-space: nowrap;
 }
 
+/* Mobile: inline accordion panel below the active tab */
+.accordionPanel {
+  margin: 8px 0 16px;
+}
+
+/* Desktop side panel hidden on mobile */
+.desktopPanel {
+  display: none;
+}
+
 @media (min-width: 769px) {
   .section {
     padding-top: 80px;
@@ -190,6 +200,15 @@
   .panel {
     flex: 1;
     min-width: 0;
+  }
+
+  /* Hide the inline accordion panel; show the single side panel */
+  .accordionPanel {
+    display: none;
+  }
+
+  .desktopPanel {
+    display: flex;
   }
 
   .panelDescription {

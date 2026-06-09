@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import Image from "next/image";
 import { Anek_Tamil } from "next/font/google";
 import styles from "./OurServices.module.css";
@@ -55,6 +55,32 @@ const services = [
   },
 ];
 
+function ServicePanel({ service, className }) {
+  return (
+    <div className={`${styles.panel} ${className || ""}`}>
+      <div className={styles.panelImage}>
+        <Image
+          src={service.image}
+          alt={service.title}
+          fill
+          sizes="(max-width: 768px) 100vw, 652px"
+          className={styles.image}
+        />
+      </div>
+      <div className={styles.panelBody}>
+        <p className={styles.panelDescription}>{service.description}</p>
+        <div className={styles.tags}>
+          {service.tags.map((tag) => (
+            <span key={tag} className={styles.tag}>
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function OurServices() {
   const [activeIndex, setActiveIndex] = useState(0);
   const active = services[activeIndex];
@@ -82,56 +108,33 @@ export default function OurServices() {
         </div>
 
         <div className={styles.layout}>
-          <div
-            className={styles.tabs}
-            role="tablist"
-            aria-label="Our services"
-          >
+          <div className={styles.tabs} aria-label="Our services">
             {services.map((service, index) => {
               const isActive = index === activeIndex;
               return (
-                <button
-                  key={service.title}
-                  type="button"
-                  role="tab"
-                  id={`service-tab-${index}`}
-                  aria-selected={isActive}
-                  aria-controls="service-panel"
-                  className={`${styles.tab} ${isActive ? styles.tabActive : ""}`}
-                  onClick={() => setActiveIndex(index)}
-                >
-                  {service.title}
-                </button>
+                <Fragment key={service.title}>
+                  <button
+                    type="button"
+                    aria-expanded={isActive}
+                    className={`${styles.tab} ${isActive ? styles.tabActive : ""}`}
+                    onClick={() => setActiveIndex(index)}
+                  >
+                    {service.title}
+                  </button>
+                  {/* Mobile: active content appears inline below its tab */}
+                  {isActive && (
+                    <ServicePanel
+                      service={service}
+                      className={styles.accordionPanel}
+                    />
+                  )}
+                </Fragment>
               );
             })}
           </div>
 
-          <div
-            className={styles.panel}
-            id="service-panel"
-            role="tabpanel"
-            aria-labelledby={`service-tab-${activeIndex}`}
-          >
-            <div className={styles.panelImage}>
-              <Image
-                src={active.image}
-                alt={active.title}
-                fill
-                sizes="(max-width: 768px) 100vw, 652px"
-                className={styles.image}
-              />
-            </div>
-            <div className={styles.panelBody}>
-              <p className={styles.panelDescription}>{active.description}</p>
-              <div className={styles.tags}>
-                {active.tags.map((tag) => (
-                  <span key={tag} className={styles.tag}>
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
+          {/* Desktop: single content panel beside the tab list */}
+          <ServicePanel service={active} className={styles.desktopPanel} />
         </div>
       </div>
     </section>

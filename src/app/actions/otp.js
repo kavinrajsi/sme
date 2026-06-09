@@ -99,13 +99,15 @@ async function sendOtpMail(email, code) {
     return;
   }
   const apiKey = process.env.ZEPTO_API_KEY;
-  const from = process.env.ZEPTO_FROM_NO_REPLY;
-  if (!apiKey || !from) {
-    throw new Error("Email not configured: missing ZEPTO_API_KEY or ZEPTO_FROM_NO_REPLY");
+  // Verification codes are sent from the SearchMadarth domain (separate from
+  // the @madarth.com address used for the business-facing form emails).
+  const from = process.env.ZEPTO_FROM_OTP || "noreply@searchmadarth.com";
+  if (!apiKey) {
+    throw new Error("Email not configured: missing ZEPTO_API_KEY");
   }
   const client = new SendMailClient({ url: ZEPTO_URL, token: apiKey });
   await client.sendMail({
-    from: { address: from },
+    from: { address: from, name: "SearchMadarth" },
     to: [{ email_address: { address: email } }],
     subject: "Your SearchMadarth verification code",
     htmlbody: buildOtpEmailHtml(code),

@@ -123,7 +123,8 @@ Behavior:
 | Variable | Required | Purpose |
 |---|---|---|
 | `ZEPTO_API_KEY` | yes (unless `EMAIL_DISABLED=true`) | ZeptoMail API token, format `Zoho-enczapikey ...` |
-| `ZEPTO_FROM_NO_REPLY` | yes | `From:` address for both forms |
+| `ZEPTO_FROM_NO_REPLY` | yes | `From:` address for the business-facing form emails (demo / quiz / booking) |
+| `ZEPTO_FROM_OTP` | no | `From:` address for the email-verification (OTP) code. Defaults to `noreply@searchmadarth.com`. The domain must be a verified sender in ZeptoMail (SPF/DKIM) or sends will bounce. |
 | `ZEPTO_FROM_ADMIN` | no | Reserved for future admin notifications |
 | `ZEPTO_TO_BUSINESS` | yes | Primary `To:` recipient for form submissions |
 | `ZEPTO_CC` | no | Optional `Cc:` recipient |

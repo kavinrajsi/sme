@@ -137,6 +137,7 @@ Behavior:
 | `PAYLOAD_SECRET` | yes (for `/admin`) | Random ≥32-char string used by Payload CMS to sign its own session tokens. Generate with `openssl rand -hex 32`. Rotating it logs every CMS user out. |
 | `DATABASE_URI` | yes (for `/admin`) | Postgres connection string Payload uses for content. Use the Supabase **pooler** URI from Settings → Database → Connection string (port 6543). Keep the `?pgbouncer=true` flag if present. |
 | `BLOB_READ_WRITE_TOKEN` | yes (for `/admin` uploads) | Vercel Blob token used by the Media collection. Create one in Vercel → Storage → Blob and add it to the Vercel project env. |
+| `CRON_SECRET` | recommended (for cron) | Random ≥16-char string. Vercel Cron sends it as `Authorization: Bearer <CRON_SECRET>` when invoking `/api/health/db`; the route rejects requests without it. Generate with `openssl rand -hex 16`. Set in Vercel (Production) so the daily DB health check is protected. If unset, the endpoint is publicly reachable. |
 
 ### CI-only (used by the weekly smoke test in GitHub Actions)
 

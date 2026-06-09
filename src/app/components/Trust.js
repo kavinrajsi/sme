@@ -14,6 +14,11 @@ const logos = [
   { src: "/logo/inspace.png", alt: "Inspace" },
   { src: "/logo/karur-vysya-bank.png", alt: "Karur Vysya Bank" },
   { src: "/logo/nithya-amirtham.png", alt: "Nithya Amirtham" },
+  { src: "/logo/dahnay.png", alt: "Dahnay" },
+  { src: "/logo/indicus.png", alt: "Indicus" },
+  { src: "/logo/mandela.png", alt: "Mandela" },
+  { src: "/logo/sundari-silks.png", alt: "Sundari Silks" },
+  { src: "/logo/veranda-ias.png", alt: "Veranda IAS" },
 ];
 
 function LogoSet() {

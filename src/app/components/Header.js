@@ -100,7 +100,7 @@ export default function Header({ solid = false }) {
           Check Your Digital Score
         </a> */}
         <a href="tel:+918667767447" className="btn-base btn-solid">
-          Call Us
+          Book a Free Strategy Call
         </a>
       </div>
       <button
@@ -143,7 +143,7 @@ export default function Header({ solid = false }) {
               className="btn-base btn-solid"
               onClick={() => setMenuOpen(false)}
             >
-              Call Us
+              Book a Free Strategy Call
             </a>
           </div>
         </div>
@@ -153,7 +153,7 @@ export default function Header({ solid = false }) {
           Check Digital Score
         </a>
         <a href="tel:+918667767447" className="btn-base">
-          Call Us
+          Talk to an Expert
         </a>
       </div>
       </div>

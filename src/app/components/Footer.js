@@ -8,7 +8,7 @@ const anekTamil = Anek_Tamil({
 });
 
 const SEARCH_MADARTH_URL =
-  "https://search.madarth.com/?utm_source=sme.searchmadarth.com&utm_medium=referral&utm_campaign=footer";
+  "https://searchmadarth.com/?utm_source=sme.searchmadarth.com&utm_medium=referral&utm_campaign=footer";
 
 function SearchMadarthLogo() {
   return (
@@ -94,7 +94,7 @@ export default function Footer() {
         target="_blank"
         rel="noopener noreferrer"
       >
-        search.madarth.com
+        searchmadarth.com
       </a>
       </div>
     </footer>

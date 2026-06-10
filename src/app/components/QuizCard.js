@@ -476,11 +476,11 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
 
             <div className={styles.resultCta}>
               <h4 className={styles.resultCtaTitle}>
-                Book Your Free 30-Min Strategy Call
+                Book Your Free 30-Min Strategy call
               </h4>
               <p className={styles.resultCtaText}>
                 Our growth experts will walk you through your score and hand you
-                a personalised action plan - at zero cost.
+                a personalised action plan at zero cost.
               </p>
               <button
                 type="button"
@@ -488,9 +488,9 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
                 onClick={() => setShowBooking(true)}
                 style={{ margin: "0 auto" }}
               >
-                Book Free Call Now
+                Book a Free Strategy Call
               </button>
-              <button
+              {/* <button
                 type="button"
                 className="btn-text"
                 onClick={handleRestart}
@@ -502,7 +502,7 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
                 }}
               >
                 ← Retake the quiz
-              </button>
+              </button> */}
             </div>
           </div>
         )}

@@ -628,11 +628,10 @@ export default function QuizChat() {
 
               <div className={styles.resultCta}>
                 <p className={styles.resultCtaTitle}>
-                  Book a free 30-min strategy call
+                  Book Your Free 30-Min Strategy call
                 </p>
                 <p className={styles.resultCtaText}>
-                  Our growth experts will walk you through your score and
-                  hand you a personalised action plan.
+                  Our growth experts will walk you through your score and hand you a personalised action plan at zero cost.
                 </p>
                 <div className={styles.resultActions}>
                   <button
@@ -640,7 +639,7 @@ export default function QuizChat() {
                     className={styles.primaryBtn}
                     onClick={openBookingModal}
                   >
-                    Book Free Call
+                    Book a Free Strategy Call
                   </button>
                   <button
                     type="button"

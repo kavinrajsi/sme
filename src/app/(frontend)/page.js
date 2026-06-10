@@ -200,10 +200,10 @@ export default async function Home() {
         <Hero />
         <Trust />
         <CaseStudy />
-        <OurProcess />
+        <ClientStories />
         <RevenueImpact />
         <OurServices />
-        <ClientStories />
+        <OurProcess />
         <FAQ />
       </main>
       <Footer />

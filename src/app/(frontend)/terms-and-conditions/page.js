@@ -26,6 +26,16 @@ export const metadata = {
     title: "Terms and Conditions | SearchMadarth®",
     description:
       "Read the terms and conditions for using the SearchMadarth® website and services.",
+    images: ["/meta-og-image.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@searchmadarth",
+    creator: "@searchmadarth",
+    title: "Terms and Conditions | SearchMadarth®",
+    description:
+      "Read the terms and conditions for using the SearchMadarth® website and services.",
+    images: ["/meta-og-image.png"],
   },
 };
 

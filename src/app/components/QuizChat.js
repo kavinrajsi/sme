@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Anek_Tamil } from "next/font/google";
+import { sendGTMEvent } from "@next/third-parties/google";
 import { sendBookingEmail, sendQuizEmail } from "../actions/sendDemoEmail";
 import {
   quizData,
@@ -267,6 +268,7 @@ export default function QuizChat() {
       pillars: p,
       questions: buildEmailQuestions(answers),
     });
+    sendGTMEvent({ event: "generate_lead", form_type: "quiz_complete" });
     setPhase("result");
   };
 
@@ -323,6 +325,7 @@ export default function QuizChat() {
       slot: selectedSlot,
       score: finalScore,
     });
+    sendGTMEvent({ event: "generate_lead", form_type: "booking" });
     setBookingDone(true);
   };
 

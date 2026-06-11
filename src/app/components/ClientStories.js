@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Anek_Tamil } from "next/font/google";
 import styles from "./ClientStories.module.css";
 
@@ -15,6 +16,7 @@ export const testimonials = [
     name: "B. Gokul",
     role: "Partner, VNC Group",
     logo: "/testimonials/indicus-logo.png",
+    logoAlt: "Indicus Paints logo",
   },
   {
     variant: "dark",
@@ -24,6 +26,7 @@ export const testimonials = [
     name: "Business Head",
     role: "Veranda IAS",
     logo: "/testimonials/veranda-ias-logo.png",
+    logoAlt: "Veranda IAS logo",
   },
 ];
 
@@ -37,7 +40,7 @@ function Stars() {
   );
 }
 
-function TestimonialCard({ variant, paragraphs, name, role, logo }) {
+function TestimonialCard({ variant, paragraphs, name, role, logo, logoAlt }) {
   const isDark = variant === "dark";
 
   return (
@@ -67,7 +70,12 @@ function TestimonialCard({ variant, paragraphs, name, role, logo }) {
         <div className={styles.authorRow}>
           {logo && (
             <div className={styles.logo}>
-              <img src={logo} alt={role} />
+              <Image
+                src={logo}
+                alt={logoAlt || `${role} logo`}
+                width={170}
+                height={56}
+              />
             </div>
           )}
           <div className={styles.author}>

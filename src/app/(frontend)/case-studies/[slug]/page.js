@@ -30,7 +30,14 @@ export async function generateMetadata({ params }) {
   const study = await loadCaseStudy(slug);
   if (!study) return {};
 
-  const title = study.metaTitle || `${study.title} Case Study | SearchMadarth®`;
+  // Strip any trailing "| SearchMadarth®" so the layout title template adds the
+  // brand suffix exactly once for the page <title>. OG/Twitter use the branded
+  // form below (no template applies to those).
+  const title = (study.metaTitle || `${study.title} Case Study`).replace(
+    /\s*\|\s*SearchMadarth®\s*$/,
+    ""
+  );
+  const brandedTitle = `${title} | SearchMadarth®`;
   const description = study.metaDescription || study.description;
   const url = `/case-studies/${study.slug}`;
   const absoluteUrl = siteUrl ? `${siteUrl}${url}` : url;
@@ -48,17 +55,18 @@ export async function generateMetadata({ params }) {
     openGraph: {
       type: "article",
       url: absoluteUrl,
-      title,
+      title: brandedTitle,
       description,
-      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: title }] : undefined,
+      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: brandedTitle }] : undefined,
       siteName: "SearchMadarth®",
     },
     twitter: {
       card: study.twitterCard || "summary_large_image",
-      title,
+      title: brandedTitle,
       description,
       images: ogImageUrl ? [ogImageUrl] : undefined,
       site: "@searchmadarth",
+      creator: "@searchmadarth",
     },
     robots: { index: true, follow: true },
   };

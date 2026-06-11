@@ -23,7 +23,11 @@ export default async function sitemap() {
 
   const caseStudyEntries = studies.map((study) => ({
     url: `${base}/case-studies/${study.slug}`,
-    lastModified: new Date(LASTMOD_CASE_STUDIES),
+    // Prefer the CMS edit time; fall back to the manual constant for the
+    // bundled fallback data (which has no updatedAt).
+    lastModified: study.updatedAt
+      ? new Date(study.updatedAt)
+      : new Date(LASTMOD_CASE_STUDIES),
     changeFrequency: "monthly",
     priority: 0.6,
   }));

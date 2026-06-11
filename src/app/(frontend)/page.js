@@ -5,7 +5,7 @@ import OurServices from "../components/OurServices";
 import OurProcess from "../components/OurProcess";
 import RevenueImpact from "../components/RevenueImpact";
 import CaseStudy from "../components/CaseStudy";
-import ClientStories, { testimonials } from "../components/ClientStories";
+import ClientStories from "../components/ClientStories";
 import Footer from "../components/Footer";
 import DemoModal from "../components/DemoModal";
 import FAQ, { faqs } from "../components/FAQ";
@@ -157,39 +157,6 @@ function buildCaseStudyItemListSchema(studies) {
   };
 }
 
-const reviewSchemas = testimonials.map((t) => ({
-  "@context": "https://schema.org",
-  "@type": "Review",
-  reviewBody: t.paragraphs.join("\n\n"),
-  reviewRating: {
-    "@type": "Rating",
-    ratingValue: 5,
-    bestRating: 5,
-    worstRating: 1,
-  },
-  author: { "@type": "Person", name: t.name, jobTitle: t.role },
-  itemReviewed: {
-    "@type": "Organization",
-    name: "SearchMadarth®",
-    url: siteUrl,
-  },
-  publisher: { "@type": "Organization", name: "SearchMadarth®", url: siteUrl },
-}));
-
-const aggregateRatingSchema = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "SearchMadarth®",
-  url: siteUrl,
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: 5,
-    bestRating: 5,
-    worstRating: 1,
-    reviewCount: testimonials.length,
-  },
-};
-
 export default async function Home() {
   const studies = await loadAllCaseStudies();
   const caseStudyItemListSchema = buildCaseStudyItemListSchema(studies);
@@ -228,19 +195,6 @@ export default async function Home() {
           __html: JSON.stringify(caseStudyItemListSchema),
         }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(aggregateRatingSchema),
-        }}
-      />
-      {reviewSchemas.map((schema, i) => (
-        <script
-          key={`review-${i}`}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      ))}
     </>
   );
 }

@@ -22,6 +22,16 @@ export const metadata = {
     title: "Digital Score Quiz | SearchMadarth®",
     description:
       "Benchmark your SME's online presence in minutes and get a personalised growth report.",
+    images: ["/meta-og-image.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@searchmadarth",
+    creator: "@searchmadarth",
+    title: "Digital Score Quiz | SearchMadarth®",
+    description:
+      "Benchmark your SME's online presence in minutes and get a personalised growth report.",
+    images: ["/meta-og-image.png"],
   },
 };
 
@@ -83,7 +93,8 @@ const quizSchema = {
 
 export default function DigitalScorePage() {
   return (
-    <main className={styles.main}>
+    <div className={styles.main}>
+      <h1 className={styles.srOnly}>Digital Score Quiz</h1>
       <QuizChat />
       <script
         type="application/ld+json"
@@ -97,6 +108,6 @@ export default function DigitalScorePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(quizSchema) }}
       />
-    </main>
+    </div>
   );
 }

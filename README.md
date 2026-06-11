@@ -289,6 +289,27 @@ Both Google Tag Manager and Google Analytics 4 are wired up in `src/app/layout.j
 
 To activate, set `NEXT_PUBLIC_GTM_ID` and/or `NEXT_PUBLIC_GA_ID` in your environment and restart / redeploy.
 
+### Conversion events (PPC)
+
+On a **successful** form submission the client components push a `generate_lead`
+event to the GTM `dataLayer` via `sendGTMEvent` (from `@next/third-parties/google`).
+These are inert when GTM isn't loaded. Map them to Google Ads / Meta conversions
+inside GTM — no further code change is needed.
+
+| Event | `form_type` | Fired from |
+| --- | --- | --- |
+| `generate_lead` | `demo` | `components/DemoModal.js` (demo request) |
+| `generate_lead` | `quiz_complete` | `components/QuizCard.js`, `components/QuizChat.js` (Digital Score completed) |
+| `generate_lead` | `booking` | `components/QuizCard.js`, `components/QuizChat.js` (strategy call booked) |
+
+Verify with GTM Preview mode: submit each form and confirm the event lands with
+the expected `form_type`.
+
+> **Asset note (Core Web Vitals)**: the home hero uses `public/video.mp4` (~14 MB)
+> and the poster `public/home-page-bg.png` (~760 KB) as the LCP element. Re-encode
+> these separately (smaller H.264/WebM, compressed poster) — the code does not
+> optimize binary assets.
+
 ---
 
 ## Conventions and gotchas

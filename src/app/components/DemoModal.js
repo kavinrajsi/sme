@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Anek_Tamil } from "next/font/google";
+import { sendGTMEvent } from "@next/third-parties/google";
 import { sendDemoEmail } from "../actions/sendDemoEmail";
 import OtpField from "./OtpField";
 import styles from "./DemoModal.module.css";
@@ -105,6 +106,7 @@ export default function DemoModal() {
     setSending(false);
 
     if (result.success) {
+      sendGTMEvent({ event: "generate_lead", form_type: "demo" });
       setSubmitted(true);
     } else {
       setErrors({ form: result.error });

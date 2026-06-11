@@ -74,13 +74,15 @@ export const metadata = {
       {
         url: "/meta-og-image.png",
         width: 1200,
-        height: 630,
+        height: 628,
         alt: "SearchMadarth® - India's SME Growth Engine",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
+    site: "@searchmadarth",
+    creator: "@searchmadarth",
     title: siteTitle,
     description: siteDescription,
     images: ["/meta-og-image.png"],
@@ -104,6 +106,13 @@ const organizationSchema = {
     "@type": "Country",
     name: "India",
   },
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: "+91-8667767447",
+    contactType: "sales",
+    areaServed: "IN",
+    availableLanguage: ["English", "Tamil"],
+  },
 };
 
 const websiteSchema = {
@@ -122,7 +131,7 @@ const websiteSchema = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`} data-scroll-behavior="smooth">
+    <html lang="en-IN" className={`${geistSans.variable} ${geistMono.variable}`} data-scroll-behavior="smooth">
       {gtmId && <GoogleTagManager gtmId={gtmId} />}
       {gaId && <GoogleAnalytics gaId={gaId} />}
       <body>

@@ -26,6 +26,16 @@ export const metadata = {
     title: "Privacy Policy | SearchMadarth®",
     description:
       "Learn how SearchMadarth® collects, uses, and protects your personal information.",
+    images: ["/meta-og-image.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@searchmadarth",
+    creator: "@searchmadarth",
+    title: "Privacy Policy | SearchMadarth®",
+    description:
+      "Learn how SearchMadarth® collects, uses, and protects your personal information.",
+    images: ["/meta-og-image.png"],
   },
 };
 
@@ -65,7 +75,7 @@ export default function PrivacyPolicy() {
             SearchMadarth<sup>&reg;</sup> (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;), a
             division of Madarth<sup>&reg;</sup>, is committed to protecting your privacy. This
             Privacy Policy explains how we collect, use, disclose, and safeguard
-            your information when you visit our website search.madarth.com.
+            your information when you visit our website searchmadarth.com.
           </p>
         </section>
 

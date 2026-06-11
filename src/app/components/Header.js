@@ -87,7 +87,7 @@ export default function Header({ solid = false }) {
       }`}
     >
       <div className={`container ${styles.headerWrapper} `}>
-      <Link href="/"><Logo /></Link>
+      <Link href="/" aria-label="SearchMadarth — home"><Logo /></Link>
       <nav className={styles.nav}>
         {navLinks.map((link) => (
           <a key={link.label} href={link.href} className={styles.navLink}>
@@ -116,7 +116,7 @@ export default function Header({ solid = false }) {
       {menuOpen && (
         <div className={styles.mobileMenu}>
           <div className={styles.mobileMenuHeader}>
-            <Link href="/"><Logo /></Link>
+            <Link href="/" aria-label="SearchMadarth — home"><Logo /></Link>
           </div>
           <nav className={styles.mobileNav}>
             {navLinks.map((link) => (

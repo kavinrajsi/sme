@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { sendGTMEvent } from "@next/third-parties/google";
 import { sendBookingEmail, sendQuizEmail } from "../actions/sendDemoEmail";
 import {
   quizData,
@@ -168,6 +169,7 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
       questions: buildEmailQuestions(answers),
     });
 
+    sendGTMEvent({ event: "generate_lead", form_type: "quiz_complete" });
     setPhase("result");
   };
 
@@ -200,6 +202,7 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
       slot: selectedSlot,
       score: finalScore,
     });
+    sendGTMEvent({ event: "generate_lead", form_type: "booking" });
     setBookingDone(true);
   };
 

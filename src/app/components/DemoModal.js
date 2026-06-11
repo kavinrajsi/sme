@@ -215,6 +215,7 @@ export default function DemoModal() {
                 type="submit"
                 className="btn-submit"
                 disabled={sending || !emailVerified}
+                data-testid="demo-submit"
               >
                 {sending
                   ? "Sending..."

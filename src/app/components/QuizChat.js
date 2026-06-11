@@ -434,6 +434,7 @@ export default function QuizChat() {
                       type="button"
                       role={question.multi ? "checkbox" : "radio"}
                       aria-checked={selected}
+                      data-testid="chat-option"
                       className={`${styles.optionChip} ${selected ? styles.optionChipSelected : ""}`}
                       onClick={() =>
                         question.multi
@@ -481,6 +482,7 @@ export default function QuizChat() {
                   className={styles.sendBtn}
                   onClick={handleNext}
                   disabled={question.required && !hasAnswerForCurrent()}
+                  data-testid="chat-next"
                 >
                   Next
                   <NextArrow />
@@ -550,6 +552,7 @@ export default function QuizChat() {
                     type="tel"
                     inputMode="numeric"
                     placeholder="10-digit mobile number"
+                    data-testid="chat-phone"
                     value={phone}
                     onChange={(e) => {
                       const digits = e.target.value
@@ -560,7 +563,7 @@ export default function QuizChat() {
                     }}
                     autoFocus
                   />
-                  <button type="submit" className={styles.sendBtn}>
+                  <button type="submit" className={styles.sendBtn} data-testid="chat-phone-submit">
                     Send
                     <SendIcon />
                   </button>
@@ -641,6 +644,7 @@ export default function QuizChat() {
                     type="button"
                     className={styles.primaryBtn}
                     onClick={openBookingModal}
+                    data-testid="chat-book"
                   >
                     Book a Free Strategy Call
                   </button>
@@ -770,6 +774,7 @@ export default function QuizChat() {
                           className={`${styles.timeSlot} ${selectedSlot === slot ? styles.timeSlotSelected : ""}`}
                           onClick={() => setSelectedSlot(slot)}
                           disabled={!bookingEmailVerified}
+                          data-testid="chat-slot"
                         >
                           {slot}
                         </button>
@@ -782,6 +787,7 @@ export default function QuizChat() {
                     style={{ width: "100%" }}
                     onClick={handleBookingSubmit}
                     disabled={!bookingEmailVerified}
+                    data-testid="chat-booking-submit"
                   >
                     {bookingEmailVerified
                       ? "Confirm my free call"

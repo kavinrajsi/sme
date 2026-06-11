@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "smoke:forms": "node scripts/weekly-form-smoke-test.mjs",
+    "smoke:forms": "node --env-file-if-exists=.env.local scripts/weekly-form-smoke-test.mjs",
     "payload": "PAYLOAD_CONFIG_PATH=src/payload.config.js node --env-file-if-exists=.env.local node_modules/payload/bin.js",
     "payload:seed": "node --env-file-if-exists=.env.local scripts/seed-case-studies.mjs"
   },
@@ -34,6 +34,7 @@
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "^16.2.6",
+    "playwright": "^1.60.0",
     "playwright-core": "^1.60.0"
   }
 }

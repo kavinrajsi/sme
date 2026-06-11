@@ -10,6 +10,7 @@ import {
   getGrade,
   buildEmailQuestions,
 } from "./quizConfig";
+import OtpField from "./OtpField";
 import styles from "./DigitalQuiz.module.css";
 
 function ArrowLeft() {
@@ -62,6 +63,11 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
+  const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [bookingEmail, setBookingEmail] = useState("");
+  const [bookingEmailVerified, setBookingEmailVerified] = useState(false);
+  const [bookingError, setBookingError] = useState("");
 
   const totalQuestions = quizData.length;
   const question = quizData[currentQuestion];
@@ -131,7 +137,7 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
 
   const handleNext = () => {
     if (currentQuestion === totalQuestions - 1) {
-      setPhase("phone");
+      setPhase("email");
       return;
     }
     setCurrentQuestion((prev) => prev + 1);
@@ -143,10 +149,15 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
 
   const handleSkip = () => {
     if (currentQuestion === totalQuestions - 1) {
-      setPhase("phone");
+      setPhase("email");
       return;
     }
     setCurrentQuestion((prev) => prev + 1);
+  };
+
+  const handleEmailVerified = (verifiedEmail) => {
+    setEmail(verifiedEmail);
+    setPhase("phone");
   };
 
   const handlePhoneSubmit = async () => {
@@ -159,15 +170,27 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
       setPhoneError("Enter a valid 10-digit Indian mobile number");
       return;
     }
+    if (!email) {
+      setPhase("email");
+      return;
+    }
     setPhoneError("");
 
     const { total, pillars: p } = computeScore(answers);
-    sendQuizEmail({
+    setSubmitting(true);
+    const result = await sendQuizEmail({
+      email,
       phone: trimmed,
       score: total,
       pillars: p,
       questions: buildEmailQuestions(answers),
     });
+    setSubmitting(false);
+
+    if (!result?.success) {
+      setPhoneError(result?.error || "Could not submit. Please try again.");
+      return;
+    }
 
     sendGTMEvent({ event: "generate_lead", form_type: "quiz_complete" });
     setPhase("result");
@@ -183,18 +206,46 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
     setSelectedSlot(null);
     setPhone("");
     setPhoneError("");
+    setEmail("");
+    setBookingEmail("");
+    setBookingEmailVerified(false);
+    setBookingError("");
   };
 
-  const handleBookingSubmit = () => {
+  const openBookingModal = () => {
+    if (email) {
+      setBookingEmail(email);
+      setBookingEmailVerified(true);
+    } else {
+      setBookingEmail("");
+      setBookingEmailVerified(false);
+    }
+    setBookingError("");
+    setShowBooking(true);
+  };
+
+  const handleBookingEmailVerified = (verifiedEmail) => {
+    setBookingEmail(verifiedEmail);
+    setBookingEmailVerified(true);
+  };
+
+  const handleBookingSubmit = async () => {
+    if (!bookingEmailVerified || !bookingEmail) {
+      setBookingError("Please verify your email first.");
+      return;
+    }
     const name = document.getElementById("booking-name")?.value.trim();
     const business = document.getElementById("booking-biz")?.value.trim();
     const phoneVal = document.getElementById("booking-phone")?.value.trim();
     const date = document.getElementById("booking-date")?.value;
     if (!name || !phoneVal || !date || !selectedSlot) {
-      alert("Please fill in your name, number, date, and a time slot.");
+      setBookingError("Please fill in your name, number, date, and a time slot.");
       return;
     }
-    sendBookingEmail({
+    setBookingError("");
+    setSubmitting(true);
+    const result = await sendBookingEmail({
+      email: bookingEmail,
       name,
       business,
       phone: phoneVal,
@@ -202,6 +253,12 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
       slot: selectedSlot,
       score: finalScore,
     });
+    setSubmitting(false);
+
+    if (!result?.success) {
+      setBookingError(result?.error || "Could not submit. Please try again.");
+      return;
+    }
     sendGTMEvent({ event: "generate_lead", form_type: "booking" });
     setBookingDone(true);
   };
@@ -234,6 +291,7 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
         className={`${styles.option} ${selected ? styles.optionSelected : ""}`}
         onClick={() => handleClick(opt)}
         type="button"
+        data-testid="quiz-option"
       >
         <span
           className={`${styles.checkbox} ${selected ? styles.checkboxSelected : ""}`}
@@ -282,7 +340,24 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
           />
         </div>
 
-        {phase === "phone" ? (
+        {phase === "email" ? (
+          <div className={styles.phoneScreen}>
+            <div className={styles.phoneContent}>
+              <h3 className={styles.questionTitle}>
+                Where should we send your Digital Score?
+              </h3>
+              <p className={styles.questionSubtitle}>
+                We&apos;ll email you a verification code to confirm.
+              </p>
+              <OtpField
+                label="Your email"
+                defaultEmail={email}
+                defaultVerified={Boolean(email)}
+                onVerified={handleEmailVerified}
+              />
+            </div>
+          </div>
+        ) : phase === "phone" ? (
           <div className={styles.phoneScreen}>
             <div className={styles.phoneContent}>
               <h3 className={styles.questionTitle}>
@@ -297,6 +372,7 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
                   type="tel"
                   inputMode="numeric"
                   placeholder="Eg: 9876543210"
+                  data-testid="quiz-phone"
                   value={phone}
                   onChange={(e) => {
                     const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
@@ -312,9 +388,11 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
                 type="button"
                 className="btn-base btn-solid-teal"
                 onClick={handlePhoneSubmit}
+                disabled={submitting}
                 style={{ width: "100%" }}
+                data-testid="quiz-phone-submit"
               >
-                See My Score
+                {submitting ? "Submitting..." : "See My Score"}
                 <ArrowRight />
               </button>
             </div>
@@ -392,6 +470,7 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
                 onClick={handleNext}
                 disabled={!canProceed}
                 style={{ opacity: canProceed ? 1 : 0.4 }}
+                data-testid="quiz-next"
               >
                 {currentQuestion === totalQuestions - 1
                   ? "See My Score"
@@ -488,8 +567,9 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
               <button
                 type="button"
                 className="btn-base btn-solid-teal"
-                onClick={() => setShowBooking(true)}
+                onClick={openBookingModal}
                 style={{ margin: "0 auto" }}
+                data-testid="quiz-book"
               >
                 Book a Free Strategy Call
               </button>
@@ -543,6 +623,12 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
                     <span className={styles.scorePillDot} />
                     Your Score: {finalScore} / 100
                   </div>
+                  <OtpField
+                    label="Email"
+                    defaultEmail={bookingEmail}
+                    defaultVerified={bookingEmailVerified}
+                    onVerified={handleBookingEmailVerified}
+                  />
                   <div className={styles.formGroup}>
                     <label className={styles.formLabel}>Your Name</label>
                     <input
@@ -550,6 +636,7 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
                       id="booking-name"
                       type="text"
                       placeholder="Eg: Rajesh Kumar"
+                      disabled={!bookingEmailVerified}
                     />
                   </div>
                   <div className={styles.formGroup}>
@@ -559,6 +646,7 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
                       id="booking-biz"
                       type="text"
                       placeholder="Eg: Sharma Electronics"
+                      disabled={!bookingEmailVerified}
                     />
                   </div>
                   <div className={styles.formGroup}>
@@ -568,6 +656,7 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
                       id="booking-phone"
                       type="tel"
                       placeholder="+91 98765 43210"
+                      disabled={!bookingEmailVerified}
                     />
                   </div>
                   <div className={styles.formGroup}>
@@ -578,6 +667,7 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
                       type="date"
                       defaultValue={minDate}
                       min={minDate}
+                      disabled={!bookingEmailVerified}
                     />
                   </div>
                   <div className={styles.formGroup}>
@@ -591,18 +681,31 @@ export default function QuizCard({ className = "", id = "quiz", aos = "fade-left
                           type="button"
                           className={`${styles.timeSlot} ${selectedSlot === slot ? styles.timeSlotSelected : ""}`}
                           onClick={() => setSelectedSlot(slot)}
+                          disabled={!bookingEmailVerified}
+                          data-testid="quiz-slot"
                         >
                           {slot}
                         </button>
                       ))}
                     </div>
                   </div>
+                  {bookingError && (
+                    <p className={styles.phoneError} style={{ marginBottom: 12 }}>
+                      {bookingError}
+                    </p>
+                  )}
                   <button
                     type="button"
                     className="btn-submit"
                     onClick={handleBookingSubmit}
+                    disabled={!bookingEmailVerified || submitting}
+                    data-testid="quiz-booking-submit"
                   >
-                    ✅ Confirm My Free Call →
+                    {submitting
+                      ? "Submitting..."
+                      : bookingEmailVerified
+                        ? "✅ Confirm My Free Call →"
+                        : "Verify email to continue"}
                   </button>
                 </>
               ) : (

@@ -98,9 +98,9 @@ All forms post to **server actions** (no API routes). Each one verifies the user
 
 | Form | Action | Server file | Submissions table |
 |---|---|---|---|
-| Demo request modal | `sendDemoEmail()` | `src/app/actions/sendDemoEmail.js` | `form_demo_submissions` |
-| Digital Quiz | `sendQuizEmail()` | same | `form_quiz_submissions` |
-| Strategy call booking | `sendBookingEmail()` | same | `form_booking_submissions` |
+| Demo request modal | `sendDemoEmail()` | `src/app/actions/sendDemoEmail.js` | `sme_submissions` (`form_type = 'demo'`) |
+| Digital Quiz | `sendQuizEmail()` | same | `sme_submissions` (`form_type = 'quiz'`) |
+| Strategy call booking | `sendBookingEmail()` | same | `sme_submissions` (`form_type = 'booking'`) |
 | Email verification | `requestOtp()` / `verifyOtp()` | `src/app/actions/otp.js` | `form_otp_codes` |
 
 Behavior:
@@ -212,7 +212,7 @@ Case studies (and Media + Users) are managed through the Payload admin at `/admi
 One Neon project backs everything, reached over a single `DATABASE_URI` connection string. Inside that project:
 
 - **Payload-owned tables** (`users`, `media`, `case_studies*`, `payload_*`) — Payload's Postgres adapter reconciles them against the live DB. Schema history is not tracked in this repo; the source of truth is the live database.
-- **App-owned tables** (`form_demo_submissions`, `form_quiz_submissions`, `form_booking_submissions`, `form_otp_codes`) — consumed via a `pg` pool in `src/lib/db.js` (server-only, never from the browser). Change schema via `psql` against the Neon connection string, or the Neon console's SQL editor.
+- **App-owned tables** (`sme_submissions` — all 3 form types, discriminated by `form_type`, with type-specific fields in a `details` JSONB column — plus `form_otp_codes`) — consumed via a `pg` pool in `src/lib/db.js` (server-only, never from the browser). Change schema via `psql` against the Neon connection string, or the Neon console's SQL editor.
 - No RLS: Neon has no separate anon/service-role split like PostgREST-fronted databases. Access is exclusively server-side via one connection string, so there's no public/anon-key surface for RLS to protect against.
 
 ---

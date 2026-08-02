@@ -132,12 +132,11 @@ export async function sendQuizEmail({ email, phone, score, pillars, questions })
   const guard = await guardVerifiedEmail(email);
   if (!guard.ok) return { success: false, error: guard.error };
 
-  const submissionId = await recordSubmission("form_quiz_submissions", {
+  const submissionId = await recordSubmission("sme_submissions", {
+    form_type: "quiz",
     email: guard.email,
     phone,
-    score,
-    pillars,
-    answers: questions,
+    details: { score, pillars, answers: questions },
   });
 
   const pillarRows = Object.values(pillars)
@@ -199,7 +198,7 @@ export async function sendQuizEmail({ email, phone, score, pillars, questions })
     subject: `${subjectPagePrefix} - Quiz Score: ${score}/100 -- ${guard.email}`,
     htmlbody,
   });
-  if (result.success) await markEmailSent("form_quiz_submissions", submissionId);
+  if (result.success) await markEmailSent("sme_submissions", submissionId);
   return result;
 }
 
@@ -215,14 +214,17 @@ export async function sendBookingEmail({
   const guard = await guardVerifiedEmail(email);
   if (!guard.ok) return { success: false, error: guard.error };
 
-  const submissionId = await recordSubmission("form_booking_submissions", {
+  const submissionId = await recordSubmission("sme_submissions", {
+    form_type: "booking",
     email: guard.email,
     phone,
-    name,
-    business: business || null,
-    booking_date: date,
-    slot,
-    score: typeof score === "number" ? score : null,
+    details: {
+      name,
+      business: business || null,
+      booking_date: date,
+      slot,
+      score: typeof score === "number" ? score : null,
+    },
   });
 
   const htmlbody = `
@@ -266,7 +268,7 @@ export async function sendBookingEmail({
     subject: `${subjectPagePrefix} - Strategy Call Booking - ${name} (${guard.email})`,
     htmlbody,
   });
-  if (result.success) await markEmailSent("form_booking_submissions", submissionId);
+  if (result.success) await markEmailSent("sme_submissions", submissionId);
   return result;
 }
 
@@ -276,12 +278,15 @@ export async function sendDemoEmail(formData) {
   const guard = await guardVerifiedEmail(email);
   if (!guard.ok) return { success: false, error: guard.error };
 
-  const submissionId = await recordSubmission("form_demo_submissions", {
+  const submissionId = await recordSubmission("sme_submissions", {
+    form_type: "demo",
     email: guard.email,
     phone,
-    name,
-    company: company || null,
-    message: message || null,
+    details: {
+      name,
+      company: company || null,
+      message: message || null,
+    },
   });
 
   const htmlbody = `
@@ -317,6 +322,6 @@ export async function sendDemoEmail(formData) {
     subject: subjectPagePrefix,
     htmlbody,
   });
-  if (result.success) await markEmailSent("form_demo_submissions", submissionId);
+  if (result.success) await markEmailSent("sme_submissions", submissionId);
   return result;
 }

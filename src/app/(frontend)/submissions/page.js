@@ -21,15 +21,12 @@ export const dynamic = "force-dynamic";
 const ROW_LIMIT = 100;
 
 async function fetchAll() {
-  const tables = [
-    "form_demo_submissions",
-    "form_quiz_submissions",
-    "form_booking_submissions",
-  ];
+  const types = ["demo", "quiz", "booking"];
   const [demoRes, quizRes, bookingRes] = await Promise.allSettled(
-    tables.map((table) =>
+    types.map((type) =>
       query(
-        `SELECT * FROM ${table} ORDER BY created_at DESC LIMIT ${ROW_LIMIT}`,
+        "SELECT * FROM sme_submissions WHERE form_type = $1 ORDER BY created_at DESC LIMIT $2",
+        [type, ROW_LIMIT],
       ),
     ),
   );
@@ -86,11 +83,11 @@ function DemoTable({ rows }) {
           {rows.map((r) => (
             <tr key={r.id}>
               <td>{formatDateTime(r.created_at)}</td>
-              <td>{r.name}</td>
+              <td>{r.details.name}</td>
               <td>{r.email}</td>
               <td>{r.phone}</td>
-              <td>{r.company || "—"}</td>
-              <td className={styles.messageCell}>{r.message || "—"}</td>
+              <td>{r.details.company || "—"}</td>
+              <td className={styles.messageCell}>{r.details.message || "—"}</td>
               <td>{emailSentChip(r.email_sent)}</td>
             </tr>
           ))}
@@ -122,11 +119,11 @@ function QuizTable({ rows }) {
               <td>{r.email}</td>
               <td>{r.phone}</td>
               <td>
-                <strong>{r.score}</strong> / 100
+                <strong>{r.details.score}</strong> / 100
               </td>
               <td className={styles.pillarsCell}>
-                {r.pillars
-                  ? Object.values(r.pillars)
+                {r.details.pillars
+                  ? Object.values(r.details.pillars)
                       .map((p) => `${p.label}: ${p.score}/${p.max}`)
                       .join(", ")
                   : "—"}
@@ -162,13 +159,13 @@ function BookingTable({ rows }) {
           {rows.map((r) => (
             <tr key={r.id}>
               <td>{formatDateTime(r.created_at)}</td>
-              <td>{r.name}</td>
+              <td>{r.details.name}</td>
               <td>{r.email}</td>
               <td>{r.phone}</td>
-              <td>{r.business || "—"}</td>
-              <td>{r.booking_date}</td>
-              <td>{r.slot}</td>
-              <td>{r.score ?? "—"}</td>
+              <td>{r.details.business || "—"}</td>
+              <td>{r.details.booking_date}</td>
+              <td>{r.details.slot}</td>
+              <td>{r.details.score ?? "—"}</td>
               <td>{emailSentChip(r.email_sent)}</td>
             </tr>
           ))}

@@ -65,19 +65,19 @@ async function injectOtp(email) {
 // Poll for the row: some actions (e.g. QuizChat) fire the submit without
 // awaiting, and email_sent flips only after ZeptoMail responds, so the row may
 // land a beat after the UI advances.
-async function expectRow(table, email, { tries = 15, delayMs = 1000 } = {}) {
+async function expectRow(formType, email, { tries = 15, delayMs = 1000 } = {}) {
   let last = "no row";
   for (let i = 0; i < tries; i++) {
     const { rows } = await pool.query(
-      `SELECT id, email_sent, created_at FROM ${table} WHERE email = $1 ORDER BY created_at DESC LIMIT 1`,
-      [email.toLowerCase()],
+      `SELECT id, email_sent, created_at FROM sme_submissions WHERE form_type = $1 AND email = $2 ORDER BY created_at DESC LIMIT 1`,
+      [formType, email.toLowerCase()],
     );
     const data = rows[0];
     if (data?.email_sent === true) return `id=${data.id} email_sent=true`;
     if (data) last = `row ${data.id} stored but email_sent=${data.email_sent}`;
     await new Promise((r) => setTimeout(r, delayMs));
   }
-  throw new Error(`${table}: ${last} for ${email}`);
+  throw new Error(`${formType}: ${last} for ${email}`);
 }
 
 // Drive an OtpField (#otp-email / #otp-code) through to the verified state.
@@ -127,7 +127,7 @@ async function runDemo(page) {
   await page.fill('input[name="company"]', "SMOKE TEST Co");
   await page.getByTestId("demo-submit").click();
   await page.waitForSelector("text=We'll Be in Touch!", { timeout: 30000 });
-  return expectRow("form_demo_submissions", email);
+  return expectRow("demo", email);
 }
 
 async function runHomeQuizAndBooking(page) {
@@ -139,7 +139,7 @@ async function runHomeQuizAndBooking(page) {
   await page.getByTestId("quiz-phone").fill(PHONE);
   await page.getByTestId("quiz-phone-submit").click();
   await page.getByTestId("quiz-book").waitFor({ state: "visible", timeout: 30000 });
-  const quiz = await expectRow("form_quiz_submissions", email);
+  const quiz = await expectRow("quiz", email);
 
   // Booking reuses the verified quiz email (fields enabled immediately).
   await page.getByTestId("quiz-book").click();
@@ -150,7 +150,7 @@ async function runHomeQuizAndBooking(page) {
   await page.locator('[data-testid="quiz-slot"]').first().click();
   await page.getByTestId("quiz-booking-submit").click();
   await page.waitForSelector("text=You're Booked!", { timeout: 30000 });
-  const booking = await expectRow("form_booking_submissions", email);
+  const booking = await expectRow("booking", email);
   return `${quiz}; booking ${booking}`;
 }
 
@@ -163,7 +163,7 @@ async function runChatQuizAndBooking(page) {
   await page.getByTestId("chat-phone").fill(PHONE);
   await page.getByTestId("chat-phone-submit").click();
   await page.getByTestId("chat-book").waitFor({ state: "visible", timeout: 30000 });
-  const quiz = await expectRow("form_quiz_submissions", email);
+  const quiz = await expectRow("quiz", email);
 
   await page.getByTestId("chat-book").click();
   await page.fill("#booking-name", "SMOKE TEST Booker");
@@ -173,7 +173,7 @@ async function runChatQuizAndBooking(page) {
   await page.locator('[data-testid="chat-slot"]').first().click();
   await page.getByTestId("chat-booking-submit").click();
   await page.waitForSelector("text=You're booked!", { timeout: 30000 });
-  const booking = await expectRow("form_booking_submissions", email);
+  const booking = await expectRow("booking", email);
   return `${quiz}; booking ${booking}`;
 }
 

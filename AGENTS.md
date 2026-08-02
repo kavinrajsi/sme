@@ -71,4 +71,4 @@ For new Payload content types: add a collection under `src/collections/`, regist
 ## Database changes
 
 - **Payload-owned tables** (`users`, `media`, `case_studies*`, `payload_*`) — modify via Payload collection configs; the schema is reconciled against the live Postgres directly.
-- **Form-submission and OTP tables** (`form_demo_submissions`, `form_quiz_submissions`, `form_booking_submissions`, `form_otp_codes`) — change via `psql` against the Neon connection string, or the Neon console's SQL editor. No RLS: access is server-only via one connection string, so there's no anon/browser surface for RLS to protect.
+- **Form-submission and OTP tables** (`sme_submissions` — all 3 form types in one table, discriminated by `form_type`, with type-specific fields in a `details` JSONB column — plus `form_otp_codes`) — change via `psql` against the Neon connection string, or the Neon console's SQL editor. No RLS: access is server-only via one connection string, so there's no anon/browser surface for RLS to protect.

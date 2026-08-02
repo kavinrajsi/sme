@@ -1,7 +1,7 @@
 // Weekly form smoke test.
 //
 // Drives every public form in a real browser and verifies that each submission
-// (a) lands in its Supabase table and (b) was emailed (the action sets
+// (a) lands in its Postgres (Neon) table and (b) was emailed (the action sets
 // `email_sent = true` only after ZeptoMail accepts the message — so asserting
 // the row exists WITH email_sent=true proves both storage and send).
 //
@@ -9,17 +9,17 @@
 // /digital-score chat quiz + booking (QuizChat). Every flow is OTP-gated; we
 // can't read a real inbox, so for each gate we click "Send code" (which fires a
 // real requestOtp + sends a real OTP email), then inject a known-code row into
-// form_otp_codes via the service role so the UI can complete verification.
+// form_otp_codes directly so the UI can complete verification.
 //
 // Run: npm run smoke:forms   (loads .env.local via the package.json script)
 // Env: SMOKE_TARGET_URL (default http://localhost:3000),
-//      SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, OTP_PEPPER (required),
+//      DATABASE_URI, OTP_PEPPER (required),
 //      BROWSERBASE_API_KEY/BROWSERBASE_PROJECT_ID (optional, for a remote
 //      browser against a PUBLIC target — cannot reach localhost).
 
 import { createHash } from "node:crypto";
 import { mkdir } from "node:fs/promises";
-import { createClient } from "@supabase/supabase-js";
+import { Pool } from "pg";
 
 const TARGET = (process.env.SMOKE_TARGET_URL || "http://localhost:3000").replace(/\/$/, "");
 const IS_LOCAL = /localhost|127\.0\.0\.1/.test(TARGET);
@@ -27,20 +27,17 @@ const KNOWN_CODE = "123456";
 const PHONE = "9876543210";
 const ARTIFACT_DIR = "smoke-artifacts";
 
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const DATABASE_URI = process.env.DATABASE_URI;
 const OTP_PEPPER = process.env.OTP_PEPPER;
 
-for (const [k, v] of Object.entries({ SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, OTP_PEPPER })) {
+for (const [k, v] of Object.entries({ DATABASE_URI, OTP_PEPPER })) {
   if (!v) {
     console.error(`[smoke] Missing required env var: ${k}`);
     process.exit(2);
   }
 }
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-  auth: { persistSession: false, autoRefreshToken: false },
-});
+const pool = new Pool({ connectionString: DATABASE_URI });
 
 // Unique per run so DB assertions are precise and OTP rate limits aren't hit.
 const RUN_ID = `${Date.now()}`;
@@ -55,17 +52,14 @@ function hashCode(code) {
 // insert a fresh known-code row. consumeOtp() picks the most recent unconsumed.
 async function injectOtp(email) {
   const e = email.toLowerCase();
-  await supabase
-    .from("form_otp_codes")
-    .update({ consumed_at: new Date().toISOString() })
-    .eq("email", e)
-    .is("consumed_at", null);
-  const { error } = await supabase.from("form_otp_codes").insert({
-    email: e,
-    code_hash: hashCode(KNOWN_CODE),
-    expires_at: new Date(Date.now() + 9 * 60 * 1000).toISOString(),
-  });
-  if (error) throw new Error(`injectOtp failed: ${error.message}`);
+  await pool.query(
+    "UPDATE form_otp_codes SET consumed_at = $1 WHERE email = $2 AND consumed_at IS NULL",
+    [new Date().toISOString(), e],
+  );
+  await pool.query(
+    "INSERT INTO form_otp_codes (email, code_hash, expires_at) VALUES ($1, $2, $3)",
+    [e, hashCode(KNOWN_CODE), new Date(Date.now() + 9 * 60 * 1000).toISOString()],
+  );
 }
 
 // Poll for the row: some actions (e.g. QuizChat) fire the submit without
@@ -74,14 +68,11 @@ async function injectOtp(email) {
 async function expectRow(table, email, { tries = 15, delayMs = 1000 } = {}) {
   let last = "no row";
   for (let i = 0; i < tries; i++) {
-    const { data, error } = await supabase
-      .from(table)
-      .select("id, email_sent, created_at")
-      .eq("email", email.toLowerCase())
-      .order("created_at", { ascending: false })
-      .limit(1)
-      .maybeSingle();
-    if (error) throw new Error(`${table} query error: ${error.message}`);
+    const { rows } = await pool.query(
+      `SELECT id, email_sent, created_at FROM ${table} WHERE email = $1 ORDER BY created_at DESC LIMIT 1`,
+      [email.toLowerCase()],
+    );
+    const data = rows[0];
     if (data?.email_sent === true) return `id=${data.id} email_sent=true`;
     if (data) last = `row ${data.id} stored but email_sent=${data.email_sent}`;
     await new Promise((r) => setTimeout(r, delayMs));

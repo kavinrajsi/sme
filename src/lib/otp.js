@@ -1,5 +1,5 @@
 import { createHash, randomInt } from "node:crypto";
-import { getSupabaseAdmin } from "./supabase";
+import { query } from "./db";
 
 const OTP_LENGTH = 6;
 const OTP_TTL_MS = 10 * 60 * 1000;
@@ -23,42 +23,34 @@ export function hashCode(code) {
 }
 
 export async function recordOtpAndCheckRate(email) {
-  const supabase = getSupabaseAdmin();
   const since = new Date(Date.now() - REQUEST_WINDOW_MS).toISOString();
-  const { count, error } = await supabase
-    .from("form_otp_codes")
-    .select("id", { count: "exact", head: true })
-    .eq("email", email)
-    .gte("created_at", since);
-  if (error) throw error;
-  if ((count ?? 0) >= MAX_REQUESTS_PER_WINDOW) {
+  const { rows } = await query(
+    "SELECT count(*)::int AS count FROM form_otp_codes WHERE email = $1 AND created_at >= $2",
+    [email, since],
+  );
+  if (rows[0].count >= MAX_REQUESTS_PER_WINDOW) {
     return { allowed: false };
   }
   return { allowed: true };
 }
 
 export async function insertOtp(email, codeHash) {
-  const supabase = getSupabaseAdmin();
   const expiresAt = new Date(Date.now() + OTP_TTL_MS).toISOString();
-  const { error } = await supabase
-    .from("form_otp_codes")
-    .insert({ email, code_hash: codeHash, expires_at: expiresAt });
-  if (error) throw error;
+  await query(
+    "INSERT INTO form_otp_codes (email, code_hash, expires_at) VALUES ($1, $2, $3)",
+    [email, codeHash, expiresAt],
+  );
 }
 
 export async function consumeOtp(email, code) {
-  const supabase = getSupabaseAdmin();
   const nowIso = new Date().toISOString();
-  const { data: row, error } = await supabase
-    .from("form_otp_codes")
-    .select("id, code_hash, attempts, expires_at, consumed_at")
-    .eq("email", email)
-    .is("consumed_at", null)
-    .gt("expires_at", nowIso)
-    .order("created_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-  if (error) throw error;
+  const { rows } = await query(
+    `SELECT id, code_hash, attempts, expires_at, consumed_at FROM form_otp_codes
+     WHERE email = $1 AND consumed_at IS NULL AND expires_at > $2
+     ORDER BY created_at DESC LIMIT 1`,
+    [email, nowIso],
+  );
+  const row = rows[0] ?? null;
   if (!row) return { ok: false, reason: "expired" };
   if (row.attempts >= MAX_VERIFY_ATTEMPTS) {
     return { ok: false, reason: "too_many_attempts" };
@@ -67,14 +59,17 @@ export async function consumeOtp(email, code) {
   const expected = hashCode(code);
   const match = expected === row.code_hash;
 
-  const update = match
-    ? { consumed_at: nowIso, attempts: row.attempts + 1 }
-    : { attempts: row.attempts + 1 };
-  const { error: updateError } = await supabase
-    .from("form_otp_codes")
-    .update(update)
-    .eq("id", row.id);
-  if (updateError) throw updateError;
+  if (match) {
+    await query(
+      "UPDATE form_otp_codes SET consumed_at = $1, attempts = $2 WHERE id = $3",
+      [nowIso, row.attempts + 1, row.id],
+    );
+  } else {
+    await query(
+      "UPDATE form_otp_codes SET attempts = $1 WHERE id = $2",
+      [row.attempts + 1, row.id],
+    );
+  }
 
   if (!match) return { ok: false, reason: "wrong_code" };
   return { ok: true };
@@ -85,18 +80,13 @@ export async function assertVerified(email) {
   if (!normalized) {
     return { ok: false, reason: "missing_email" };
   }
-  const supabase = getSupabaseAdmin();
   const since = new Date(Date.now() - VERIFIED_WINDOW_MS).toISOString();
-  const { data, error } = await supabase
-    .from("form_otp_codes")
-    .select("id")
-    .eq("email", normalized)
-    .not("consumed_at", "is", null)
-    .gte("consumed_at", since)
-    .order("consumed_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-  if (error) throw error;
-  if (!data) return { ok: false, reason: "not_verified" };
+  const { rows } = await query(
+    `SELECT id FROM form_otp_codes
+     WHERE email = $1 AND consumed_at IS NOT NULL AND consumed_at >= $2
+     ORDER BY consumed_at DESC LIMIT 1`,
+    [normalized, since],
+  );
+  if (!rows[0]) return { ok: false, reason: "not_verified" };
   return { ok: true };
 }

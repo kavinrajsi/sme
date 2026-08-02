@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { SendMailClient } from "zeptomail";
-import { getSupabaseAdmin } from "@/lib/supabase";
+import { query } from "@/lib/db";
 
 // Daily DB liveness check, triggered by Vercel Cron (see vercel.json).
-// Runs a lightweight head-count query against Postgres (via Supabase). On
+// Runs a lightweight count query against Postgres (Neon). On
 // failure it sends an alert email through the existing ZeptoMail setup.
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -14,12 +14,7 @@ const PROBE_TABLE = "case_studies";
 async function checkDb() {
   const start = Date.now();
   try {
-    const supabase = getSupabaseAdmin();
-    // head: true => no rows transferred, just validates the round-trip + count.
-    const { error } = await supabase
-      .from(PROBE_TABLE)
-      .select("id", { count: "exact", head: true });
-    if (error) throw error;
+    await query(`SELECT count(*)::int AS count FROM ${PROBE_TABLE}`);
     return { ok: true, latencyMs: Date.now() - start };
   } catch (error) {
     return {

@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { Anek_Tamil } from "next/font/google";
-import { getSupabaseAdmin } from "@/lib/supabase";
+import { query } from "@/lib/db";
 import { isSessionValid, SESSION_COOKIE_NAME } from "@/lib/adminAuth";
 import LoginForm from "./LoginForm";
 import { logoutAction } from "./actions";
@@ -21,29 +21,25 @@ export const dynamic = "force-dynamic";
 const ROW_LIMIT = 100;
 
 async function fetchAll() {
-  const supabase = getSupabaseAdmin();
-  const [demoRes, quizRes, bookingRes] = await Promise.all([
-    supabase
-      .from("form_demo_submissions")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(ROW_LIMIT),
-    supabase
-      .from("form_quiz_submissions")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(ROW_LIMIT),
-    supabase
-      .from("form_booking_submissions")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(ROW_LIMIT),
-  ]);
+  const tables = [
+    "form_demo_submissions",
+    "form_quiz_submissions",
+    "form_booking_submissions",
+  ];
+  const [demoRes, quizRes, bookingRes] = await Promise.allSettled(
+    tables.map((table) =>
+      query(
+        `SELECT * FROM ${table} ORDER BY created_at DESC LIMIT ${ROW_LIMIT}`,
+      ),
+    ),
+  );
   return {
-    demo: demoRes.data || [],
-    quiz: quizRes.data || [],
-    booking: bookingRes.data || [],
-    errors: [demoRes.error, quizRes.error, bookingRes.error].filter(Boolean),
+    demo: demoRes.status === "fulfilled" ? demoRes.value.rows : [],
+    quiz: quizRes.status === "fulfilled" ? quizRes.value.rows : [],
+    booking: bookingRes.status === "fulfilled" ? bookingRes.value.rows : [],
+    errors: [demoRes, quizRes, bookingRes]
+      .filter((r) => r.status === "rejected")
+      .map((r) => r.reason),
   };
 }
 

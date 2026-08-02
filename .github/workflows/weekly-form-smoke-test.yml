@@ -26,6 +26,8 @@ jobs:
           BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
           SMOKE_TARGET_URL: https://sme.searchmadarth.com
+          DATABASE_URI: ${{ secrets.DATABASE_URI }}
+          OTP_PEPPER: ${{ secrets.OTP_PEPPER }}
 
       - name: Upload artifacts
         if: always()

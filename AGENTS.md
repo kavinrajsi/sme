@@ -8,7 +8,7 @@ This version has breaking changes - APIs, conventions, and file structure may al
 
 - **Framework**: Next.js 16 App Router, React 19. Plain JavaScript - **no TypeScript**. React Compiler is **disabled** (`reactCompiler: false` in `next.config.mjs`) because it crashes Payload's admin UI; do not flip it back on without a scoped workaround.
 - **CMS**: [Payload CMS 3](https://payloadcms.com/) embedded under the `(payload)` route group at `/admin`. Collections live in `src/collections/`; reusable blocks in `src/collections/blocks.js`; the entry config is `src/payload.config.js`. Use the `payload` CLI via `npm run payload -- <command>` (e.g. `generate:types`).
-- **Databases**: One Supabase project (`sme-searchmadarth`) hosts everything. Payload connects to it as Postgres via `DATABASE_URI` (pooler, port 6543). The same project's REST API is used (service-role only) by `supabase-js` for form submission tables and the OTP flow. Other Supabase projects on the same account are off-limits.
+- **Databases**: One Neon project hosts everything, reached over a single `DATABASE_URI` connection string via `pg`. Payload's `postgresAdapter` uses it for `users`/`media`/`case_studies*`/`payload_*`; `src/lib/db.js` uses the same string for the form-submission and OTP tables.
 - **Storage**: Vercel Blob for Payload Media uploads, configured via the `@payloadcms/storage-vercel-blob` plugin and `BLOB_READ_WRITE_TOKEN`.
 - **Styling**: CSS Modules co-located with components (`Foo.js` + `Foo.module.css`) plus `globals.css`. No Tailwind, no styled-components.
 - **Forms**: server actions in `src/app/actions/` (files start with `"use server";`). Not API routes.
@@ -35,10 +35,10 @@ Other top-level routes (not in a group):
 Server-side code:
 
 - `src/collections/` — Payload collection configs (`Users.js`, `Media.js`, `CaseStudies.js`, `blocks.js` exports the 7 block types used by `CaseStudies.body`)
-- `src/lib/` — server-only helpers (`caseStudies.js`, `otp.js`, `supabase.js`, `adminAuth.js`)
+- `src/lib/` — server-only helpers (`caseStudies.js`, `otp.js`, `db.js`, `adminAuth.js`)
 - `src/app/components/` — React components (flat folder)
 - `src/app/actions/`
-  - `sendDemoEmail.js` — exports `sendDemoEmail`, `sendQuizEmail`, `sendBookingEmail`. Writes to `form_*_submissions` tables via `supabase-js`, then sends via ZeptoMail.
+  - `sendDemoEmail.js` — exports `sendDemoEmail`, `sendQuizEmail`, `sendBookingEmail`. Writes to `form_*_submissions` tables via `src/lib/db.js`, then sends via ZeptoMail.
   - `otp.js` — exports `requestOtp`, `verifyOtp`. Writes to `form_otp_codes`.
 
 ## Domains
@@ -52,7 +52,7 @@ These are different on purpose - don't conflate them when writing copy, env valu
 
 The README is the source of truth for the env var contract. See the **Environment variables** section in `README.md`. Summary:
 
-- Server-only: `ZEPTO_*`, `EMAIL_DISABLED`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `OTP_PEPPER`, `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`, `PAYLOAD_SECRET`, `DATABASE_URI`, `BLOB_READ_WRITE_TOKEN`
+- Server-only: `ZEPTO_*`, `EMAIL_DISABLED`, `OTP_PEPPER`, `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`, `PAYLOAD_SECRET`, `DATABASE_URI`, `BLOB_READ_WRITE_TOKEN`
 - Public (`NEXT_PUBLIC_*`, ships to the browser): `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_GTM_ID`, `NEXT_PUBLIC_GA_ID`
 
 When adding a new env var, document it in `README.md` and follow the existing pattern in `.env.local` (key + a one-line comment). Mirror it in Vercel (Production + Preview) — see the deployment section of the README.
@@ -71,4 +71,4 @@ For new Payload content types: add a collection under `src/collections/`, regist
 ## Database changes
 
 - **Payload-owned tables** (`users`, `media`, `case_studies*`, `payload_*`) — modify via Payload collection configs; the schema is reconciled against the live Postgres directly.
-- **Form-submission and OTP tables** (`form_demo_submissions`, `form_quiz_submissions`, `form_booking_submissions`, `form_otp_codes`) — change via Supabase MCP / Supabase CLI / dashboard SQL editor. Keep RLS enabled on every public table.
+- **Form-submission and OTP tables** (`form_demo_submissions`, `form_quiz_submissions`, `form_booking_submissions`, `form_otp_codes`) — change via `psql` against the Neon connection string, or the Neon console's SQL editor. No RLS: access is server-only via one connection string, so there's no anon/browser surface for RLS to protect.

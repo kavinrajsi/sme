@@ -2,7 +2,7 @@
 
 import { SendMailClient } from "zeptomail";
 import { assertVerified, normalizeEmail } from "@/lib/otp";
-import { getSupabaseAdmin } from "@/lib/supabase";
+import { query } from "@/lib/db";
 import { parseEmailAddress, toRecipients } from "@/lib/email";
 
 const url = "https://api.zeptomail.com/v1.1/email";
@@ -23,16 +23,25 @@ function siteFooter(campaign) {
 
 async function recordSubmission(table, row) {
   try {
-    const supabase = getSupabaseAdmin();
-    const { data, error } = await supabase
-      .from(table)
-      .insert(row)
-      .select("id")
-      .single();
-    if (error) throw error;
-    return data?.id || null;
+    const columns = Object.keys(row);
+    const values = columns.map((col) => {
+      const value = row[col];
+      return value !== null && typeof value === "object"
+        ? JSON.stringify(value)
+        : value;
+    });
+    const placeholders = columns.map((col, i) => {
+      const value = row[col];
+      const isJson = value !== null && typeof value === "object";
+      return isJson ? `$${i + 1}::jsonb` : `$${i + 1}`;
+    });
+    const { rows } = await query(
+      `INSERT INTO ${table} (${columns.join(", ")}) VALUES (${placeholders.join(", ")}) RETURNING id`,
+      values,
+    );
+    return rows[0]?.id || null;
   } catch (error) {
-    console.error(`[supabase] insert into ${table} failed:`, error);
+    console.error(`[db] insert into ${table} failed:`, error);
     return null;
   }
 }
@@ -40,10 +49,9 @@ async function recordSubmission(table, row) {
 async function markEmailSent(table, id) {
   if (!id) return;
   try {
-    const supabase = getSupabaseAdmin();
-    await supabase.from(table).update({ email_sent: true }).eq("id", id);
+    await query(`UPDATE ${table} SET email_sent = true WHERE id = $1`, [id]);
   } catch (error) {
-    console.error(`[supabase] mark email_sent on ${table} failed:`, error);
+    console.error(`[db] mark email_sent on ${table} failed:`, error);
   }
 }
 

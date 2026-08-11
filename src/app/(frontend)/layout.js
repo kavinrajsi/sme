@@ -108,7 +108,7 @@ const organizationSchema = {
   },
   contactPoint: {
     "@type": "ContactPoint",
-    telephone: "+91-8667767447",
+    telephone: "+91-6374115422",
     contactType: "sales",
     areaServed: "IN",
     availableLanguage: ["English", "Tamil"],

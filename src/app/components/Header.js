@@ -99,7 +99,7 @@ export default function Header({ solid = false }) {
         {/* <a href="#quiz" className="btn-base btn-ghost-lime">
           Check Your Digital Score
         </a> */}
-        <a href="tel:+918667767447" className="btn-base btn-solid">
+        <a href="tel:+916374115422" className="btn-base btn-solid">
           Book a Free Strategy Call
         </a>
       </div>
@@ -139,7 +139,7 @@ export default function Header({ solid = false }) {
               Check Your Digital Score
             </a>
             <a
-              href="tel:+918667767447"
+              href="tel:+916374115422"
               className="btn-base btn-solid"
               onClick={() => setMenuOpen(false)}
             >
@@ -152,7 +152,7 @@ export default function Header({ solid = false }) {
         <a href="#quiz" className="btn-base">
           Check Digital Score
         </a>
-        <a href="tel:+918667767447" className="btn-base">
+        <a href="tel:+916374115422" className="btn-base">
           Talk to an Expert
         </a>
       </div>
